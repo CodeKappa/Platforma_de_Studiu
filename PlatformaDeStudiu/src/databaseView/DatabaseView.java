@@ -1,4 +1,4 @@
-package DatabaseView;
+package databaseView;
 
 import java.awt.Dimension;
 //import java.awt.Point;
@@ -22,8 +22,4 @@ public class DatabaseView extends JFrame{
 		//setSize(500,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
-	
-	
-
 }

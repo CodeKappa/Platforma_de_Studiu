@@ -1,4 +1,4 @@
-package DatabaseModel;
+package databaseModel;
 
 public class DatabaseModel {
 

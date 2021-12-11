@@ -2,33 +2,43 @@ package main;
 
 import java.sql.SQLException;
 
-import DatabaseController.DatabaseController;
-import DatabaseModel.DatabaseModel;
-import DatabaseModel.SqlQueries;
-import DatabaseView.DatabaseView;
+import databaseController.DatabaseController;
+import databaseModel.DatabaseModel;
+import databaseModel.PersoaneSqlQueries;
+import databaseView.DatabaseView;
 
+/**
+ * Main class of the Java application. 
+ * It contains the main method that starts the Java application.
+ */
 public class MainClass {
-
+	
 	public static DatabaseConnection db;
 	public static DatabaseView theView;
 	public static DatabaseModel theModel;
 	public static DatabaseController theController;
 	
+	/**
+	 * The main method.
+	 */
 	public static void main(String[] args){
 		
+		//details for the MySQL JDBC driver to develop the program
 		String url = "jdbc:mysql://localhost:3306/";
 		String user = "root";
 	    String password = "12344321";	
 	    
 	    db = new DatabaseConnection(url,user,password);
 		
-		//select database you want to work with
+		//set the name of database we work with
 		db.setDbName("test");
-		try { SqlQueries.selectDatabase(db.getCon()); }
+		
+		//select database we work with "use test"
+		try { db.selectDatabase(db.getCon()); }
 		catch (SQLException e) { e.printStackTrace();}
 		
-		//print in console
-		try { SqlQueries.viewTable(db.getCon()); }
+		//print in console database in use "select * from persoane"
+		try { PersoaneSqlQueries.viewPersoane(db.getCon()); }
 		catch (SQLException e) { e.printStackTrace();}
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

@@ -1,16 +1,16 @@
-package DatabaseController;
+package databaseController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import DatabaseModel.DatabaseModel;
-import DatabaseModel.SqlQueries;
-import DatabaseView.DatabaseView;
+import databaseModel.DatabaseModel;
+import databaseModel.PersoaneSqlQueries;
+import databaseView.DatabaseView;
 import main.MainClass;
 
 public class DatabaseController {
-	DatabaseView theView;
-	DatabaseModel theModel;
+	protected DatabaseView theView;
+	protected DatabaseModel theModel;
 	
 	public DatabaseController(DatabaseView theView, DatabaseModel theModel) {
 		super();
@@ -18,7 +18,7 @@ public class DatabaseController {
 		this.theModel = theModel;
 		theView.panelLogin.addSubmitListener(new SubmitListener());
 	}
-
+	
 	class SubmitListener implements ActionListener
 	{
 		@Override
@@ -27,12 +27,17 @@ public class DatabaseController {
 			String password;
 			try
 			{
-				username = theView.panelLogin.getUsernameField();
-				password = theView.panelLogin.getPasswordField();
-				if(SqlQueries.isValidPassword(MainClass.db.getCon(),username, password) == true)
+				username = theView.panelLogin.getUsername();
+				password = theView.panelLogin.getPassword();
+				if(PersoaneSqlQueries.isValidPassword(MainClass.db.getCon(),username, password) == true)
+				{
 					theView.panelLogin.setBackground(java.awt.Color.GREEN);
+					//theView.panelLogin.setVisible(false);
+				}					
 				else
-					theView.panelLogin.setBackground(java.awt.Color.RED);		
+				{
+					theView.panelLogin.setBackground(java.awt.Color.RED);	
+				}				
 			}
 			catch(Exception ex)
 			{

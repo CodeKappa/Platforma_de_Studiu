@@ -1,4 +1,4 @@
-package DatabaseView;
+package databaseView;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-
 
 @SuppressWarnings("serial")
 public class PanelLogin extends JPanel
@@ -56,11 +55,11 @@ public class PanelLogin extends JPanel
 		buttonLogin.addActionListener(listenForSubmitButton);
 	}
 
-	public String getUsernameField() {
+	public String getUsername() {
 		return usernameField.getText();
 	}
 
-	public String getPasswordField() {
+	public String getPassword() {
 		return passwordField.getText();
 	}
 }

@@ -3,6 +3,9 @@ package main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+import databaseModel.TreatException;
 
 public class DatabaseConnection {
 
@@ -35,22 +38,33 @@ public class DatabaseConnection {
 		if(this.con == null) System.exit(3);
 	}
 
-	public void closeConnection() {
+	public void closeConnection() 
+	{
 		// close JDBC connection	
 		try { this.con.close(); } 
 		catch (SQLException e) { e.printStackTrace();}
 		System.out.println("JDBC connection has been closed");
 	}
 
-	public String getDbName() {
-		return this.dbName;
-	}
-
-	public void setDbName(String dbName) {
+	public void setDbName(String dbName) 
+	{
 		this.dbName = dbName;
 	}
 
 	public Connection getCon() {
 		return con;
+	}
+	
+	public void selectDatabase(Connection con) throws SQLException {
+		String query = "use " + this.dbName;
+		try (Statement stmt = con.createStatement()) 
+		{
+			stmt.executeUpdate(query);
+			System.out.println("database test in use");
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
 	}
 }
