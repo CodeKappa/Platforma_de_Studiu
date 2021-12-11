@@ -12,4 +12,4 @@
 ## 3. Basic details of the MySQL JDBC driver to develop the program
 - Modify the url, user and password in `\ProiectBD\main\MainClass.java` **(Warrning don't push your password if you don't want to)**
 
-## Check [https://www.knowprogram.com/jdbc/connect-mysql-database-eclipse/] for more details
+## Check [this](https://www.knowprogram.com/jdbc/connect-mysql-database-eclipse/) for more details
