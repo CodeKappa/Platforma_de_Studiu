@@ -1,6 +1,6 @@
 # ProiectBD
 
-## 1. Adding JDBC driver jar file to Java project.
+## 1. Add JDBC driver jar file to Java project.
 
 - Open project properties => select project then `ALT+ENTER` OR `right click on project` => `Properties` 
 - In the `Java Build path`, in the `Libraries Section` => `Classpath` => Click on `Add External Jars` => Select `mysql-connector-java-<version>.jar` from 
