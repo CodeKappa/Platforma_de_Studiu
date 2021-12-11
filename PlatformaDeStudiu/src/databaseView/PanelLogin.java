@@ -50,9 +50,9 @@ public class PanelLogin extends JPanel
 	
 	public Dimension getPreferredSize() { return new Dimension(300,155); }
 	
-	public void addSubmitListener(ActionListener listenForSubmitButton)
+	public void addLoginListener(ActionListener listenForLoginButton)
 	{
-		buttonLogin.addActionListener(listenForSubmitButton);
+		buttonLogin.addActionListener(listenForLoginButton);
 	}
 
 	public String getUsername() {
