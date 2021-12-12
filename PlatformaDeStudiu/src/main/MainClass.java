@@ -33,14 +33,6 @@ public class MainClass {
 		//set the name of database we work with
 		db.setDbName("test");
 		
-		//select database we work with "use test"
-		try { db.selectDatabase(db.getCon()); }
-		catch (SQLException e) { e.printStackTrace();}
-		
-		//print in console database in use "select * from persoane"
-		try { PersoaneSqlQueries.viewPersoane(db.getCon()); }
-		catch (SQLException e) { e.printStackTrace();}
-		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				DatabaseView theView = new DatabaseView();
@@ -50,6 +42,14 @@ public class MainClass {
 				theView.setVisible(true);
 			}
 		});
+		
+		//select database we work with "use test"
+		try { db.selectDatabase(db.getCon()); }
+		catch (SQLException e) { e.printStackTrace();}
+		
+		//print in console database in use "select * from persoane"
+		try { PersoaneSqlQueries.viewPersoane(db.getCon()); }
+		catch (SQLException e) { e.printStackTrace();}	
 	}
 
 }

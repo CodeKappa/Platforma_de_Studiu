@@ -15,16 +15,17 @@ public class PanelLogin extends JPanel
 {	
 	private static JTextField usernameField = new JTextField();
 	private static JTextField passwordField = new JTextField();
-	private static JButton buttonLogin = new JButton("Login");
+	private static JButton buttonLogin = new JButton("Log in");
+	private static JButton buttonSignUpComute = new JButton("Sign Up");
 	
 	PanelLogin()
 	{
 		setLayout(null);
 		
-		JLabel usernameLabel = new JLabel("ID");
+		JLabel usernameLabel = new JLabel("Contract Number");
 		JLabel passwordLabel = new JLabel("Password");
 
-		//Username		
+		//Contract Number	
 		add(usernameLabel);
 		add(usernameField);
 		usernameLabel.setBounds(50, 10, 200, 20);	
@@ -38,9 +39,13 @@ public class PanelLogin extends JPanel
 		
 		//Login Button
 		add(buttonLogin);
-		buttonLogin.setBounds(50, 110, 200, 25);
+		buttonLogin.setBounds(50, 110, 100, 25);
 		
-		this.setBorder(new LineBorder(Color.BLACK, 3));
+		//Button to go to Sign Up
+		add(buttonSignUpComute);
+		buttonSignUpComute.setBounds(150, 110, 100, 25);
+		
+		this.setBorder(new LineBorder(Color.BLACK, 5));
 	}
 	
 	public void setBackgroungColor(Color c)
@@ -54,12 +59,17 @@ public class PanelLogin extends JPanel
 	{
 		buttonLogin.addActionListener(listenForLoginButton);
 	}
+	
+	public void addComuteListener(ActionListener SignUp_ComuteButton)
+	{
+		buttonSignUpComute.addActionListener(SignUp_ComuteButton);
+	}
 
-	public String getUsername() {
+	public static String getUsername() {
 		return usernameField.getText();
 	}
 
-	public String getPassword() {
+	public static String getPassword() {
 		return passwordField.getText();
 	}
 }

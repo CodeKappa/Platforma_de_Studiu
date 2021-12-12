@@ -36,6 +36,10 @@ public class DatabaseConnection {
 		else
 			System.out.println("Congratulations," + " JDBC connection is established successfully.\n");
 		if(this.con == null) System.exit(3);
+		
+		//disable auto-commit
+		try {con.setAutoCommit(false);
+		} catch (SQLException e) {e.printStackTrace();}
 	}
 
 	public void closeConnection() 
