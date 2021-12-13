@@ -13,10 +13,10 @@ import javax.swing.border.LineBorder;
 @SuppressWarnings("serial")
 public class PanelLogin extends JPanel
 {	
-	private static JTextField usernameField = new JTextField();
-	private static JTextField passwordField = new JTextField();
-	private static JButton buttonLogin = new JButton("Log in");
-	private static JButton buttonSignUpComute = new JButton("Sign Up");
+	private JTextField usernameField = new JTextField();
+	private JTextField passwordField = new JTextField();
+	private JButton buttonLogin = new JButton("Log in");
+	private JButton buttonSignUpComute = new JButton("Sign Up");
 	
 	PanelLogin()
 	{
@@ -65,11 +65,11 @@ public class PanelLogin extends JPanel
 		buttonSignUpComute.addActionListener(SignUp_ComuteButton);
 	}
 
-	public static String getUsername() {
+	public String getUsername() {
 		return usernameField.getText();
 	}
 
-	public static String getPassword() {
+	public String getPassword() {
 		return passwordField.getText();
 	}
 }

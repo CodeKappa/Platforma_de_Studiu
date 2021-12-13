@@ -4,13 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
-
 import databaseModel.DatabaseModel;
 import databaseModel.PersoaneSqlQueries;
 import databaseView.DatabaseView;
-import databaseView.PanelLogin;
-import databaseView_SignUpPanel.PanelSignUp;
 import databaseView_SignUpPanel.SIGNUP_LABEL;
 import main.MainClass;
 import java.awt.Point;
@@ -38,8 +34,8 @@ public class DatabaseController {
 			String password;
 			try
 			{
-				username = PanelLogin.getUsername();
-				password = PanelLogin.getPassword();
+				username = theView.panelLogin.getUsername();
+				password = theView.panelLogin.getPassword();
 				if(username.length() > 0 && password.length() > 0 
 				   && PersoaneSqlQueries.isValidPassword(MainClass.db.getCon(), Integer.parseInt(username), password) == true
 				){
@@ -92,13 +88,13 @@ public class DatabaseController {
 			ArrayList<String> data = new ArrayList<String>();
 			try
 			{
-				data.add(PanelSignUp.getTextFrom(SIGNUP_LABEL.NAME));		    //0
-				data.add(PanelSignUp.getTextFrom(SIGNUP_LABEL.CNP));		    //1
-				data.add(PanelSignUp.getTextFrom(SIGNUP_LABEL.ADRESS));		    //2
-				data.add(PanelSignUp.getTextFrom(SIGNUP_LABEL.PHONE));  	    //3
-				data.add(PanelSignUp.getTextFrom(SIGNUP_LABEL.EMAIL));		    //4
-				data.add(PanelSignUp.getTextFrom(SIGNUP_LABEL.IBAN));		    //5
-				data.add(PanelSignUp.getTextFrom(SIGNUP_LABEL.PASSWORD));	    //6
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.NAME));		    //0
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.CNP));		    //1
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.ADRESS));		    //2
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.PHONE));  	    //3
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.EMAIL));		    //4
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.IBAN));		    //5
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.PASSWORD));	    //6
 				
 				//data.add(PanelSignUp.getTextFrom(SIGNUP_LABEL.PASSWORDCONFIRM));//7
 				

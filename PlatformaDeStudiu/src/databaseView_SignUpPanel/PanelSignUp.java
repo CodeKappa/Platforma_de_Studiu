@@ -15,10 +15,10 @@ import javax.swing.border.LineBorder;
 @SuppressWarnings("serial")
 public class PanelSignUp extends JPanel
 {	
-	private static ArrayList<SignUpField> data = new ArrayList<SignUpField>();
-	private static SignUpLabelMap lm = new SignUpLabelMap();
-	private static JButton buttonLoginComute = new JButton("Log in");
-	private static JButton buttonSignUp = new JButton("Sign Up");
+	private ArrayList<SignUpField> data = new ArrayList<SignUpField>();
+	private SignUpLabelMap lm = new SignUpLabelMap();
+	private JButton buttonLoginComute = new JButton("Log in");
+	private JButton buttonSignUp = new JButton("Sign Up");
 	
 	public void addComponentLabel(JLabel l, int x, int y, int width, int height)
 	{
@@ -31,8 +31,7 @@ public class PanelSignUp extends JPanel
 		add(tf);
 		tf.setBounds(x, y, width, height);
 	}
-	
-	
+		
 	public PanelSignUp()
 	{
 		setLayout(null);
@@ -98,7 +97,7 @@ public class PanelSignUp extends JPanel
 		buttonLoginComute.addActionListener(Login_ComuteButton);
 	}
 
-	public static String getTextFrom(SIGNUP_LABEL l) {
+	public String getTextFrom(SIGNUP_LABEL l) {
 		for(SignUpField f : data)
 		{
 			if(f.getLabel().getText() == lm.getLabelName(l))
