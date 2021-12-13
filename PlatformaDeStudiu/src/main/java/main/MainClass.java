@@ -14,9 +14,6 @@ import databaseView.DatabaseView;
 public class MainClass {
 	
 	public static DatabaseConnection db;
-	private static DatabaseView theView;
-	private static DatabaseModel theModel;
-	private static DatabaseController theController;
 	
 	/**
 	 * The main method.
