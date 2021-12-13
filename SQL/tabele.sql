@@ -129,3 +129,34 @@ BEGIN
     END IF;
 END;//
 //
+
+
+CREATE PROCEDURE Cautare_materie(materie varchar(50))
+BEGIN
+select * from materii where nume=materie;
+
+END; //
+
+CREATE PROCEDURE Inscriere(id_materie int, cnp_student char(13))
+BEGIN
+
+select id into @x  from materii where id=id_curs;
+
+if(x!=null)
+then 
+INSERT INTO materii_studenti(id_materie, cnp_student) VALUES(id_materie, cnp_student);
+else 
+signal sqlstate '45000' set message_text= 'Materia nu exista';
+END IF;
+
+END;//
+
+CREATE PROCEDURE Vizualizare_note(cnp_student char(13))
+BEGIN
+
+select x.nume, m.nota from materii_studenti m join materii x on m.id_materie=x.id;
+END;
+
+
+
+
