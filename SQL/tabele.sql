@@ -52,46 +52,47 @@ FOREIGN KEY (id_materie) REFERENCES materii(id));
 
 CREATE TABLE calendar
 (id int unique auto_increment primary key,
-data_programarii datetime,
-durata time,
-id_materie int,
-categorie ENUM('Curs', 'Seminar', 'Laborator'),
-nr_maxim int,
+data_programarii datetime not null,
+durata time not null,
+id_materie int not null,
+categorie ENUM('Curs', 'Seminar', 'Laborator') not null,
+nr_maxim int not null,
 FOREIGN KEY (id_materie) REFERENCES materii(id));
 
 CREATE TABLE calendar_studenti
 (cnp_student char(13),
-id_calendar int,
+id_calendar int not null,
 FOREIGN KEY (cnp_student) REFERENCES persoane(cnp),
 FOREIGN KEY (id_calendar) REFERENCES calendar(id));
 
 CREATE TABLE grup_studiu
 (id int unique auto_increment primary key,
-id_materie int,
+id_materie int not null,
 FOREIGN KEY (id_materie) REFERENCES materii(id));
 
 CREATE TABLE grup_studiu_studenti
-(id_grup int,
-cnp_student char(13),
+(id_grup int not null,
+cnp_student char(13) not null,
 FOREIGN KEY (id_grup) REFERENCES grup_studiu(id),
 FOREIGN KEY (cnp_student) REFERENCES persoane(cnp));
 
 CREATE TABLE grup_studiu_mesaje
-(id_grup int,
-cnp_student char(13),
-mesaj varchar(250),
+(id_grup int not null,
+cnp_student char(13) not null,
+mesaj varchar(250) not null,
+data_ora_trimiterii datetime not null,
 FOREIGN KEY (id_grup) REFERENCES grup_studiu(id),
 FOREIGN KEY (cnp_student) REFERENCES persoane(cnp));
 
 CREATE TABLE grup_studiu_activitati
-(id_grup int,
+(id_grup int not null,
 cnp_profesor char(13),
-nume varchar(50),
+nume varchar(50) not null,
 descriere varchar(250),
-data_programarii datetime,
-durata time,
-data_expirarii datetime,
-numar_minim int,
+data_programarii datetime not null, 
+durata time not null,
+data_expirarii datetime not null,
+numar_minim int not null,
 FOREIGN KEY (id_grup) REFERENCES grup_studiu(id),
 FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp));
 
@@ -167,7 +168,7 @@ END; //
 CREATE PROCEDURE Mesaje_vizualizare(id int)
 BEGIN
 
-select p.nume, p.prenume, g.mesaj from grup_studiu_mesaje g join persoane p where g.cnp_student=p.cnp and id_grup=id;
+select p.nume, p.prenume, g.mesaj, g.data_ora_trimiterii from grup_studiu_mesaje g join persoane p where g.cnp_student=p.cnp and id_grup=id order by g.data_ora_trimiterii;
 END; //
 
 CREATE PROCEDURE Mesaje_scriere()
