@@ -2,6 +2,7 @@ package databaseController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import databaseModel.DatabaseModel;
@@ -23,6 +24,8 @@ public class DatabaseController {
 		theView.panelSignUp.addSignUpListener(new SignUpListener());
 		theView.panelLogin.addComuteListener(new LoginComuteListener());
 		theView.panelSignUp.addComuteListener(new SignUpComuteListener());
+		theView.panelAfis.addDelogareListener(new DelogareListener());
+		theView.panelAfis.addAfisListener(new AfisListener());
 	}
 
 	class LoginListener implements ActionListener 
@@ -40,7 +43,7 @@ public class DatabaseController {
 				   && PersoaneSqlQueries.isValidPassword(MainClass.db.getCon(), Integer.parseInt(username), password) == true
 				){
 					theView.panelLogin.setBackground(java.awt.Color.GREEN);
-					//theView.panelLogin.setVisible(false);
+					theView.switchPanels(theView.panelAfis);
 				}					
 				else
 				{
@@ -89,12 +92,13 @@ public class DatabaseController {
 			try
 			{
 				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.NAME));		    //0
-				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.CNP));		    //1
-				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.ADRESS));		    //2
-				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.PHONE));  	    //3
-				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.EMAIL));		    //4
-				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.IBAN));		    //5
-				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.PASSWORD));	    //6
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.PRENUME));		//1
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.CNP));		    //2
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.ADRESS));		    //3
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.PHONE));  	    //4
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.EMAIL));		    //5
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.IBAN));		    //6
+				data.add(theView.panelSignUp.getTextFrom(SIGNUP_LABEL.PASSWORD));	    //7
 				
 				//data.add(PanelSignUp.getTextFrom(SIGNUP_LABEL.PASSWORDCONFIRM));//7
 				
@@ -146,5 +150,30 @@ public class DatabaseController {
 		{
 			theView.switchPanels(theView.panelSignUp);
 		}
+	}
+	
+	class AfisListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{	
+			try 
+			{
+				theView.panelAfis.setTable(PersoaneSqlQueries.Cautare_materie (MainClass.db.getCon()));
+			} 
+			catch (SQLException e1) 
+			{
+				e1.printStackTrace();
+			}
+		}	
+	}
+	
+	class DelogareListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			theView.switchPanels(theView.panelLogin);
+		}		
 	}
 }

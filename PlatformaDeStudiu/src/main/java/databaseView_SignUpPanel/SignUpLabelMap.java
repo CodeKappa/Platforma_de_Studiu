@@ -8,10 +8,11 @@ public class SignUpLabelMap {
 	public SignUpLabelMap()
 	{
 		hm.put(SIGNUP_LABEL.NAME, "Name");
+		hm.put(SIGNUP_LABEL.PRENUME, "Prenume");
 		hm.put(SIGNUP_LABEL.CNP, "CNP");
 		hm.put(SIGNUP_LABEL.ADRESS, "Adress");
 		hm.put(SIGNUP_LABEL.PHONE, "Adress");
-		hm.put(SIGNUP_LABEL.EMAIL, "EMAIL");
+		hm.put(SIGNUP_LABEL.EMAIL, "Email");
 		hm.put(SIGNUP_LABEL.IBAN, "IBAN");
 		hm.put(SIGNUP_LABEL.PASSWORD, "Password");
 		hm.put(SIGNUP_LABEL.PASSWORDCONFIRM, "Confirm Password");

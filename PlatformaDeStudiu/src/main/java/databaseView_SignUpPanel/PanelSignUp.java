@@ -37,13 +37,14 @@ public class PanelSignUp extends JPanel
 		setLayout(null);
 		
 		data.add(new SignUpField (SIGNUP_LABEL.NAME));		      //0
-		data.add(new SignUpField (SIGNUP_LABEL.CNP));		      //1
-		data.add(new SignUpField (SIGNUP_LABEL.ADRESS));		  //2
-		data.add(new SignUpField (SIGNUP_LABEL.PHONE));		      //3
-		data.add(new SignUpField (SIGNUP_LABEL.EMAIL));		      //4
-		data.add(new SignUpField (SIGNUP_LABEL.IBAN));		      //5
-		data.add(new SignUpField (SIGNUP_LABEL.PASSWORD));	      //6
-		data.add(new SignUpField (SIGNUP_LABEL.PASSWORDCONFIRM)); //7
+		data.add(new SignUpField (SIGNUP_LABEL.PRENUME));		  //1
+		data.add(new SignUpField (SIGNUP_LABEL.CNP));		      //2
+		data.add(new SignUpField (SIGNUP_LABEL.ADRESS));		  //3
+		data.add(new SignUpField (SIGNUP_LABEL.PHONE));		      //4
+		data.add(new SignUpField (SIGNUP_LABEL.EMAIL));		      //5
+		data.add(new SignUpField (SIGNUP_LABEL.IBAN));		      //6
+		data.add(new SignUpField (SIGNUP_LABEL.PASSWORD));	      //7
+		data.add(new SignUpField (SIGNUP_LABEL.PASSWORDCONFIRM)); //8
 
 		int gapBetweenComponents = 25;
 		int i = 0;

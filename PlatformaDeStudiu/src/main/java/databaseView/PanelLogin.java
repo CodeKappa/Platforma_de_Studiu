@@ -13,8 +13,8 @@ import javax.swing.border.LineBorder;
 @SuppressWarnings("serial")
 public class PanelLogin extends JPanel
 {	
-	private JTextField usernameField = new JTextField();
-	private JTextField passwordField = new JTextField();
+	private JTextField usernameField = new JTextField("1");
+	private JTextField passwordField = new JTextField("parola");
 	private JButton buttonLogin = new JButton("Log in");
 	private JButton buttonSignUpComute = new JButton("Sign Up");
 	
