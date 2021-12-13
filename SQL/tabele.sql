@@ -155,8 +155,13 @@ CREATE PROCEDURE Vizualizare_note(cnp_student char(13))
 BEGIN
 
 select x.nume, m.nota from materii_studenti m join materii x on m.id_materie=x.id;
+END; //
+
+CREATE PROCEDURE Vizualizare_grupuri()
+BEGIN
+
+select gs.id, m.nume, p.nume, p.prenume from grup_studiu_studenti gss join persoane p on gss.cnp_student=p.cnp join grup_studiu gs on gss.id_grup=gs.id join materii m on gs.id_materie=m.id
+ORDER BY gs.id;
 END;
 
-
-
-
+CREATE PROCEDURE Mesaje
