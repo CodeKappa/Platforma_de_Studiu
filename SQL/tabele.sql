@@ -162,6 +162,20 @@ BEGIN
 
 select gs.id, m.nume, p.nume, p.prenume from grup_studiu_studenti gss join persoane p on gss.cnp_student=p.cnp join grup_studiu gs on gss.id_grup=gs.id join materii m on gs.id_materie=m.id
 ORDER BY gs.id;
-END;
+END; //
 
-CREATE PROCEDURE Mesaje
+CREATE PROCEDURE Mesaje_vizualizare(id int)
+BEGIN
+
+select p.nume, p.prenume, g.mesaj from grup_studiu_mesaje g join persoane p where g.cnp_student=p.cnp and id_grup=id;
+END; //
+
+CREATE PROCEDURE Mesaje_scriere()
+BEGIN
+
+
+END; //
+
+
+
+
