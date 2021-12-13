@@ -171,12 +171,34 @@ BEGIN
 select p.nume, p.prenume, g.mesaj, g.data_ora_trimiterii from grup_studiu_mesaje g join persoane p where g.cnp_student=p.cnp and id_grup=id order by g.data_ora_trimiterii;
 END; //
 
-CREATE PROCEDURE Mesaje_scriere()
+CREATE PROCEDURE Mesaje_scriere(mesaj varchar(250), id_grup int, cnp_student char(13))
 BEGIN
 
+insert into grup_studiu_mesaje(id_grup, cnp_student, mesaj, data_ora_trimiterii) VALUES (id_grup, cnp_student, mesaj, current_timestamp());
+END; //
+
+CREATE PROCEDURE Vizualizare_activitati(cnp_student char(13))
+BEGIN
+
+select * from grup_studiu_activitati gsa join grup_studiu gs on gsa.id_grup=gs.id join grup_studiu_studenti gss on gss.id_grup=gs.id where gss.cnp_student=cnp_student and current_timestamp()<=gsa.data_programarii
+ORDER by data_programarii;
 
 END; //
 
+
+CREATE PROCEDURE Descarcare_activitati(cnp_student char(13))
+BEGIN
+
+select * from grup_studiu_activitati gsa join grup_studiu gs on gsa.id_grup=gs.id join grup_studiu_studenti gss on gss.id_grup=gs.id where gss.cnp_student=cnp_student and current_timestamp()<=gsa.data_programarii
+ORDER by data_programarii
+
+INTO OUTFILE 'proiectBD' 
+FIELDS ENCLOSED BY '"' 
+TERMINATED BY ';' 
+ESCAPED BY '"' 
+LINES TERMINATED BY '\r\n';
+
+END; //
 
 
 
