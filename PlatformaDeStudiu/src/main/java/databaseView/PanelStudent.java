@@ -5,8 +5,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,23 +15,43 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
-public class PanelAfis extends JPanel
+public class PanelStudent extends JPanel
 {	
-	//private JTextField usernameField = new JTextField();
-	//private JTextField passwordField = new JTextField();
+	private JTextField input = new JTextField();
 	private JTable tableAfis = new JTable();
-	private JButton buttonAfis = new JButton("Afis");
+	private JButton buttonDatePersonale = new JButton("Date Persoanle");
+	private JButton buttonCautaMaterie = new JButton("Cauta Materie");
+	private JButton buttonInscriereActivitate = new JButton("Incriere la Activitate");
+	private JButton buttonRenutaActivitate = new JButton("Renunta la Activitate");
+	private JButton buttonVizualizareNote = new JButton("Vizualizeaza Note");
+	private JButton buttonVizualizeazaGrupuri = new JButton("Vizualizeaza grupuri");
+	private JButton buttonMembriDinGrup = new JButton("Vizualizeaza membrii din grup");
+	private JButton buttonActivitati = new JButton("Pagina activitati");
 	private JButton buttonDelogare = new JButton("Delogare");
 	private JScrollPane jsp = new JScrollPane(tableAfis);
 	
-	PanelAfis()
+	PanelStudent()
 	{
 		//setLayout(null);
 		
 		add(jsp);
 		
 		//Login Button
-		add(buttonAfis);
+		JPanel inputPanel = new JPanel();
+		inputPanel.add(input);
+		inputPanel.add(buttonDatePersonale);
+		inputPanel.add(buttonCautaMaterie);
+		inputPanel.add(buttonInscriereActivitate);
+		inputPanel.add(buttonRenutaActivitate);
+		inputPanel.add(buttonVizualizareNote);
+		inputPanel.add(buttonVizualizeazaGrupuri);
+		inputPanel.add(buttonMembriDinGrup);
+		inputPanel.add(buttonActivitati);
+		
+		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+		
+		add(inputPanel);
+		
 		//buttonAfis.setBounds(50, 110, 100, 25);
 		
 		//Button to go to Sign Up
@@ -48,9 +68,9 @@ public class PanelAfis extends JPanel
 	
 	public Dimension getPreferredSize() { return new Dimension(700,422); }
 	
-	public void addAfisListener(ActionListener listenAfisButton)
+	public void addCautaMaterieListener(ActionListener listenCautaMaterieButton)
 	{
-		buttonAfis.addActionListener(listenAfisButton);
+		buttonCautaMaterie.addActionListener(listenCautaMaterieButton);
 	}
 	
 	public void addDelogareListener(ActionListener delogareButton)

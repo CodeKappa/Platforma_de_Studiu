@@ -13,7 +13,7 @@ public class DatabaseView extends JFrame{
 	
 	public PanelLogin panelLogin = new PanelLogin();	
 	public PanelSignUp panelSignUp = new PanelSignUp();
-	public PanelAfis panelAfis = new PanelAfis();
+	public PanelStudent panelAfis = new PanelStudent();
 	
 	public DatabaseView()
 	{

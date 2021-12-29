@@ -64,7 +64,7 @@ public class DatabaseConnection {
 		try (Statement stmt = con.createStatement()) 
 		{
 			stmt.executeUpdate(query);
-			System.out.println("database test in use");
+			System.out.println("database " + this.dbName + " in use");
 		} 
 		catch (SQLException e) 
 		{

@@ -9,7 +9,8 @@ public class CustomWindowListener implements WindowListener{
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		MainClass.db.closeConnection();
+		try{MainClass.db.closeConnection();}
+		catch (Exception ex) { ex.printStackTrace();}	
 	}
 	
 	@Override

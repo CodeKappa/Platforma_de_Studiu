@@ -25,7 +25,7 @@ public class DatabaseController {
 		theView.panelLogin.addComuteListener(new LoginComuteListener());
 		theView.panelSignUp.addComuteListener(new SignUpComuteListener());
 		theView.panelAfis.addDelogareListener(new DelogareListener());
-		theView.panelAfis.addAfisListener(new AfisListener());
+		theView.panelAfis.addCautaMaterieListener(new CautaMaterieListener());
 	}
 
 	class LoginListener implements ActionListener 
@@ -152,7 +152,7 @@ public class DatabaseController {
 		}
 	}
 	
-	class AfisListener implements ActionListener
+	class CautaMaterieListener implements ActionListener
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) 

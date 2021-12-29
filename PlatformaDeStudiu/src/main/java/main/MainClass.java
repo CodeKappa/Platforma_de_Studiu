@@ -21,10 +21,26 @@ public class MainClass {
 	public static void main(String[] args){
 		
 		//details for the MySQL JDBC driver to develop the program
-		String url = "jdbc:mysql://192.168.58.155:3306/";
-		String user = "user";
-	    String password = "ce_parola2021";	
+		
+	    String url;
+		String user;
+	    String password;
+		
+	    boolean workFromHome = true;
 	    
+		if(workFromHome == true)
+		{
+		    url = "jdbc:mysql://localhost:3306/";
+			user = "root";
+		    password = "12344321";
+		}
+		else
+		{
+			url = "jdbc:mysql://192.168.58.155:3306/";
+			user = "user";
+		    password = "ce_parola2021";	
+		}
+	        
 	    db = new DatabaseConnection(url,user,password);
 		
 		//set the name of database we work with

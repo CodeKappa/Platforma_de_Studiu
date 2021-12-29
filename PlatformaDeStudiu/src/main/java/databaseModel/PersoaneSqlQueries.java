@@ -45,7 +45,6 @@ public class PersoaneSqlQueries {
 	
 	public static boolean isValidPassword(Connection con, int nr_contract, String parola) throws SQLException 
 	{
-		
 		String query = "select parola from persoane where nr_contract = ?";
 		try 
 		{

@@ -6,11 +6,12 @@ CREATE TABLE persoane
 (cnp char(13) not null unique primary key,
 nume varchar(50) not null,
 prenume varchar(50) not null,
+parola varchar(70) not null,
 adresa varchar(200) not null,
-nr_telefon char(12) not null,
-email varchar(50) not null,
-iban varchar(30) not null,
-nr_contract int unique not null,
+nr_telefon char(12) unique not null,
+email varchar(50) unique not null,
+iban varchar(30) unique not null,
+nr_contract int auto_increment unique not null,
 isAdmin bool not null);
 
 CREATE TABLE studenti
