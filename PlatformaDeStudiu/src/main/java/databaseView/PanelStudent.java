@@ -32,12 +32,16 @@ public class PanelStudent extends JPanel
 	
 	PanelStudent()
 	{
-		//setLayout(null);
+		setLayout(null);
 		
+		//JScrollPane to print data
 		add(jsp);
+		jsp.setBounds(10, 10, 1250, 450);
 		
-		//Login Button
+		//user input panel
 		JPanel inputPanel = new JPanel();
+		
+		inputPanel.setLayout(null);
 		
 		inputPanel.add(buttonDatePersonale);
 		inputPanel.add(buttonVizualizareNote);
@@ -51,15 +55,25 @@ public class PanelStudent extends JPanel
 		inputPanel.add(buttonRenutaActivitate);
 		inputPanel.add(buttonMembriDinGrup);	
 		
-		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+		buttonDatePersonale.setBounds(0, 0, 150, 20);
+		buttonVizualizareNote.setBounds(0, 20, 150, 20);
+		buttonVizualizeazaGrupuri.setBounds(0, 40, 150, 20);
+		buttonActivitati.setBounds(0, 60, 150, 20);
+		
+		input.setBounds(0, 120, 150, 20);
+		buttonCautaMaterie.setBounds(0, 140, 150, 20);
+		buttonInscriereActivitate.setBounds(0, 160, 150, 20);
+		buttonRenutaActivitate.setBounds(0, 180, 150, 20);
+		buttonMembriDinGrup.setBounds(0, 200, 150, 20);
+		
 		
 		add(inputPanel);
-		
+		inputPanel.setBounds(1260, 10, 150, 300);
 		//buttonAfis.setBounds(50, 110, 100, 25);
 		
-		//Button to go to Sign Up
+		//Button to go to Log in
 		add(buttonDelogare);
-		//buttonDelogare.setBounds(150, 110, 100, 25);
+		buttonDelogare.setBounds(1260, 439, 150, 20);
 		
 		this.setBorder(new LineBorder(Color.BLUE, 5));
 	}
@@ -69,7 +83,7 @@ public class PanelStudent extends JPanel
 		this.setBackground(c);	
 	}
 	
-	public Dimension getPreferredSize() { return new Dimension(730,460); }
+	public Dimension getPreferredSize() { return new Dimension(1500,500); }
 	
 	public void addCautaMaterieListener(ActionListener listenCautaMaterieButton)
 	{
@@ -84,12 +98,13 @@ public class PanelStudent extends JPanel
 	public void setTable(ArrayList<ArrayList<String>> a)
 	{
 		DefaultTableModel dtm = new DefaultTableModel();
-		
-		dtm.setColumnCount(8);
+		if(a.isEmpty() == false)
+			dtm.setColumnCount(a.get(0).size());
 		int i = 0, j = 0;
 		for(ArrayList<String> arow : a)
 		{
 			dtm.setRowCount(dtm.getRowCount() + 1);
+			j = 0;
 			for(String s : arow)
 			{
 				

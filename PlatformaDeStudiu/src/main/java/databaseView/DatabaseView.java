@@ -23,7 +23,7 @@ public class DatabaseView extends JFrame{
 		
 		pack();
 		//setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		setLocation(new Point(500, 200));
+		setLocation(new Point(600, 250));
 		setMinimumSize(new Dimension(100, 100));
 		//setSize(500,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,6 +33,8 @@ public class DatabaseView extends JFrame{
 	{
 		getContentPane().removeAll();
 		this.add(panel);
+		if(panel == panelLogin)setLocation(new Point(600, 250));
+		else setLocation(new Point(10, 150));
 		this.repaint();
 		this.revalidate();
 		pack();
