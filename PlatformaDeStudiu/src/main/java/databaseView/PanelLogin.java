@@ -16,7 +16,7 @@ public class PanelLogin extends JPanel
 	private JTextField usernameField = new JTextField("1");
 	private JTextField passwordField = new JTextField("1234");
 	private JButton buttonLogin = new JButton("Log in");
-	private JButton buttonSignUpComute = new JButton("Sign Up");
+	//private JButton buttonSignUpComute = new JButton("Sign Up");
 	
 	PanelLogin()
 	{
@@ -42,8 +42,8 @@ public class PanelLogin extends JPanel
 		buttonLogin.setBounds(50, 110, 100, 25);
 		
 		//Button to go to Sign Up
-		add(buttonSignUpComute);
-		buttonSignUpComute.setBounds(150, 110, 100, 25);
+		//add(buttonSignUpComute);
+		//buttonSignUpComute.setBounds(150, 110, 100, 25);
 		
 		this.setBorder(new LineBorder(Color.BLACK, 5));
 	}
@@ -60,10 +60,10 @@ public class PanelLogin extends JPanel
 		buttonLogin.addActionListener(listenForLoginButton);
 	}
 	
-	public void addComuteListener(ActionListener SignUp_ComuteButton)
-	{
-		buttonSignUpComute.addActionListener(SignUp_ComuteButton);
-	}
+//	public void addComuteListener(ActionListener SignUp_ComuteButton)
+//	{
+//		buttonSignUpComute.addActionListener(SignUp_ComuteButton);
+//	}
 
 	public String getUsername() {
 		return usernameField.getText();

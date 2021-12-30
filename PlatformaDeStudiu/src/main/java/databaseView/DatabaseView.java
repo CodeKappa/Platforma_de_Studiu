@@ -6,14 +6,12 @@ import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import databaseView_SignUpPanel.PanelSignUp;
-
 @SuppressWarnings("serial")
 public class DatabaseView extends JFrame{
 	
 	public PanelLogin panelLogin = new PanelLogin();	
-	public PanelSignUp panelSignUp = new PanelSignUp();
-	public PanelStudent panelAfis = new PanelStudent();
+	//public PanelSignUp panelSignUp = new PanelSignUp();
+	public PanelStudent panelStudentView = new PanelStudent();
 	
 	public DatabaseView()
 	{

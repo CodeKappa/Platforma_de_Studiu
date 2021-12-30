@@ -17,7 +17,7 @@ public class PanelSignUp extends JPanel
 {	
 	private ArrayList<SignUpField> data = new ArrayList<SignUpField>();
 	private SignUpLabelMap lm = new SignUpLabelMap();
-	private JButton buttonLoginComute = new JButton("Log in");
+	//private JButton buttonLoginComute = new JButton("Log in");
 	private JButton buttonSignUp = new JButton("Sign Up");
 	
 	public void addComponentLabel(JLabel l, int x, int y, int width, int height)
@@ -70,9 +70,10 @@ public class PanelSignUp extends JPanel
 		}
 		
 		int y = gapBetweenComponents * (i+2);
+		
 		//Button to go to Login
-		add(buttonLoginComute);
-		buttonLoginComute.setBounds(150, y, 100, 25);
+		//add(buttonLoginComute);
+		//buttonLoginComute.setBounds(150, y, 100, 25);
 		
 		//Button to Sign Up
 		add(buttonSignUp);
@@ -93,10 +94,10 @@ public class PanelSignUp extends JPanel
 		buttonSignUp.addActionListener(listenForSignUpButton);
 	}
 	
-	public void addComuteListener(ActionListener Login_ComuteButton)
-	{
-		buttonLoginComute.addActionListener(Login_ComuteButton);
-	}
+//	public void addComuteListener(ActionListener Login_ComuteButton)
+//	{
+//		buttonLoginComute.addActionListener(Login_ComuteButton);
+//	}
 
 	public String getTextFrom(SIGNUP_LABEL l) {
 		for(SignUpField f : data)
