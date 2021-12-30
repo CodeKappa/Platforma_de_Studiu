@@ -38,15 +38,18 @@ public class PanelStudent extends JPanel
 		
 		//Login Button
 		JPanel inputPanel = new JPanel();
-		inputPanel.add(input);
+		
 		inputPanel.add(buttonDatePersonale);
+		inputPanel.add(buttonVizualizareNote);
+		inputPanel.add(buttonVizualizeazaGrupuri);
+		inputPanel.add(buttonActivitati);
+		
+		inputPanel.add(input);
+		
 		inputPanel.add(buttonCautaMaterie);
 		inputPanel.add(buttonInscriereActivitate);
 		inputPanel.add(buttonRenutaActivitate);
-		inputPanel.add(buttonVizualizareNote);
-		inputPanel.add(buttonVizualizeazaGrupuri);
-		inputPanel.add(buttonMembriDinGrup);
-		inputPanel.add(buttonActivitati);
+		inputPanel.add(buttonMembriDinGrup);	
 		
 		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
 		
@@ -66,7 +69,7 @@ public class PanelStudent extends JPanel
 		this.setBackground(c);	
 	}
 	
-	public Dimension getPreferredSize() { return new Dimension(700,422); }
+	public Dimension getPreferredSize() { return new Dimension(730,460); }
 	
 	public void addCautaMaterieListener(ActionListener listenCautaMaterieButton)
 	{

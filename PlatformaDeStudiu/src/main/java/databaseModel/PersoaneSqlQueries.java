@@ -71,7 +71,7 @@ public class PersoaneSqlQueries {
 	
 	public static boolean insertIntoPersoane(Connection con, ArrayList<String> data) throws SQLException 
 	{			
-		String query = "insert into persoane (nume, prenume, cnp, adresa, nr_telefon, parola, email, iban, is_admin) values (?, ?, ?, ?, ?, ?, ?, ?, 0)";
+		String query = "insert into persoane (nume, prenume, cnp, adresa, nr_telefon, parola, email, iban) values (?, ?, ?, ?, ?, ?, ?, ?)";
 		try 
 		{
 			PreparedStatement preStmt = con.prepareStatement(query);

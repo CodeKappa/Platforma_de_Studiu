@@ -86,7 +86,7 @@ public class PanelSignUp extends JPanel
 		this.setBackground(c);	
 	}
 	
-	public Dimension getPreferredSize() { return new Dimension(500,300); }
+	public Dimension getPreferredSize() { return new Dimension(500,310); }
 	
 	public void addSignUpListener(ActionListener listenForSignUpButton)
 	{

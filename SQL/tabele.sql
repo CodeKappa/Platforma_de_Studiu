@@ -11,8 +11,11 @@ adresa varchar(200) not null,
 nr_telefon char(12) unique not null,
 email varchar(50) unique not null,
 iban varchar(30) unique not null,
-nr_contract int auto_increment unique not null,
-isAdmin bool not null);
+nr_contract int auto_increment unique not null);
+
+CREATE TABLE admini
+(cnp char(13) not null unique primary key,
+FOREIGN KEY (cnp) REFERENCES persoane(cnp));
 
 CREATE TABLE studenti
 (cnp char(13) not null unique primary key,
@@ -31,9 +34,9 @@ CREATE TABLE materii
 (id int not null unique auto_increment primary key,
 nume varchar(50) not null,
 descriere varchar(250),
-procent_curs int not null,
-procent_seminar int not null,
-procent_laborator int not null,
+procent_curs int,
+procent_seminar int,
+procent_laborator int,
 nr_max_studenti int not null,
 recurenta int not null);
 
@@ -200,6 +203,3 @@ ESCAPED BY '"'
 LINES TERMINATED BY '\r\n';
 
 END; //
-
-
-
