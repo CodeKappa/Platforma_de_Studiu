@@ -100,6 +100,12 @@ numar_minim int not null,
 FOREIGN KEY (id_grup) REFERENCES grup_studiu(id),
 FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp));
 
+CREATE ROLE student, profesor, administrator, superadministrator;
+GRANT ALL ON gestiune_studenti TO superadministrator;
+GRANT SELECT ON persoane TO student, profesor; 
+
+
+
 DELIMITER //
 
 CREATE TRIGGER materii_insert_verificare_procentaje BEFORE INSERT ON materii FOR EACH ROW

@@ -23,6 +23,7 @@ public class MainClass {
 		//details for the MySQL JDBC driver to develop the program
 		
 	    String url;
+	    String dbName = "gestiune_studenti";
 		String user;
 	    String password;
 		
@@ -31,8 +32,10 @@ public class MainClass {
 		if(workFromHome == true)
 		{
 		    url = "jdbc:mysql://localhost:3306/";
-			user = "root";
-		    password = "12344321";
+			//user = "root";
+		    //password = "12344321";
+		    user = "superadmin";
+		    password = "12345";
 		}
 		else
 		{
@@ -41,7 +44,7 @@ public class MainClass {
 		    password = "ce_parola2021";	
 		}
 	        
-	    db = new DatabaseConnection(url,user,password);
+	    db = new DatabaseConnection(url+dbName,user,password);
 		
 		//set the name of database we work with
 		db.setDbName("gestiune_studenti");

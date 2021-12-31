@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
@@ -14,7 +15,7 @@ import javax.swing.border.LineBorder;
 public class PanelLogin extends JPanel
 {	
 	private JTextField usernameField = new JTextField("1");
-	private JTextField passwordField = new JTextField("1234");
+	private JTextField passwordField = new JPasswordField("1234");
 	private JButton buttonLogin = new JButton("Log in");
 	//private JButton buttonSignUpComute = new JButton("Sign Up");
 	

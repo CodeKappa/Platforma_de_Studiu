@@ -32,7 +32,7 @@ public class DatabaseConnection {
 
 		// display status message
 		if (this.con == null) 
-			System.out.println("JDBC connection is not established");
+			System.out.println("JDBC connection did not establish");
 		else
 			System.out.println("Congratulations," + " JDBC connection is established successfully.\n");
 		if(this.con == null) System.exit(3);

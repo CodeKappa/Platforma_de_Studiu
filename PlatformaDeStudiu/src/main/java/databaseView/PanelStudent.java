@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,13 +29,23 @@ public class PanelStudent extends JPanel
 	private JButton buttonDelogare = new JButton("Delogare");
 	private JScrollPane jsp = new JScrollPane(tableAfis);
 	
+    public PanelFeedback feedbackPanel = new PanelFeedback();
+	
 	PanelStudent()
 	{
 		setLayout(null);
 		
+		add(feedbackPanel);
+		feedbackPanel.setBounds(10,10, 1480, 100);
+		feedbackPanel.setBorder(new LineBorder(Color.BLACK, 1));
+		
 		//JScrollPane to print data
 		add(jsp);
-		jsp.setBounds(10, 10, 1250, 450);
+		jsp.setBounds(10, 110, 1250, 450);
+		///remove(jsp);
+		///add(jsp);
+		///revalidate();
+		///repaint();
 		
 		//user input panel
 		JPanel inputPanel = new JPanel();
@@ -68,12 +77,12 @@ public class PanelStudent extends JPanel
 		
 		
 		add(inputPanel);
-		inputPanel.setBounds(1260, 10, 150, 300);
+		inputPanel.setBounds(1260, 110, 150, 300);
 		//buttonAfis.setBounds(50, 110, 100, 25);
 		
 		//Button to go to Log in
 		add(buttonDelogare);
-		buttonDelogare.setBounds(1260, 439, 150, 20);
+		buttonDelogare.setBounds(1260, 539, 150, 20);
 		
 		this.setBorder(new LineBorder(Color.BLUE, 5));
 	}
@@ -83,7 +92,7 @@ public class PanelStudent extends JPanel
 		this.setBackground(c);	
 	}
 	
-	public Dimension getPreferredSize() { return new Dimension(1500,500); }
+	public Dimension getPreferredSize() { return new Dimension(1500,570); }
 	
 	public void addCautaMaterieListener(ActionListener listenCautaMaterieButton)
 	{
@@ -94,7 +103,7 @@ public class PanelStudent extends JPanel
 	{
 		buttonDelogare.addActionListener(delogareButton);
 	}
-	
+
 	public void setTable(ArrayList<ArrayList<String>> a)
 	{
 		DefaultTableModel dtm = new DefaultTableModel();

@@ -128,6 +128,7 @@ public class DatabaseController {
 		{	
 			try 
 			{
+				theView.panelStudentView.feedbackPanel.feedbackMessage = "Ati cautat materia BD";
 				theView.panelStudentView.setTable(PersoaneSqlQueries.Cautare_materie (MainClass.db.getCon()));
 			} 
 			catch (SQLException e1) 
