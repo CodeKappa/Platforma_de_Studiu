@@ -6,7 +6,6 @@ CREATE TABLE persoane
 (cnp char(13) not null unique primary key,
 nume varchar(50) not null,
 prenume varchar(50) not null,
-parola varchar(70) not null,
 adresa varchar(200) not null,
 nr_telefon char(12) unique not null,
 email varchar(50) unique not null,
@@ -100,13 +99,43 @@ numar_minim int not null,
 FOREIGN KEY (id_grup) REFERENCES grup_studiu(id),
 FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp));
 
-CREATE ROLE student, profesor, administrator, superadministrator;
-GRANT ALL ON gestiune_studenti TO superadministrator;
-GRANT SELECT ON persoane TO student, profesor; 
+#flush privileges;
+drop role if exists student@localhost, profesor@localhost, administrator@localhost, superadministrator@localhost;
+CREATE ROLE student@localhost, profesor@localhost, administrator@localhost, superadministrator@localhost;
+#GRANT ALL PRIVILEGES ON gestiune_studenti.* TO superadministrator@localhost;
 
-
+drop user if exists superadmin@localhost;
+drop user if exists "1"@localhost;
+CREATE USER superadmin@localhost IDENTIFIED BY '12345';
+CREATE USER "1"@localhost IDENTIFIED BY '12345';
+#GRANT superadministrator@localhost TO superadmin@localhost;
+GRANT ALL PRIVILEGES on gestiune_studenti.* to superadmin@localhost;
 
 DELIMITER //
+
+CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13))
+BEGIN
+
+	IF (tip < 1 OR tip >3) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tip ultilizator nu exista';
+	END IF;
+
+	INSERT INTO persoane VALUES (cnp, nume, prenume, adresa, nr_telefon, email, iban, null);
+    
+    SET @query1 = CONCAT('CREATE USER "',email,'"@"localhost" IDENTIFIED BY "',parola,'" ');
+	PREPARE stmt FROM @query1; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+	IF(tip = 1) then
+		SET @queryadmin = CONCAT(' GRANT ALL PRIVILEGES gestiune_studenti.* TO "',email,'"@"localhost" ');
+		PREPARE stmt FROM @queryadmin; EXECUTE stmt; DEALLOCATE PREPARE stmt;    
+	ELSEIF(tip = 2) then 
+		SET @querystudent = CONCAT(' GRANT ALL PRIVILEGES gestiune_studenti.* TO "',email,'"@"localhost" ');
+		PREPARE stmt FROM @querystudent; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+	ELSEIF(tip = 3) then
+		SET @queryadmin = CONCAT(' GRANT ALL PRIVILEGES gestiune_studenti.* TO "',email,'"@"localhost" ');
+		PREPARE stmt FROM @queryprofesor; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+	END IF;
+END;//
 
 CREATE TRIGGER materii_insert_verificare_procentaje BEFORE INSERT ON materii FOR EACH ROW
 BEGIN

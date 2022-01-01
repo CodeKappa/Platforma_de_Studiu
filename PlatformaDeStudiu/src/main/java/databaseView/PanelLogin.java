@@ -14,8 +14,8 @@ import javax.swing.border.LineBorder;
 @SuppressWarnings("serial")
 public class PanelLogin extends JPanel
 {	
-	private JTextField usernameField = new JTextField("1");
-	private JTextField passwordField = new JPasswordField("1234");
+	private JTextField usernameField = new JTextField("superadmin");
+	private JTextField passwordField = new JPasswordField("12345");
 	private JButton buttonLogin = new JButton("Log in");
 	//private JButton buttonSignUpComute = new JButton("Sign Up");
 	
@@ -23,7 +23,7 @@ public class PanelLogin extends JPanel
 	{
 		setLayout(null);
 		
-		JLabel usernameLabel = new JLabel("Contract Number");
+		JLabel usernameLabel = new JLabel("Email");
 		JLabel passwordLabel = new JLabel("Password");
 
 		//Contract Number	
@@ -49,7 +49,14 @@ public class PanelLogin extends JPanel
 		this.setBorder(new LineBorder(Color.BLACK, 5));
 	}
 	
-	public void setBackgroungColor(Color c)
+	public void reset()
+	{
+		usernameField.setText("");
+		passwordField.setText("");
+		setBackgroundColor(null);
+	}
+	
+	public void setBackgroundColor(Color c)
 	{
 		this.setBackground(c);	
 	}

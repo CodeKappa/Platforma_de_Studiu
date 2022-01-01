@@ -1,10 +1,7 @@
 package main;
 
-import java.sql.SQLException;
-
 import databaseController.DatabaseController;
 import databaseModel.DatabaseModel;
-import databaseModel.PersoaneSqlQueries;
 import databaseView.DatabaseView;
 
 /**
@@ -14,40 +11,11 @@ import databaseView.DatabaseView;
 public class MainClass {
 	
 	public static DatabaseConnection db;
-	
+	public static final boolean WORK_FROM_HOME = true;
 	/**
 	 * The main method.
 	 */
 	public static void main(String[] args){
-		
-		//details for the MySQL JDBC driver to develop the program
-		
-	    String url;
-	    String dbName = "gestiune_studenti";
-		String user;
-	    String password;
-		
-	    boolean workFromHome = true;
-	    
-		if(workFromHome == true)
-		{
-		    url = "jdbc:mysql://localhost:3306/";
-			//user = "root";
-		    //password = "12344321";
-		    user = "superadmin";
-		    password = "12345";
-		}
-		else
-		{
-			url = "jdbc:mysql://192.168.58.155:3306/";
-			user = "user";
-		    password = "ce_parola2021";	
-		}
-	        
-	    db = new DatabaseConnection(url+dbName,user,password);
-		
-		//set the name of database we work with
-		db.setDbName("gestiune_studenti");
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -59,13 +27,6 @@ public class MainClass {
 			}
 		});
 		
-		//select database we work with "use test"
-		try { db.selectDatabase(db.getCon()); }
-		catch (SQLException e) { e.printStackTrace();}
-		
-		//print in console database in use "select * from persoane"
-		try { PersoaneSqlQueries.viewPersoane(db.getCon()); }
-		catch (SQLException e) { e.printStackTrace();}	
 	}
 
 }

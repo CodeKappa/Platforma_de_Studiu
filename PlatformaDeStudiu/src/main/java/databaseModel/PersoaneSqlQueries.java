@@ -25,14 +25,13 @@ public class PersoaneSqlQueries {
 				String cnp = rs.getString("cnp");
 				String name = rs.getString("nume");
 				String prenume = rs.getString("prenume");
-				String password = rs.getString("parola");
 				String adress = rs.getString("adresa");
 				String tel = rs.getString("nr_telefon");
 				String email = rs.getString("email");
 				String iban = rs.getString("iban");
 				int contract_nr = rs.getInt("nr_contract");
 				
-				System.out.format("%-5s %-20s %-20s %-7s %-15s %-10s %-21s %-15s %-2d\n", cnp, name, prenume, password, adress, tel, email, iban, contract_nr);
+				System.out.format("%-5s %-20s %-20s %-15s %-10s %-21s %-15s %-2d\n", cnp, name, prenume, adress, tel, email, iban, contract_nr);
 			}
 			stmt.close();
 		} 
@@ -43,13 +42,13 @@ public class PersoaneSqlQueries {
 		con.rollback();
 	}
 	
-	public static boolean isValidPassword(Connection con, int nr_contract, String parola) throws SQLException 
+	public static boolean isValidPassword(Connection con, String nr_contract, String parola) throws SQLException 
 	{
 		String query = "select parola from persoane where nr_contract = ?";
 		try 
 		{
 			PreparedStatement preStmt = con.prepareStatement(query);
-		    preStmt.setInt(1, nr_contract);
+		    preStmt.setString(1, nr_contract);
 			ResultSet rs = preStmt.executeQuery();
 			while (rs.next()) 
 			{

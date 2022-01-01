@@ -6,7 +6,9 @@ import java.sql.SQLException;
 
 import databaseModel.DatabaseModel;
 import databaseModel.PersoaneSqlQueries;
+import databaseModel.TreatException;
 import databaseView.DatabaseView;
+import main.DatabaseConnection;
 import main.MainClass;
 import java.awt.Point;
 
@@ -31,36 +33,54 @@ public class DatabaseController {
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
+			//details for the MySQL JDBC driver to develop the program
 			String username;
 			String password;
-			try
+		    String url = "jdbc:mysql://192.168.58.155:3306/";
+		    String dbName = "gestiune_studenti";		
+		    
+		    try
 			{
 				username = theView.panelLogin.getUsername();
 				password = theView.panelLogin.getPassword();
-				if(username.length() > 0 && password.length() > 0 
-				   && PersoaneSqlQueries.isValidPassword(MainClass.db.getCon(), Integer.parseInt(username), password) == true
-				){
-					theView.panelLogin.setBackground(java.awt.Color.GREEN);
-					theView.switchPanels(theView.panelStudentView);
-				}					
-				else
+				
+				if(username.length() > 0 && password.length() > 0)
 				{
-					theView.panelLogin.setBackground(java.awt.Color.RED);
-					
-					Point currLocation;
-					int iDisplaceXBy = 5;
-					int iDisplaceYBy = -10;
-					currLocation = theView.getLocationOnScreen();
-
-				    Point position1 = new Point(currLocation.x + iDisplaceXBy, currLocation.y + iDisplaceYBy);
-				    Point position2 = new Point(currLocation.x - iDisplaceXBy, currLocation.y - iDisplaceYBy);
-				    for (int i = 0; i < 30; i++) 
+				       
+					if(MainClass.WORK_FROM_HOME == true)
+					{
+					    url = "jdbc:mysql://localhost:3306/";
+					}
+				    
+					MainClass.db = new DatabaseConnection(url, username, password, dbName);			
+				
+					//print in console "select * from persoane"
+					//try { PersoaneSqlQueries.viewPersoane(MainClass.db.getCon()); }
+					//catch (SQLException ex) { ex.printStackTrace();}	
+				    if(MainClass.db.getCon() != null)
 				    {
-					    theView.setLocation(position1);
-					    theView.setLocation(position2);
-				    }
-				    theView.setLocation(currLocation);
-				}				
+				    	theView.panelLogin.setBackground(java.awt.Color.GREEN);
+						theView.switchPanels(theView.panelStudentView);
+				    }					
+					else
+					{
+						theView.panelLogin.setBackground(java.awt.Color.RED);
+						
+						Point currLocation;
+						int iDisplaceXBy = 5;
+						int iDisplaceYBy = -10;
+						currLocation = theView.getLocationOnScreen();
+	
+					    Point position1 = new Point(currLocation.x + iDisplaceXBy, currLocation.y + iDisplaceYBy);
+					    Point position2 = new Point(currLocation.x - iDisplaceXBy, currLocation.y - iDisplaceYBy);
+					    for (int i = 0; i < 30; i++) 
+					    {
+						    theView.setLocation(position1);
+						    theView.setLocation(position2);
+					    }
+					    theView.setLocation(currLocation);
+					}
+				}
 			}
 			catch(Exception ex)
 			{
@@ -143,6 +163,10 @@ public class DatabaseController {
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
+			if(MainClass.db != null && MainClass.db.getCon() != null)
+				MainClass.db.closeConnection();
+			MainClass.db = null;
+			theView.panelLogin.reset();
 			theView.switchPanels(theView.panelLogin);
 		}		
 	}

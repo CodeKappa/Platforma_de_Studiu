@@ -14,4 +14,9 @@ public class PanelFeedback extends JPanel{
        // g.fillRect(0, 0, 100, 100);
         g.drawString(feedbackMessage, 10, 10);
     }
+    
+    public void reset()
+    {
+    	feedbackMessage = "Bine te-ai intors";
+    }
 }
