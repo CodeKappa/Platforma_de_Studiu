@@ -77,6 +77,7 @@ public class PanelStudent extends JPanel
 		buttonRenutaActivitate.setBounds(0, 180, width, 20);
 		buttonMembriDinGrup.setBounds(0, 200, width, 20);
 		
+		input.setText("student");
 		
 		add(inputPanel);
 		inputPanel.setBounds(1285, 110, width + 25, 300);

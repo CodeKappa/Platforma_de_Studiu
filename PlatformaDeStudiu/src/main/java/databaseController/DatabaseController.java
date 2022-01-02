@@ -53,14 +53,23 @@ public class DatabaseController {
 					}
 				    
 					MainClass.db = new DatabaseConnection(url, username, password, dbName);			
-				
-					//print in console "select * from persoane"
-					//try { PersoaneSqlQueries.viewPersoane(MainClass.db.getCon()); }
-					//catch (SQLException ex) { ex.printStackTrace();}	
+
+					username = PersoaneSqlQueries.get_cnp(MainClass.db.getCon(), username);
+					
 				    if(MainClass.db.getCon() != null)
 				    {
+				    	int tipUser = 0;
+				    	tipUser = PersoaneSqlQueries.determina_tip_utilizator(MainClass.db.getCon(), username);
+				    	System.out.println(tipUser);
+				    	
 				    	theView.panelLogin.setBackground(java.awt.Color.GREEN);
-						theView.switchPanels(theView.panelStudentView);
+						
+				    	if(tipUser == 1)
+				    		theView.switchPanels(theView.panelAdminView);
+				    	else if(tipUser == 2)
+				    		theView.switchPanels(theView.panelStudentView);
+				    	else if (tipUser == 3)
+				    		theView.switchPanels(theView.panelProfesorView);
 				    }					
 					else
 					{
@@ -82,9 +91,9 @@ public class DatabaseController {
 					}
 				}
 			}
-			catch(Exception ex)
+			catch(SQLException ex)
 			{
-				ex.printStackTrace();
+				TreatException.printSQLException(ex);
 			}
 		}
 	}

@@ -110,7 +110,36 @@ DROP USER IF EXISTS superadmin@localhost;
 CREATE USER superadmin@localhost IDENTIFIED BY "12345";
 GRANT 'superadministrator' TO 'superadmin'@'localhost';
 SET DEFAULT ROLE ALL TO 'superadmin'@'localhost';
+insert into persoane  values ("696969", "numescu", "prenumescu", "000000000", "00000000000", "superadmin", "000000000", null);
+insert into admini values ("696969");
+
 DELIMITER //
+
+CREATE FUNCTION get_cnp(email varchar(50)) 
+RETURNS CHAR(13)
+NOT DETERMINISTIC
+READS SQL DATA
+BEGIN 
+	DECLARE cnp char(13);
+	SET cnp = (SELECT persoane.cnp FROM persoane WHERE persoane.email = email);
+	RETURN cnp;
+END//
+
+CREATE FUNCTION find_user_type(cnp varchar(50)) 
+RETURNS INT
+NOT DETERMINISTIC
+READS SQL DATA
+BEGIN 
+	DECLARE tip1, tip2, tip3 INT DEFAULT 0;
+	SET tip1 = (SELECT 1 FROM admini WHERE admini.cnp = cnp);
+    SET tip2 = (SELECT 1 FROM studenti WHERE studenti.cnp = cnp);
+    SET tip3 = (SELECT 1 FROM profesori WHERE profesori.cnp = cnp);
+    IF (tip1 = 1) THEN RETURN 1;
+    ELSEIF (tip2 = 1) THEN RETURN 2;
+    ELSEIF (tip3 = 1) THEN RETURN 3;
+    ELSE RETURN 0;
+    END IF;
+END//
 
 CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13), intreg1 int, intreg2 int, departament char(50))
 BEGIN

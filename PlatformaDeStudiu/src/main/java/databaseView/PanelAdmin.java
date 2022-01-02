@@ -31,7 +31,7 @@ public class PanelAdmin extends JPanel
 	
     public PanelFeedback feedbackPanel = new PanelFeedback();
 	
-	PanelAdmin()
+    PanelAdmin()
 	{
 		setLayout(null);
 		
@@ -60,10 +60,10 @@ public class PanelAdmin extends JPanel
 		
 		inputPanel.add(input);
 		
-		//inputPanel.add(buttonCautaMaterie);
-		//inputPanel.add(buttonInscriereActivitate);
-	//	inputPanel.add(buttonRenutaActivitate);
-		//inputPanel.add(buttonMembriDinGrup);	
+		inputPanel.add(buttonCautaMaterie);
+		inputPanel.add(buttonInscriereActivitate);
+		inputPanel.add(buttonRenutaActivitate);
+		inputPanel.add(buttonMembriDinGrup);	
 		
 		int width = 181;
 		buttonDatePersonale.setBounds(0, 0, width, 20);
@@ -77,6 +77,7 @@ public class PanelAdmin extends JPanel
 		buttonRenutaActivitate.setBounds(0, 180, width, 20);
 		buttonMembriDinGrup.setBounds(0, 200, width, 20);
 		
+		input.setText("admin");
 		
 		add(inputPanel);
 		inputPanel.setBounds(1285, 110, width + 25, 300);

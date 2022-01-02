@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 
 public class PersoaneSqlQueries {
@@ -40,6 +41,52 @@ public class PersoaneSqlQueries {
 			TreatException.printSQLException(e);
 		}
 		con.rollback();
+	}
+	
+	public static int determina_tip_utilizator(Connection con, String cnp) throws SQLException 
+	{	
+		int tip = 0;
+		try 
+		{
+			String query = "{ ? = call find_user_type (?)}";
+			CallableStatement cs = con.prepareCall(query);
+			cs.registerOutParameter(1, Types.INTEGER);
+			cs.setString(2,cnp);
+			cs.execute();
+			
+			tip = cs.getInt(1);
+			
+			con.commit();	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return tip;
+	}
+	
+	public static String get_cnp(Connection con, String email) throws SQLException 
+	{	
+		String cnp = "-";
+		try 
+		{
+			String query = "{ ? = call get_cnp (?)}";
+			CallableStatement cs = con.prepareCall(query);
+			cs.registerOutParameter(1, Types.CHAR);
+			cs.setString(2,email);
+			cs.execute();
+			
+			cnp = cs.getString(1);
+			
+			con.commit();	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return cnp;
 	}
 	
 	public static boolean insertIntoPersoane(Connection con, ArrayList<String> data) throws SQLException 

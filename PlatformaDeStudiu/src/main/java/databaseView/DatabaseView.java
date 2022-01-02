@@ -11,7 +11,9 @@ public class DatabaseView extends JFrame{
 	
 	public PanelLogin panelLogin = new PanelLogin();	
 	//public PanelSignUp panelSignUp = new PanelSignUp();
+	public PanelAdmin panelAdminView = new PanelAdmin();
 	public PanelStudent panelStudentView = new PanelStudent();
+	public PanelProfesor panelProfesorView = new PanelProfesor();
 	
 	public DatabaseView()
 	{
