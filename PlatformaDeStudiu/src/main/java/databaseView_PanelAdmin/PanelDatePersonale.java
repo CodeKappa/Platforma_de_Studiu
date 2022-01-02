@@ -6,6 +6,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 import javax.swing.ButtonGroup;
 import java.awt.Color;
+import java.util.ArrayList;
+
 import javax.swing.JRadioButton;
 
 @SuppressWarnings("serial")
@@ -23,6 +25,9 @@ public class PanelDatePersonale extends JPanel {
 	private JLabel label_telefon;
 	private JLabel label_iban;
 	private JLabel label_nrContract;
+	private JRadioButton radio_admin = new JRadioButton("admin");
+	private JRadioButton radio_profesor = new JRadioButton("profesor");
+	private JRadioButton radio_student = new JRadioButton("student");
 	/**
 	 * Create the panel.
 	 */
@@ -31,7 +36,7 @@ public class PanelDatePersonale extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		textField_cnp = new JTextField("adas");
+		textField_cnp = new JTextField();
 		textField_cnp.setEditable(false);
 		textField_cnp.setBounds(1069, 28, 112, 19);
 		add(textField_cnp);
@@ -100,18 +105,15 @@ public class PanelDatePersonale extends JPanel {
 		textField_contract.setBounds(1069, 205, 112, 19);
 		add(textField_contract);
 		textField_contract.setColumns(10);
-		
-		JRadioButton radio_admin = new JRadioButton("admin");
+				
 		radio_admin.setEnabled(false);
 		radio_admin.setBounds(984, 227, 78, 21);
 		add(radio_admin);
 		
-		JRadioButton radio_profesor = new JRadioButton("profesor");
 		radio_profesor.setEnabled(false);
 		radio_profesor.setBounds(984, 250, 78, 21);
 		add(radio_profesor);
-		
-		JRadioButton radio_student = new JRadioButton("student");
+
 		radio_student.setEnabled(false);
 		radio_student.setBounds(984, 273, 87, 21);
 		add(radio_student);
@@ -121,6 +123,18 @@ public class PanelDatePersonale extends JPanel {
 		group.add(radio_admin);
 		group.add(radio_profesor);
 		group.add(radio_student);
+		radio_admin.setSelected(true);
+	}
+	
+	public void setData(ArrayList<String> arr)
+	{
+		textField_cnp.setText(arr.get(0));
+		textField_nume.setText(arr.get(1));
+		textField_prenume.setText(arr.get(2));
+		textField_adresa.setText(arr.get(3));
+		textField_telefon.setText(arr.get(4));
+		textField_iban.setText(arr.get(5));
+		textField_contract.setText(arr.get(6));
 		radio_admin.setSelected(true);
 	}
 }

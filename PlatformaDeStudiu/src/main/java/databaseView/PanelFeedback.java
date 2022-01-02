@@ -8,7 +8,7 @@ import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class PanelFeedback extends JPanel{
-	public String feedbackMessage = "Bine te-ai intors";
+	public static String feedbackMessage = "Bine te-ai intors";
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

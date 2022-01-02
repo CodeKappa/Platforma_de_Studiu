@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 
+import databaseController.DatabaseController;
+
 public class PersoaneSqlQueries {
 	
 	public static int determina_tip_utilizator(Connection con, String cnp) throws SQLException 
@@ -57,7 +59,7 @@ public class PersoaneSqlQueries {
 		return cnp;
 	}
 	
-	public static ArrayList<ArrayList<String>> Cautare_materie(Connection con) throws SQLException 
+	public static ArrayList<ArrayList<String>> cautare_materie(Connection con) throws SQLException 
 	{	
 		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
 		try 
@@ -79,6 +81,36 @@ public class PersoaneSqlQueries {
 				aux.add(rs.getString("nr_max_studenti"));
 				aux.add(rs.getString("recurenta"));
 				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList<String> date_personale(Connection con) throws SQLException 
+	{	
+		ArrayList <String> arr = new ArrayList <String>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Vizualizare_date_personale(?)}");
+			cs.setString(1, DatabaseController.user);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				arr.add(rs.getString("cnp"));
+				arr.add(rs.getString("nume"));
+				arr.add(rs.getString("prenume"));
+				arr.add(rs.getString("adresa"));
+				arr.add(rs.getString("nr_telefon"));
+				arr.add(rs.getString("email"));
+				arr.add(rs.getString("iban"));
+				arr.add(rs.getString("nr_contract"));
 			}	
 		} 
 		catch (SQLException e) 

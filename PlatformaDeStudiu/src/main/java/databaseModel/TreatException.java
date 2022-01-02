@@ -2,6 +2,8 @@ package databaseModel;
 
 import java.sql.SQLException;
 
+import databaseView.PanelFeedback;
+
 public class TreatException {
 	
 	public static void printSQLException(SQLException ex) 
@@ -16,6 +18,7 @@ public class TreatException {
 					System.err.println("SQLState: " + ((SQLException) e).getSQLState());
 					System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
 					System.err.println("Message: " + e.getMessage());
+					PanelFeedback.feedbackMessage = e.getMessage();
 					Throwable t = ex.getCause();
 					while (t != null) 
 					{
