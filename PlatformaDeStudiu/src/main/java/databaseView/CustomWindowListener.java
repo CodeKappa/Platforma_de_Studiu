@@ -11,7 +11,7 @@ public class CustomWindowListener implements WindowListener{
 	public void windowClosing(WindowEvent e) {
 		try
 		{
-			if(MainClass.db != null)
+			if(MainClass.db != null && MainClass.db.getCon() != null)
 				MainClass.db.closeConnection();
 			else
 				System.out.println("There was no connection to be closed");

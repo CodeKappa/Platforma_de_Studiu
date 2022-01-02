@@ -42,32 +42,6 @@ public class PersoaneSqlQueries {
 		con.rollback();
 	}
 	
-	public static boolean isValidPassword(Connection con, String nr_contract, String parola) throws SQLException 
-	{
-		String query = "select parola from persoane where nr_contract = ?";
-		try 
-		{
-			PreparedStatement preStmt = con.prepareStatement(query);
-		    preStmt.setString(1, nr_contract);
-			ResultSet rs = preStmt.executeQuery();
-			while (rs.next()) 
-			{
-				if(parola.equals(rs.getString("parola")))
-				{
-					con.rollback();
-					preStmt.close();
-					return true;
-				}
-			}	
-		} 
-		catch (SQLException e) 
-		{
-			TreatException.printSQLException(e);
-		}
-		con.rollback();
-		return false;
-	}
-	
 	public static boolean insertIntoPersoane(Connection con, ArrayList<String> data) throws SQLException 
 	{			
 		String query = "insert into persoane (nume, prenume, cnp, adresa, nr_telefon, parola, email, iban) values (?, ?, ?, ?, ?, ?, ?, ?)";

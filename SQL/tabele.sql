@@ -14,20 +14,20 @@ nr_contract int auto_increment unique not null);
 
 CREATE TABLE admini
 (cnp char(13) not null unique primary key,
-FOREIGN KEY (cnp) REFERENCES persoane(cnp));
+FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE);
 
 CREATE TABLE studenti
 (cnp char(13) not null unique primary key,
 an_studiu int not null,
 nr_ore int not null,
-FOREIGN KEY (cnp) REFERENCES persoane(cnp));
+FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE);
 
 CREATE TABLE profesori
 (cnp char(13) not null unique primary key,
 nr_ore_min int not null,
 nr_ore_max int not null,
 departament varchar(50) not null,
-FOREIGN KEY (cnp) REFERENCES persoane(cnp));
+FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE);
 
 CREATE TABLE materii
 (id int not null unique auto_increment primary key,
@@ -100,20 +100,19 @@ FOREIGN KEY (id_grup) REFERENCES grup_studiu(id),
 FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp));
 
 #flush privileges;
-drop role if exists student@localhost, profesor@localhost, administrator@localhost, superadministrator@localhost;
-CREATE ROLE student@localhost, profesor@localhost, administrator@localhost, superadministrator@localhost;
-#GRANT ALL PRIVILEGES ON gestiune_studenti.* TO superadministrator@localhost;
+drop role if exists 'student', 'profesor', 'administrator', 'superadministrator';
+CREATE ROLE 'student', 'profesor', 'administrator', 'superadministrator';
 
-drop user if exists superadmin@localhost;
-drop user if exists "1"@localhost;
-CREATE USER superadmin@localhost IDENTIFIED BY '12345';
-CREATE USER "1"@localhost IDENTIFIED BY '12345';
-#GRANT superadministrator@localhost TO superadmin@localhost;
-GRANT ALL PRIVILEGES on gestiune_studenti.* to superadmin@localhost;
+GRANT ALL ON gestiune_studenti.* TO 'superadministrator';
+GRANT ALL ON gestiune_studenti.* TO 'administrator';
 
+DROP USER IF EXISTS superadmin@localhost;
+CREATE USER superadmin@localhost IDENTIFIED BY "12345";
+GRANT 'superadministrator' TO 'superadmin'@'localhost';
+SET DEFAULT ROLE ALL TO 'superadmin'@'localhost';
 DELIMITER //
 
-CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13))
+CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13), intreg1 int, intreg2 int, departament char(50))
 BEGIN
 
 	IF (tip < 1 OR tip >3) THEN
@@ -121,20 +120,106 @@ BEGIN
 	END IF;
 
 	INSERT INTO persoane VALUES (cnp, nume, prenume, adresa, nr_telefon, email, iban, null);
-    
-    SET @query1 = CONCAT('CREATE USER "',email,'"@"localhost" IDENTIFIED BY "',parola,'" ');
+	
+    IF (tip = 1) THEN
+		INSERT INTO admini VALUES (cnp);
+    ELSEIF (tip = 2) THEN
+		INSERT INTO studenti VALUES (cnp, intreg1, intreg2);
+	ELSEIF (tip = 3) THEN
+		INSERT INTO profesori VALUES (cnp, intreg1, intreg2, departament);
+	END IF;
+   
+	SET @query1 = CONCAT('DROP USER IF EXISTS "', email, '"@"localhost"');
 	PREPARE stmt FROM @query1; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+    
+    SET @query2 = CONCAT('CREATE USER "', email, '"@"localhost" IDENTIFIED BY "', parola,'"');
+	PREPARE stmt FROM @query2; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
-	IF(tip = 1) then
-		SET @queryadmin = CONCAT(' GRANT ALL PRIVILEGES gestiune_studenti.* TO "',email,'"@"localhost" ');
-		PREPARE stmt FROM @queryadmin; EXECUTE stmt; DEALLOCATE PREPARE stmt;    
-	ELSEIF(tip = 2) then 
-		SET @querystudent = CONCAT(' GRANT ALL PRIVILEGES gestiune_studenti.* TO "',email,'"@"localhost" ');
+	IF (tip = 1) THEN
+		SET @queryadmin = CONCAT('GRANT administrator TO "', email, '"@"localhost"');
+		PREPARE stmt FROM @queryadmin; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+	ELSEIF (tip = 2) THEN 
+		SET @querystudent = CONCAT('GRANT studet TO "', email, '"@"localhost"');
 		PREPARE stmt FROM @querystudent; EXECUTE stmt; DEALLOCATE PREPARE stmt;
-	ELSEIF(tip = 3) then
-		SET @queryadmin = CONCAT(' GRANT ALL PRIVILEGES gestiune_studenti.* TO "',email,'"@"localhost" ');
+	ELSEIF (tip = 3) THEN
+		SET @queryadmin = CONCAT('GRANT profesor TO "', email, '"@"localhost"');
 		PREPARE stmt FROM @queryprofesor; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 	END IF;
+    
+	SET @query3 = CONCAT('SET DEFAULT ROLE ALL TO "', email, '"@"localhost"');
+	PREPARE stmt FROM @query3; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+END;//
+
+CREATE PROCEDURE update_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), nr_contract int, parola char(13), intreg1 int, intreg2 int, departament char(50))
+BEGIN
+
+	IF (tip < 1 OR tip >3) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tip ultilizator nu exista';
+	END IF;
+
+	SET @query1 = CONCAT('DROP USER IF EXISTS "', email, '"@"localhost"');
+	PREPARE stmt FROM @query1; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+	UPDATE persoane p set p.cnp = cnp, p.nume = nume, p.prenume = prenume, p.adresa = adresa, p.nr_telefon = nr_telefon, p.email = email, p.iban = iban;
+	
+    IF (tip = 2) THEN
+		UPDATE studenti s SET s.cnp = cnp, s.an_studiu = intreg1, s.nr_ore = intreg2;
+	ELSEIF (tip = 3) THEN
+		UPDATE profesori p SET p.cnp = cnp, p.nr_ore_min = intreg1, p.nr_ore_max = intreg2, p.depatament = departament;
+	END IF;
+    
+    SET @query2 = CONCAT('CREATE USER "', email, '"@"localhost" IDENTIFIED BY "', parola,'"');
+	PREPARE stmt FROM @query2; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+	IF (tip = 1) THEN
+		SET @queryadmin = CONCAT('GRANT administrator TO "', email, '"@"localhost"');
+		PREPARE stmt FROM @queryadmin; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+	ELSEIF (tip = 2) THEN 
+		SET @querystudent = CONCAT('GRANT studet TO "', email, '"@"localhost"');
+		PREPARE stmt FROM @querystudent; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+	ELSEIF (tip = 3) THEN
+		SET @queryadmin = CONCAT('GRANT profesor TO "', email, '"@"localhost"');
+		PREPARE stmt FROM @queryprofesor; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+	END IF;
+    
+	SET @query3 = CONCAT('SET DEFAULT ROLE ALL TO "', email, '"@"localhost"');
+	PREPARE stmt FROM @query3; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+END;//
+
+CREATE PROCEDURE read_user(cnp int)
+BEGIN
+	DECLARE tip1, tip2, tip3 INT DEFAULT 0;
+    
+    SET tip1 = (SELECT 1 FROM admini WHERE admini.cnp = cnp);
+    SET tip2 = (SELECT 1 FROM studenti WHERE studenti.cnp = cnp);
+    SET tip3 = (SELECT 1 FROM profesori WHERE profesori.cnp = cnp);
+    
+	IF (tip1 = 1) THEN
+		SELECT * FROM persoane;
+	ELSEIF (tip2 = 1) THEN
+		SELECT * FROM persoane p INNER JOIN studenti s ON p.cnp = s.cnp;
+	ELSEIF (tip3 = 1) THEN
+		SELECT * FROM persoane p1 INNER JOIN profesori p2 ON p1.cnp = p2.cnp;
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Utilizatorul nu exita';
+	END IF;
+END;//
+
+CREATE PROCEDURE delete_user(cnp char(13))
+BEGIN
+	DECLARE exista INT DEFAULT 0;
+    DECLARE email VARCHAR(50); 
+	SET exista = (SELECT 1 FROM persoane WHERE persoane.cnp = cnp);
+	SET email = (SELECT email FROM persoane WHERE persoane.cnp = cnp);
+    
+	IF (exista = 0) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tip ultilizator nu exista';
+	END IF;
+
+	SET @query1 = CONCAT('DROP USER IF EXISTS "', email, '"@"localhost"');
+	PREPARE stmt FROM @query1; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+	DELETE FROM persoane WHERE persoane.cnp = cnp;
 END;//
 
 CREATE TRIGGER materii_insert_verificare_procentaje BEFORE INSERT ON materii FOR EACH ROW
