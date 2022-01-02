@@ -44,14 +44,14 @@ CREATE TABLE materii_studenti
 cnp_student char(13) not null,
 categorie ENUM('Curs', 'Seminar', 'Laborator'),
 nota DECIMAL(4,2),
-FOREIGN KEY (cnp_student) REFERENCES persoane(cnp),
-FOREIGN KEY (id_materie) REFERENCES materii(id));
+FOREIGN KEY (cnp_student) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (id_materie) REFERENCES materii(id) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE materii_profesor
 (id_materie int not null,
 cnp_profesor char(13) not null,
-FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp),
-FOREIGN KEY (id_materie) REFERENCES materii(id));
+FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (id_materie) REFERENCES materii(id) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE calendar
 (id int unique auto_increment primary key,
@@ -60,32 +60,32 @@ durata time not null,
 id_materie int not null,
 categorie ENUM('Curs', 'Seminar', 'Laborator') not null,
 nr_maxim int not null,
-FOREIGN KEY (id_materie) REFERENCES materii(id));
+FOREIGN KEY (id_materie) REFERENCES materii(id) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE calendar_studenti
 (cnp_student char(13),
 id_calendar int not null,
-FOREIGN KEY (cnp_student) REFERENCES persoane(cnp),
-FOREIGN KEY (id_calendar) REFERENCES calendar(id));
+FOREIGN KEY (cnp_student) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (id_calendar) REFERENCES calendar(id) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE grup_studiu
 (id int unique auto_increment primary key,
 id_materie int not null,
-FOREIGN KEY (id_materie) REFERENCES materii(id));
+FOREIGN KEY (id_materie) REFERENCES materii(id) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE grup_studiu_studenti
 (id_grup int not null,
 cnp_student char(13) not null,
-FOREIGN KEY (id_grup) REFERENCES grup_studiu(id),
-FOREIGN KEY (cnp_student) REFERENCES persoane(cnp));
+FOREIGN KEY (id_grup) REFERENCES grup_studiu(id) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (cnp_student) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE grup_studiu_mesaje
 (id_grup int not null,
 cnp_student char(13) not null,
 mesaj varchar(250) not null,
 data_ora_trimiterii datetime not null,
-FOREIGN KEY (id_grup) REFERENCES grup_studiu(id),
-FOREIGN KEY (cnp_student) REFERENCES persoane(cnp));
+FOREIGN KEY (id_grup) REFERENCES grup_studiu(id) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (cnp_student) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE grup_studiu_activitati
 (id_grup int not null,
@@ -96,10 +96,9 @@ data_programarii datetime not null,
 durata time not null,
 data_expirarii datetime not null,
 numar_minim int not null,
-FOREIGN KEY (id_grup) REFERENCES grup_studiu(id),
-FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp));
+FOREIGN KEY (id_grup) REFERENCES grup_studiu(id) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
-#flush privileges;
 drop role if exists 'student', 'profesor', 'administrator', 'superadministrator';
 CREATE ROLE 'student', 'profesor', 'administrator', 'superadministrator';
 
@@ -149,7 +148,7 @@ BEGIN
 	END IF;
 
 	INSERT INTO persoane VALUES (cnp, nume, prenume, adresa, nr_telefon, email, iban, null);
-	
+    
     IF (tip = 1) THEN
 		INSERT INTO admini VALUES (cnp);
     ELSEIF (tip = 2) THEN
@@ -251,6 +250,31 @@ BEGIN
 	DELETE FROM persoane WHERE persoane.cnp = cnp;
 END;//
 
+#-------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE PROCEDURE create_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta int)
+BEGIN
+	INSERT INTO materii VALUES (null, nume, descriere, procent_curs, procent_seminar, procent_laborator, recurenta);
+END//
+
+CREATE PROCEDURE update_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta int)
+BEGIN
+	UPDATE materie m set m.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta = recurenta;
+	INSERT INTO materii VALUES (null, nume, descriere, procent_curs, procent_seminar, procent_laborator, recurenta);
+END//
+
+CREATE PROCEDURE read_materie (id int)
+BEGIN
+	SELECT * FROM materie where materie.id = id;
+END//
+
+CREATE PROCEDURE delete_materie (id int)
+BEGIN
+	DELETE FROM materie where materie.id = id;
+END//
+
+#-------------------------------------------------------------------------------------------------------------------------------------------
+
 CREATE TRIGGER materii_insert_verificare_procentaje BEFORE INSERT ON materii FOR EACH ROW
 BEGIN
 	IF NEW.procent_curs + NEW.procent_seminar + NEW.procent_laborator != 100
@@ -283,7 +307,6 @@ BEGIN
     END IF;
 END;//
 //
-
 
 CREATE PROCEDURE Cautare_materie(materie varchar(50))
 BEGIN
