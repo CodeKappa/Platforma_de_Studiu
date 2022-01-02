@@ -257,14 +257,14 @@ END;//
 
 #CRUD materii-------------------------------------------------------------------------------------------------------------------------------------------
 
-CREATE PROCEDURE create_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta int)
+CREATE PROCEDURE create_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta_c int, recurenta_s int, recurenta_l int)
 BEGIN
-	INSERT INTO materii VALUES (null, nume, descriere, procent_curs, procent_seminar, procent_laborator, recurenta);
+	INSERT INTO materii VALUES (null, nume, descriere, procent_curs, procent_seminar, procent_laborator, recurenta_c, recurenta_s, recurenta_l);
 END//
 
-CREATE PROCEDURE update_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta int)
+CREATE PROCEDURE update_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta_c int, recurenta_s int, recurenta_l int)
 BEGIN
-	UPDATE materie m set m.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta = recurenta;
+	UPDATE materie m set m.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta_c = recurenta_c, m.recurenta_s = recurenta_s, m.recurenta_l = recurenta_l;
 END//
 
 CREATE PROCEDURE read_materie (id int)
@@ -284,31 +284,32 @@ BEGIN
 	INSERT INTO grup_studiu VALUES (null, id_materie);
 END//
 
-CREATE PROCEDURE update_grup (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta int)
+CREATE PROCEDURE update_grup (id_materie int)
 BEGIN
-	UPDATE grup_studiu g set g.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta = recurenta;
+	UPDATE grup_studiu g set g.id_materie = id_materie;
 END//
 
 CREATE PROCEDURE read_grup (id int)
 BEGIN
-	SELECT * FROM materie where materie.id = id;
+	SELECT * FROM grup_studiu where grup_studiu.id = id;
 END//
 
 CREATE PROCEDURE delete_grup (id int)
 BEGIN
-	DELETE FROM materie where materie.id = id;
+	DELETE FROM grup_studiu where grup_studiu.id = id;
 END//
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
-CREATE TRIGGER materii_insert_verificare_procentaje BEFORE INSERT ON materii FOR EACH ROW
+CREATE TRIGGER materii_insert BEFORE INSERT ON materii FOR EACH ROW
 BEGIN
 	IF NEW.procent_curs + NEW.procent_seminar + NEW.procent_laborator != 100
     THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nu se poate adauga inregistrarea in materii: suma ponderilor nu este 100';
 	END IF;
+    INSERT INTO grup_studiu VALUES (NEW.id);
 END;//
 
-CREATE TRIGGER materii_update_verificare_procentaje BEFORE UPDATE ON materii FOR EACH ROW
+CREATE TRIGGER materii_update BEFORE UPDATE ON materii FOR EACH ROW
 BEGIN
 	IF NEW.procent_curs + NEW.procent_seminar + NEW.procent_laborator != 100
     THEN
@@ -332,71 +333,113 @@ BEGIN
     END IF;
 END;//
 //
-
-CREATE PROCEDURE Cautare_materie(materie varchar(50))
+#Toti--------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE Vizualizare_date_personale(cnp char(13))
 BEGIN
-select * from materii where nume=materie;
-
+	SELECT * FROM persoane p WHERE p.cnp = cnp;
 END; //
 
-CREATE PROCEDURE Inscriere(id_materie int, cnp_student char(13))
+#Student------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE Cautare_materie(materie varchar(50))
 BEGIN
+	SELECT * FROM materii WHERE nume=materie;
+END; //
 
-select id into @x  from materii where id=id_curs;
-
-if(x!=null)
-then 
-INSERT INTO materii_studenti(id_materie, cnp_student) VALUES(id_materie, cnp_student);
-else 
-signal sqlstate '45000' set message_text= 'Materia nu exista';
-END IF;
-
+CREATE PROCEDURE Inscriere_materie(id_materie int, cnp_student char(13))
+BEGIN
+	SELECT id INTO @id FROM materii WHERE id=id_materie;
+	IF(@id!=null)
+	THEN
+		SELECT 1 INTO @nexists FROM materii_studenti ms WHERE ms.id_materie = id_materie AND ms.cnp_student = cnp_student;
+        IF(@nexists = 1)
+        THEN
+			INSERT INTO materii_studenti(id_materie, cnp_student) VALUES(id_materie, cnp_student);
+		ELSE
+			SIGNAL SQLSTATE '45000' SET message_text='Sunteti deja inscris';
+		END IF;
+	ELSE
+		SIGNAL SQLSTATE '45000' SET message_text='Materia nu exista';
+	END IF;
 END;//
+
+CREATE PROCEDURE Renuntare_materie(id_materie int, cnp_student char(13))
+BEGIN
+	DELETE FROM materii_studenti ms WHERE ms.id_materie = id_materie AND ms.cnp_student = cnp_student;
+END; //
+
+CREATE PROCEDURE Inscriere_calendar(id_materie int, cnp_student char(13))
+BEGIN
+	
+END; //
 
 CREATE PROCEDURE Vizualizare_note(cnp_student char(13))
 BEGIN
-
-select x.nume, m.nota from materii_studenti m join materii x on m.id_materie=x.id;
+	SELECT x.nume, m.nota FROM materii_studenti m JOIN materii x ON m.id_materie=x.id WHERE cnp_student = m.cnp_student;
 END; //
 
 CREATE PROCEDURE Vizualizare_grupuri()
 BEGIN
-
-select gs.id, m.nume, p.nume, p.prenume from grup_studiu_studenti gss join persoane p on gss.cnp_student=p.cnp join grup_studiu gs on gss.id_grup=gs.id join materii m on gs.id_materie=m.id
+	SELECT gs.id, m.nume, p.nume, p.prenume FROM grup_studiu_studenti gss JOIN persoane p ON gss.cnp_student=p.cnp JOIN grup_studiu gs ON gss.id_grup=gs.id JOIN materii m ON gs.id_materie=m.id
 ORDER BY gs.id;
+END; //
+
+CREATE PROCEDURE Inscriere_grup(id_grup int, cnp_student char(13))
+BEGIN
+	SELECT gss.id_grup INTO @id FROM grup_studiu_studenti gss WHERE gss.id_grup = id_grup;
+    IF(@id != null)
+    THEN
+		INSERT INTO grup_studiu_studenti VALUES (id_grup, cnp_stdent);
+    ELSE
+		SIGNAL SQLSTATE '45000' SET message_text='Grupul nu exista';
+    END IF;
+END;//
+
+CREATE PROCEDURE Parasire_grup(id_grup int, cnp_student char(13))
+BEGIN
+	DELETE FROM grup_studiu_studenti gss WHERE gss.id_grup = id_grup AND gss.cnp_student = cnp_student;
+END;//
+
+CREATE PROCEDURE Vizualizare_membrii_grup(id_grup int, cnp_student char(13))
+BEGIN
+	SELECT cnp_student INTO @cnp FROM grup_studiu_studenti gss WHERE gss.id_grup = id_grup AND gss.cnp_student = cnp_student;
+    IF(@cnp != null)
+    THEN
+		SELECT p.nume, p.prenume FROM grup_studiu_studenti gss JOIN persoane p WHERE gss.cnp_student = p.cnp;
+	END IF;
+END; //
+
+CREATE PROCEDURE Adaugare_activitate_grup(id_grup int, nume varchar(50), descriere varchar(250), durata time, durata_expirare time, numar_minim int)
+BEGIN
+	SELECT 1 INTO @cgs FROM grup_studiu gs WHERE gs.id = id_grup;
+    IF(@cgs = 1)
+    THEN
+		INSERT INTO grup_studiu_activitati VALUES (id_grup, nume, descriere, current_timestamp(), durata, current_timestamp() + durata_expirare, numar_minim);
+    ELSE
+		SIGNAL SQLSTATE '45000' SET message_text='Grupul nu exista';
+    END IF;
 END; //
 
 CREATE PROCEDURE Mesaje_vizualizare(id int)
 BEGIN
-
-select p.nume, p.prenume, g.mesaj, g.data_ora_trimiterii from grup_studiu_mesaje g join persoane p where g.cnp_student=p.cnp and id_grup=id order by g.data_ora_trimiterii;
+	SELECT p.nume, p.prenume, g.mesaj, g.data_ora_trimiterii FROM grup_studiu_mesaje g JOIN persoane p WHERE g.cnp_student=p.cnp AND id_grup=id ORDER BY g.data_ora_trimiterii;
 END; //
 
 CREATE PROCEDURE Mesaje_scriere(mesaj varchar(250), id_grup int, cnp_student char(13))
 BEGIN
-
-insert into grup_studiu_mesaje(id_grup, cnp_student, mesaj, data_ora_trimiterii) VALUES (id_grup, cnp_student, mesaj, current_timestamp());
+	INSERT INTO grup_studiu_mesaje(id_grup, cnp_student, mesaj, data_ora_trimiterii) VALUES (id_grup, cnp_student, mesaj, current_timestamp());
 END; //
 
 CREATE PROCEDURE Vizualizare_activitati(cnp_student char(13))
 BEGIN
-
-select * from grup_studiu_activitati gsa join grup_studiu gs on gsa.id_grup=gs.id join grup_studiu_studenti gss on gss.id_grup=gs.id where gss.cnp_student=cnp_student and current_timestamp()<=gsa.data_programarii
-ORDER by data_programarii;
-
+	SELECT * FROM grup_studiu_activitati gsa JOIN grup_studiu gs ON gsa.id_grup=gs.id JOIN grup_studiu_studenti gss ON gss.id_grup=gs.id WHERE gss.cnp_student=cnp_student AND CURRENT_TIMESTAMP()<=gsa.data_programarii
+	ORDER by data_programarii;
 END; //
-
 
 CREATE PROCEDURE Descarcare_activitati(cnp_student char(13))
 BEGIN
-
-select * from grup_studiu_activitati gsa join grup_studiu gs on gsa.id_grup=gs.id join grup_studiu_studenti gss on gss.id_grup=gs.id where gss.cnp_student=cnp_student and current_timestamp()<=gsa.data_programarii
-ORDER by data_programarii
-
-INTO OUTFILE 'proiectBD' 
-FIELDS ENCLOSED BY '"' 
-TERMINATED BY ';' 
-ESCAPED BY '"' 
-LINES TERMINATED BY '\r\n';
-
+	SELECT * FROM grup_studiu_activitati gsa JOIN grup_studiu gs ON gsa.id_grup=gs.id JOIN grup_studiu_studenti gss ON gss.id_grup=gs.id WHERE gss.cnp_student=cnp_student AND CURRENT_TIMESTAMP()<=gsa.data_programarii
+	ORDER by data_programarii
+	INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\activitati.csv' 
+	FIELDS TERMINATED BY ','  
+	LINES TERMINATED BY '\r\n';
 END; //
