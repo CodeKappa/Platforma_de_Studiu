@@ -1,8 +1,10 @@
 package databaseView;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class PanelFeedback extends JPanel{
@@ -13,6 +15,7 @@ public class PanelFeedback extends JPanel{
         //g.setColor(Color.BLUE);
        // g.fillRect(0, 0, 100, 100);
         g.drawString(feedbackMessage, 10, 10);
+		setBorder(new LineBorder(Color.BLACK, 1));
     }
     
     public void reset()

@@ -1,4 +1,4 @@
-package databaseView;
+package databaseView_PanelProfesor;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,8 +13,10 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import databaseView.PanelFeedback;
+
 @SuppressWarnings("serial")
-public class PanelAdmin extends JPanel
+public class PanelProfesor extends JPanel
 {	
 	private JTextField input = new JTextField();
 	private JTable tableAfis = new JTable();
@@ -31,7 +33,7 @@ public class PanelAdmin extends JPanel
 	
     public PanelFeedback feedbackPanel = new PanelFeedback();
 	
-    PanelAdmin()
+	public PanelProfesor()
 	{
 		setLayout(null);
 		
@@ -60,7 +62,7 @@ public class PanelAdmin extends JPanel
 		
 		inputPanel.add(input);
 		
-		inputPanel.add(buttonCautaMaterie);
+		//inputPanel.add(buttonCautaMaterie);
 		inputPanel.add(buttonInscriereActivitate);
 		inputPanel.add(buttonRenutaActivitate);
 		inputPanel.add(buttonMembriDinGrup);	
@@ -77,10 +79,10 @@ public class PanelAdmin extends JPanel
 		buttonRenutaActivitate.setBounds(0, 180, width, 20);
 		buttonMembriDinGrup.setBounds(0, 200, width, 20);
 		
-		input.setText("admin");
+		input.setText("profesor");
 		
 		add(inputPanel);
-		inputPanel.setBounds(1285, 110, width + 25, 300);
+		inputPanel.setBounds(1285, 110, width, 300);
 		//buttonAfis.setBounds(50, 110, 100, 25);
 		
 		//Button to go to Log in

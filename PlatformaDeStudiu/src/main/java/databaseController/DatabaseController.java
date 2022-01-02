@@ -24,7 +24,11 @@ public class DatabaseController {
 		//theView.panelSignUp.addSignUpListener(new SignUpListener());
 		//theView.panelLogin.addComuteListener(new LoginComuteListener());
 		//theView.panelSignUp.addComuteListener(new SignUpComuteListener());
+		
+		theView.panelAdminView.addDelogareListener(new DelogareListener());
 		theView.panelStudentView.addDelogareListener(new DelogareListener());
+		theView.panelProfesorView.addDelogareListener(new DelogareListener());
+		
 		theView.panelStudentView.addCautaMaterieListener(new CautaMaterieListener());
 	}
 
@@ -98,6 +102,36 @@ public class DatabaseController {
 		}
 	}
 	
+	class CautaMaterieListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{	
+			try 
+			{
+				theView.panelStudentView.feedbackPanel.feedbackMessage = "Ati cautat materia BD";
+				theView.panelStudentView.setTable(PersoaneSqlQueries.Cautare_materie (MainClass.db.getCon()));
+			} 
+			catch (SQLException e1) 
+			{
+				e1.printStackTrace();
+			}
+		}	
+	}
+	
+	class DelogareListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			if(MainClass.db != null && MainClass.db.getCon() != null)
+				MainClass.db.closeConnection();
+			MainClass.db = null;
+			theView.panelLogin.reset();
+			theView.switchPanels(theView.panelLogin);
+		}		
+	}
+	
 	/*
 	 * class SignUpListener implements ActionListener {
 	 * 
@@ -149,34 +183,4 @@ public class DatabaseController {
 	 * @Override public void actionPerformed(ActionEvent e) {
 	 * theView.switchPanels(theView.panelSignUp); } }
 	 */
-	
-	class CautaMaterieListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e) 
-		{	
-			try 
-			{
-				theView.panelStudentView.feedbackPanel.feedbackMessage = "Ati cautat materia BD";
-				theView.panelStudentView.setTable(PersoaneSqlQueries.Cautare_materie (MainClass.db.getCon()));
-			} 
-			catch (SQLException e1) 
-			{
-				e1.printStackTrace();
-			}
-		}	
-	}
-	
-	class DelogareListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e) 
-		{
-			if(MainClass.db != null && MainClass.db.getCon() != null)
-				MainClass.db.closeConnection();
-			MainClass.db = null;
-			theView.panelLogin.reset();
-			theView.switchPanels(theView.panelLogin);
-		}		
-	}
 }

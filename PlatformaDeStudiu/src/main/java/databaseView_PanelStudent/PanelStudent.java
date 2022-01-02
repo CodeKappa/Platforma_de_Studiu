@@ -1,4 +1,4 @@
-package databaseView;
+package databaseView_PanelStudent;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,6 +12,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+
+import databaseView.PanelFeedback;
 
 @SuppressWarnings("serial")
 public class PanelStudent extends JPanel
@@ -31,7 +33,7 @@ public class PanelStudent extends JPanel
 	
     public PanelFeedback feedbackPanel = new PanelFeedback();
 	
-	PanelStudent()
+	public PanelStudent()
 	{
 		setLayout(null);
 		
