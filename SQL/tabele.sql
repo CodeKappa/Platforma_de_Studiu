@@ -37,7 +37,10 @@ procent_curs int,
 procent_seminar int,
 procent_laborator int,
 nr_max_studenti int not null,
-recurenta int not null);
+recurenta_c int not null,
+recurenta_s int not null,
+recurenta_l int not null
+);
 
 CREATE TABLE materii_studenti
 (id_materie int not null,
@@ -140,6 +143,7 @@ BEGIN
     END IF;
 END//
 
+#CRUD useri-------------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13), intreg1 int, intreg2 int, departament char(50))
 BEGIN
 
@@ -249,8 +253,9 @@ BEGIN
 
 	DELETE FROM persoane WHERE persoane.cnp = cnp;
 END;//
-
 #-------------------------------------------------------------------------------------------------------------------------------------------
+
+#CRUD materii-------------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE PROCEDURE create_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta int)
 BEGIN
@@ -260,7 +265,6 @@ END//
 CREATE PROCEDURE update_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta int)
 BEGIN
 	UPDATE materie m set m.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta = recurenta;
-	INSERT INTO materii VALUES (null, nume, descriere, procent_curs, procent_seminar, procent_laborator, recurenta);
 END//
 
 CREATE PROCEDURE read_materie (id int)
@@ -272,7 +276,28 @@ CREATE PROCEDURE delete_materie (id int)
 BEGIN
 	DELETE FROM materie where materie.id = id;
 END//
+#-------------------------------------------------------------------------------------------------------------------------------------------
 
+#CRUD grupuri de studiu-------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE create_grup (id_materie int)
+BEGIN
+	INSERT INTO grup_studiu VALUES (null, id_materie);
+END//
+
+CREATE PROCEDURE update_grup (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta int)
+BEGIN
+	UPDATE grup_studiu g set g.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta = recurenta;
+END//
+
+CREATE PROCEDURE read_grup (id int)
+BEGIN
+	SELECT * FROM materie where materie.id = id;
+END//
+
+CREATE PROCEDURE delete_grup (id int)
+BEGIN
+	DELETE FROM materie where materie.id = id;
+END//
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE TRIGGER materii_insert_verificare_procentaje BEFORE INSERT ON materii FOR EACH ROW
