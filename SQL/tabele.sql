@@ -14,20 +14,20 @@ nr_contract int auto_increment unique not null);
 
 CREATE TABLE admini
 (cnp char(13) not null unique primary key,
-FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE);
+FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE studenti
 (cnp char(13) not null unique primary key,
 an_studiu int not null,
 nr_ore int not null,
-FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE);
+FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE profesori
 (cnp char(13) not null unique primary key,
 nr_ore_min int not null,
 nr_ore_max int not null,
 departament varchar(50) not null,
-FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE);
+FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE materii
 (id int not null unique auto_increment primary key,
