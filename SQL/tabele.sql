@@ -516,6 +516,7 @@ BEGIN
     WHERE ms.cnp_student = cnp_student;
 END; //
 
+/*
 CREATE PROCEDURE Inscriere_calendar(id_materie int, cnp_student char(13))
 BEGIN
 	IF(((SELECT COUNT(*) FROM calendar_studenti cs
@@ -523,6 +524,7 @@ BEGIN
     WHERE c.id_materie = id_materie) < (SELECT nr_maxim FROM calendar c WHERE c.id_materie = id_materie)) AND current_timestamp() < (SELECT data_programarii)) THEN
 		
 END; //
+*/
 
 CREATE PROCEDURE Vizualizare_note(cnp_student char(13))
 BEGIN
