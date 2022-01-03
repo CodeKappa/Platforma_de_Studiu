@@ -3,6 +3,7 @@ package databaseView_PanelAdmin;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -12,31 +13,30 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import databaseController.DatabaseController;
+import databaseModel.PersoaneSqlQueries;
+import databaseModel.TreatException;
 import databaseView.PanelFeedback;
+import main.MainClass;
 
 import java.awt.event.ActionEvent;
-import javax.swing.JLayeredPane;
 
 @SuppressWarnings("serial")
 public class PanelAdmin extends JPanel
 {
     public PanelFeedback feedbackPanel = new PanelFeedback();
-	private PanelButoaneAdmin inputPanel = new PanelButoaneAdmin();
+	public PanelButoaneAdmin inputPanel = new PanelButoaneAdmin();
 	private JButton buttonDelogare = new JButton("Delogare");
 	
-	//private JLayeredPane layeredPane = new JLayeredPane();
-	
-	private JTable tableAfis = new JTable();
-	private JScrollPane jsp = new JScrollPane(tableAfis);
-	
-	private PanelDatePersonale datePersonale = new PanelDatePersonale();
-	private PanelCRUDuser crudUser = new PanelCRUDuser();
-	private PanelCRUDmaterii crudMaterii = new PanelCRUDmaterii();
-	private PanelCRUDgrupuri crudGrupuri = new PanelCRUDgrupuri();
-	private PanelCautaUtilizatori cautaUtilizatori = new PanelCautaUtilizatori();
-	private PanelCautaMaterii cautaMaterii = new PanelCautaMaterii();
-	private PanelAsignareProfesori asignareProfesori = new PanelAsignareProfesori();
-	private PanelAdaugaActivitati adaugaActivitati = new PanelAdaugaActivitati();
+	public PanelDatePersonale datePersonale = new PanelDatePersonale();
+	public PanelCRUDuser crudUser = new PanelCRUDuser();
+	public PanelCRUDmaterii crudMaterii = new PanelCRUDmaterii();
+	public PanelCRUDgrupuri crudGrupuri = new PanelCRUDgrupuri();
+	public PanelCautaUtilizatori cautaUtilizatori = new PanelCautaUtilizatori();
+	public PanelCautaMaterii cautaMaterii = new PanelCautaMaterii();
+	public PanelAsignareProfesori asignareProfesori = new PanelAsignareProfesori();
+	public PanelAdaugaActivitati adaugaActivitati = new PanelAdaugaActivitati();
+	private JPanel blankPanel = new JPanel();
 	
 	private JPanel frontPanel;
 	
@@ -44,10 +44,11 @@ public class PanelAdmin extends JPanel
 	{
 		setLayout(null);
 		
-		feedbackPanel.setBounds(10,10, 1480, 100);
+		feedbackPanel.setBounds(10, 9, 1480, 100);
 		add(feedbackPanel);
 		feedbackPanel.reset();
-			
+		
+		blankPanel.setBounds(10, 110, 1199, 450);
 		datePersonale.setBounds(10, 110, 1199, 450);
 		crudUser.setBounds(10, 110, 1199, 450);
 		crudMaterii.setBounds(10, 110, 1199, 450);
@@ -57,12 +58,11 @@ public class PanelAdmin extends JPanel
 		asignareProfesori.setBounds(10, 110, 1199, 450);
 		adaugaActivitati.setBounds(10, 110, 1199, 450);
 		
-		//jsp.setBounds(0, 0, 1199, 450);
-		
 		inputPanel.setBounds(1219, 110, 271 , 419);
 		add(inputPanel);
-		
-		
+
+		blankPanel.setBorder(new LineBorder(Color.BLACK, 1));
+		add(blankPanel);
 		add(datePersonale);
 		add(crudUser);
 		add(crudMaterii);
@@ -71,7 +71,9 @@ public class PanelAdmin extends JPanel
 		add(cautaMaterii);
 		add(asignareProfesori);
 		add(adaugaActivitati);
-		datePersonale.setVisible(true);
+		
+		blankPanel.setVisible(true);
+		datePersonale.setVisible(false);
 		crudUser.setVisible(false);
 		crudMaterii.setVisible(false);
 		crudGrupuri.setVisible(false);
@@ -80,7 +82,7 @@ public class PanelAdmin extends JPanel
 		asignareProfesori.setVisible(false);
 		adaugaActivitati.setVisible(false);
 		
-		frontPanel = datePersonale;
+		frontPanel = blankPanel;
 		
 		setActionListeners();
 		
@@ -89,10 +91,10 @@ public class PanelAdmin extends JPanel
 			
 		this.setBorder(new LineBorder(Color.BLUE, 5));
 	}
-    
+   
     public void setActionListeners()
     {
-		inputPanel.buttonDatePersonale.addActionListener(new ActionListener() {
+    	inputPanel.buttonDatePersonale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frontPanel.setVisible(false);
 				datePersonale.setVisible(true);	
@@ -149,7 +151,7 @@ public class PanelAdmin extends JPanel
 			}
 		});
     }
-	
+    
 	public void setBackgroungColor(Color c)
 	{
 		this.setBackground(c);	
@@ -166,26 +168,11 @@ public class PanelAdmin extends JPanel
 	{
 		buttonDelogare.addActionListener(delogareButton);
 	}
-
-	public void setTable(ArrayList<ArrayList<String>> a)
+	
+	public void reset()
 	{
-		DefaultTableModel dtm = new DefaultTableModel();
-		if(a.isEmpty() == false)
-			dtm.setColumnCount(a.get(0).size());
-		int i = 0, j = 0;
-		for(ArrayList<String> arow : a)
-		{
-			dtm.setRowCount(dtm.getRowCount() + 1);
-			j = 0;
-			for(String s : arow)
-			{
-				
-				dtm.setValueAt(s, i, j);
-				j++;
-			}
-			i++;
-		}	
-		tableAfis.setModel(dtm);
-		repaint();
+		frontPanel.setVisible(false);
+		blankPanel.setVisible(true);	
+		frontPanel = blankPanel;
 	}
 }

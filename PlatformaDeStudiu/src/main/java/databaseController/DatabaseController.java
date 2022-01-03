@@ -13,13 +13,16 @@ import main.MainClass;
 import java.awt.Point;
 
 public class DatabaseController {
-	protected DatabaseView theView;
-	protected DatabaseModel theModel;
-
+	private DatabaseView theView;
+	private DatabaseModel theModel;
+	public static String user = new String();
+	
 	public DatabaseController(DatabaseView theView, DatabaseModel theModel) {
 		super();
 		this.theView = theView;
 		this.theModel = theModel;
+		AdminListeners al = new AdminListeners(theView, theModel);
+		
 		theView.panelLogin.addLoginListener(new LoginListener());
 		//theView.panelSignUp.addSignUpListener(new SignUpListener());
 		//theView.panelLogin.addComuteListener(new LoginComuteListener());
@@ -58,13 +61,13 @@ public class DatabaseController {
 				    
 					MainClass.db = new DatabaseConnection(url, username, password, dbName);			
 
-					username = PersoaneSqlQueries.get_cnp(MainClass.db.getCon(), username);
-					
+					user = PersoaneSqlQueries.get_cnp(MainClass.db.getCon(), username);
+								
 				    if(MainClass.db.getCon() != null)
 				    {
 				    	int tipUser = 0;
-				    	tipUser = PersoaneSqlQueries.determina_tip_utilizator(MainClass.db.getCon(), username);
-				    	System.out.println(tipUser);
+				    	tipUser = PersoaneSqlQueries.determina_tip_utilizator(MainClass.db.getCon(), user);
+				    	//System.out.println(tipUser);
 				    	
 				    	theView.panelLogin.setBackground(java.awt.Color.GREEN);
 						
@@ -110,7 +113,7 @@ public class DatabaseController {
 			try 
 			{
 				theView.panelStudentView.feedbackPanel.feedbackMessage = "Ati cautat materia BD";
-				theView.panelStudentView.setTable(PersoaneSqlQueries.Cautare_materie (MainClass.db.getCon()));
+				theView.panelStudentView.setTable(PersoaneSqlQueries.cautare_materie (MainClass.db.getCon()));
 			} 
 			catch (SQLException e1) 
 			{
@@ -124,6 +127,7 @@ public class DatabaseController {
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
+			user = null;
 			if(MainClass.db != null && MainClass.db.getCon() != null)
 				MainClass.db.closeConnection();
 			MainClass.db = null;

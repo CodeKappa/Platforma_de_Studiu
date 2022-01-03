@@ -1,7 +1,10 @@
 package databaseView_PanelAdmin;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class PanelButoaneAdmin extends JPanel
@@ -42,5 +45,7 @@ public class PanelButoaneAdmin extends JPanel
 		
 		buttonAdaugaActivitatiGrup.setBounds(51, 276, 181, 20);
 		add(buttonAdaugaActivitatiGrup);
+		
+		this.setBorder(new LineBorder(Color.BLACK, 1));
 	}
 }
