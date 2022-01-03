@@ -61,9 +61,11 @@ CREATE TABLE calendar
 data_programarii datetime not null,
 durata time not null,
 id_materie int not null,
+cnp_profesor char(13) not null,
 categorie ENUM('Curs', 'Seminar', 'Laborator') not null,
 nr_maxim int not null,
-FOREIGN KEY (id_materie) REFERENCES materii(id) ON DELETE CASCADE ON UPDATE CASCADE);
+FOREIGN KEY (id_materie) REFERENCES materii(id) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE calendar_studenti
 (cnp_student char(13),
@@ -393,6 +395,15 @@ CREATE PROCEDURE Vizualizare_date_personale(cnp char(13))
 BEGIN
 	SELECT * FROM persoane p WHERE p.cnp = cnp;
 END; //
+
+CREATE PROCEDURE Vizualizare_activitati(cnp char(13))
+BEGIN
+	SELECT * FROM grup_studiu_activitati gsa 
+    JOIN grup_studiu gs ON gsa.id_grup=gs.id 
+    JOIN grup_studiu_studenti gss ON gss.id_grup=gs.id 
+    WHERE gss.cnp_student=cnp_student AND CURRENT_TIMESTAMP()<=gsa.data_programarii
+	ORDER by data_programarii;
+END; //
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
 #Student------------------------------------------------------------------------------------------------------------------------------------
@@ -495,12 +506,6 @@ BEGIN
 	INSERT INTO grup_studiu_mesaje(id_grup, cnp_student, mesaj, data_ora_trimiterii) VALUES (id_grup, cnp_student, mesaj, current_timestamp());
 END; //
 
-CREATE PROCEDURE Vizualizare_activitati(cnp_student char(13))
-BEGIN
-	SELECT * FROM grup_studiu_activitati gsa JOIN grup_studiu gs ON gsa.id_grup=gs.id JOIN grup_studiu_studenti gss ON gss.id_grup=gs.id WHERE gss.cnp_student=cnp_student AND CURRENT_TIMESTAMP()<=gsa.data_programarii
-	ORDER by data_programarii;
-END; //
-
 CREATE PROCEDURE Descarcare_activitati(cnp_student char(13))
 BEGIN
 	SELECT * FROM grup_studiu_activitati gsa JOIN grup_studiu gs ON gsa.id_grup=gs.id JOIN grup_studiu_studenti gss ON gss.id_grup=gs.id WHERE gss.cnp_student=cnp_student AND CURRENT_TIMESTAMP()<=gsa.data_programarii
@@ -525,4 +530,59 @@ END; //
 CREATE PROCEDURE Inscriere_activitati_studiu(cnp_profesor char(13), id_gsa int)
 BEGIN
 	UPDATE grup_studiu_activitati gsa SET gsa.cnp_profesor = cnp_profesor WHERE gsa.id = id_gsa;
+END; //
+
+CREATE PROCEDURE Programare_calendar(cnp_profesor char(13), data_inceput datetime, data_final datetime, durata time, id_materie int, categorie enum('Curs','Seminar','Laborator'), nr_maxim int)
+BEGIN
+	DECLARE recurenta int;
+    DECLARE current_datetime datetime;
+	IF (categorie = 'Curs') THEN
+		SELECT recurenta_c INTO recurenta FROM materii m WHERE m.id = id_materie;
+	ELSEIF(categorie = 'Seminar') THEN
+		SELECT recurenta_s INTO recurenta FROM materii m WHERE m.id = id_materie;
+    ELSE
+		SELECT recurenta_l INTO recurenta FROM materii m WHERE m.id = id_materie;
+    END IF;
+    
+    WHILE current_datetime < data_final DO
+		INSERT INTO calendar VALUES (current_datetime, durata, id_materie, cnp_profesor, categorie, nr_maxim);
+        SET current_datetime = ADDDATE(current_datetime, recurenta);
+	END WHILE;
+END; //
+
+CREATE PROCEDURE Vizualizare_ponderi(cnp_profesor char(13))
+BEGIN
+	SELECT nume, procent_curs, procent_seminar, procent_laborator 
+    FROM materii m 
+    JOIN materii_profesor mp ON m.id = mp.id_materie
+    WHERE mp.cnp_profesor = cnp_profesor;
+END; //
+
+CREATE PROCEDURE Actualizare_ponderi(id_materie int, p_c int, p_s int, p_l int)
+BEGIN
+	UPDATE materii SET procent_curs = p_c, procent_seminar = p_s, procent_laborator = p_l WHERE id = id_materie;  
+END; //
+
+CREATE PROCEDURE Notare_studenti(id_materie int, cnp_student char(13), categorie enum('Curs','Seminar','Laborator'), nota decimal(4,2))
+BEGIN
+	INSERT INTO materii_studenti VALUES (id_materie, cnp_student, categorie, nota);
+END; //
+
+CREATE PROCEDURE Vizualizare_studenti_materie(id_materie int)
+BEGIN
+	SELECT p.nume, p.prenume, s.an_studiu, p.nr_telefon, p.email, ms.nota FROM persoane p
+    JOIN studenti s ON p.cnp = s.cnp
+    JOIN materii_studenti ms ON p.cnp = ms.cnp_student
+    WHERE id_materie = ms.id_materie;
+END; //
+
+CREATE PROCEDURE Descarcare_studenti_materie(id_materie int)
+BEGIN
+	SELECT p.nume, p.prenume, s.an_studiu, p.nr_telefon, p.email, ms.nota FROM persoane p
+    JOIN studenti s ON p.cnp = s.cnp
+    JOIN materii_studenti ms ON p.cnp = ms.cnp_student
+    WHERE id_materie = ms.id_materie
+    INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\catalog.csv' 
+	FIELDS TERMINATED BY ','  
+	LINES TERMINATED BY '\r\n';
 END; //
