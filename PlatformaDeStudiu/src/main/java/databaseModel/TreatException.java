@@ -45,6 +45,8 @@ public class TreatException {
 			return true;
 		//if (sqlState.equalsIgnoreCase("42000"))
 		//	return true;
+		//if (sqlState.equalsIgnoreCase("23000"))
+				//	return true;
 		return false;
 	}
 }

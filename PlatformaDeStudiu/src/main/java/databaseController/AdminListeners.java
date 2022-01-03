@@ -46,10 +46,22 @@ public class AdminListeners{
 		});
     	theView.panelAdminView.inputPanel.buttonCRUDmaterii.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					theView.panelAdminView.crudMaterii.setData(null);
+					theView.panelAdminView.crudMaterii.setTable(AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
+				}
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
     	theView.panelAdminView.inputPanel.buttonCRUDgrupuri.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					theView.panelAdminView.crudGrupuri.setData(null);
+					theView.panelAdminView.crudGrupuri.setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
+				}
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
     	theView.panelAdminView.inputPanel.buttonCautaUtilizatori.addActionListener(new ActionListener() {
