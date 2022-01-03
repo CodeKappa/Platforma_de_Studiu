@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.Color;
@@ -143,13 +145,13 @@ public class PanelCRUDuser extends JPanel {
 		add(textField_parola);
 		textField_parola.setColumns(10);
 		
-		button_create.setBounds(971, 381, 210, 21);
+		button_create.setBounds(966, 381, 220, 21);
 		add(button_create);
 
-		button_update.setBounds(971, 412, 101, 21);
+		button_update.setBounds(966, 412, 105, 21);
 		add(button_update);
 
-		button_delete.setBounds(1080, 412, 101, 21);
+		button_delete.setBounds(1081, 412, 105, 21);
 		add(button_delete);
 		
 		setActionListeners();
@@ -224,6 +226,12 @@ public class PanelCRUDuser extends JPanel {
 		label_email.setBounds(988, 164, 45, 13);
 		add(label_email);
 		
+        tableAfis.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                tableAfisMouseClicked(evt);
+            }
+        });
+		
 		setExtraLabelsOnFalse();
 	}
 	
@@ -276,16 +284,29 @@ public class PanelCRUDuser extends JPanel {
 				try 
 				{
 					AdminSqlQueries.create_user(MainClass.db.getCon(), getData());
+					setTable(AdminSqlQueries.all_user_data(MainClass.db.getCon()));
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
 		button_update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					AdminSqlQueries.update_user(MainClass.db.getCon(), getData());
+					setTable(AdminSqlQueries.all_user_data(MainClass.db.getCon()));
+				} 
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
 		button_delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					AdminSqlQueries.delete_user(MainClass.db.getCon(), textField_cnp.getText());
+					setTable(AdminSqlQueries.all_user_data(MainClass.db.getCon()));
+				} 
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
 	}
@@ -329,8 +350,10 @@ public class PanelCRUDuser extends JPanel {
 		arr.add(textField_telefon.getText());
 		arr.add(textField_email.getText());
 		arr.add(textField_iban.getText());
+		arr.add(textField_contract.getText());
 		arr.add(textField_parola.getText());
-			
+
+		
 		if(arr.get(0).equals("1"))
 		{
 			arr.add(null);
@@ -355,43 +378,66 @@ public class PanelCRUDuser extends JPanel {
 	
 	public void setData(ArrayList<String> arr)
 	{
-		textField_cnp.setText(arr.get(0));
-		textField_nume.setText(arr.get(1));
-		textField_prenume.setText(arr.get(2));
-		textField_adresa.setText(arr.get(3));
-		textField_telefon.setText(arr.get(4));
-		textField_email.setText(arr.get(5));
-		textField_iban.setText(arr.get(6));
-		textField_contract.setText(arr.get(7));
-		
-		if(arr.get(arr.size()-1).equals("1"))
+		if(arr == null)
 		{
-			radio_admin.setSelected(true);
-			for(ActionListener a: radio_admin.getActionListeners()) {
-			    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
-			    });
-			}
-		}			
-		else if(arr.get(arr.size()-1).equals("2"))
-		{
-			radio_student.setSelected(true);
-			for(ActionListener a: radio_student.getActionListeners()) {
-			    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
-			    });
-			}
-			textField_an.setText(arr.get(8));
-			textField_nrOre.setText(arr.get(9));
+			textField_cnp.setText(null);
+			textField_nume.setText(null);
+			textField_prenume.setText(null);
+			textField_adresa.setText(null);
+			textField_telefon.setText(null);
+			textField_email.setText(null);
+			textField_iban.setText(null);
+			textField_contract.setText(null);
 		}
-		else if(arr.get(arr.size()-1).equals("3"))
+		else
 		{
-			radio_profesor.setSelected(true);
-			for(ActionListener a: radio_profesor.getActionListeners()) {
-			    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
-			    });
+			textField_cnp.setText(arr.get(0));
+			textField_nume.setText(arr.get(1));
+			textField_prenume.setText(arr.get(2));
+			textField_adresa.setText(arr.get(3));
+			textField_telefon.setText(arr.get(4));
+			textField_email.setText(arr.get(5));
+			textField_iban.setText(arr.get(6));
+			textField_contract.setText(arr.get(7));
+			
+			if(arr.get(arr.size()-1).equals("1"))
+			{
+				radio_admin.setSelected(true);
+				for(ActionListener a: radio_admin.getActionListeners()) {
+				    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+				    });
+				}
+			}			
+			else if(arr.get(arr.size()-1).equals("2"))
+			{
+				radio_student.setSelected(true);
+				for(ActionListener a: radio_student.getActionListeners()) {
+				    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+				    });
+				}
+				textField_an.setText(arr.get(8));
+				textField_nrOre.setText(arr.get(9));
 			}
-			textField_departament.setText(arr.get(8));
-			textField_oreMin.setText(arr.get(9));
-			textField_oreMax.setText(arr.get(10));
-		}
+			else if(arr.get(arr.size()-1).equals("3"))
+			{
+				radio_profesor.setSelected(true);
+				for(ActionListener a: radio_profesor.getActionListeners()) {
+				    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+				    });
+				}
+				textField_oreMin.setText(arr.get(8));
+				textField_oreMax.setText(arr.get(9));
+				textField_departament.setText(arr.get(10));			
+			}
+		}	
 	}
+	
+    private void tableAfisMouseClicked(MouseEvent evt) {
+        String cnp = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
+        try 
+        {
+        	setData(AdminSqlQueries.read_user(MainClass.db.getCon(), cnp));
+		} 
+        catch (SQLException e) { TreatException.printSQLException(e); }
+    }
 }

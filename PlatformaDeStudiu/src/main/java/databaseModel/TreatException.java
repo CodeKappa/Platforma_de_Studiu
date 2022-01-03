@@ -43,6 +43,8 @@ public class TreatException {
 		// 42Y55: Table already exists in schema
 		if (sqlState.equalsIgnoreCase("42Y55"))
 			return true;
+		//if (sqlState.equalsIgnoreCase("42000"))
+		//	return true;
 		return false;
 	}
 }

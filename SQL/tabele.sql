@@ -150,7 +150,13 @@ BEGIN
     END IF;
 END//
 
+CREATE PROCEDURE all_user_data()
+BEGIN 
+	SELECT p1.cnp, p1.nume, p1.prenume, p1.adresa, p1.nr_telefon, p1.email, p1.iban, p1.nr_contract, p2.nr_ore_min, p2.nr_ore_max, p2.departament,s.an_studiu, s.nr_ore FROM persoane p1 LEFT JOIN profesori p2 ON p1.cnp = p2.cnp LEFT JOIN studenti s ON p1.cnp = s.cnp;
+END;//
+
 #CRUD useri-------------------------------------------------------------------------------------------------------------------------------------------
+
 CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13), intreg1 int, intreg2 int, departament char(50))
 BEGIN
 
@@ -192,23 +198,43 @@ END;//
 CREATE PROCEDURE update_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), nr_contract int, parola char(13), intreg1 int, intreg2 int, departament char(50))
 BEGIN
 	DECLARE old_email varchar(50);
+	DECLARE old_cnp char(13);
+    DECLARE old_tip int;
+    
     SET old_email = (SELECT persoane.email from persoane where persoane.nr_contract = nr_contract);
+    SET old_cnp = (SELECT persoane.cnp from persoane where persoane.nr_contract = nr_contract);
+	SET old_tip = find_user_type(old_cnp);
     
 	IF (tip < 1 OR tip >3) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tip ultilizator nu exista';
 	END IF;
 
-	UPDATE persoane p set p.cnp = cnp, p.nume = nume, p.prenume = prenume, p.adresa = adresa, p.nr_telefon = nr_telefon, p.email = email, p.iban = iban;
+	UPDATE persoane p set p.cnp = cnp, p.nume = nume, p.prenume = prenume, p.adresa = adresa, p.nr_telefon = nr_telefon, p.email = email, p.iban = iban WHERE p.nr_contract = nr_contract;
 	
-    IF (tip = 2) THEN
-		UPDATE studenti s SET s.cnp = cnp, s.an_studiu = intreg1, s.nr_ore = intreg2;
-	ELSEIF (tip = 3) THEN
-		UPDATE profesori p SET p.cnp = cnp, p.nr_ore_min = intreg1, p.nr_ore_max = intreg2, p.depatament = departament;
-	END IF;
-    
-    IF (old_email != email) THEN
-		SET @querye = CONCAT('RENAME USER "', old_email, '"@"localhost" TO "', email, '"@"localhost"' );
-		PREPARE stmt FROM @querye; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+    IF (old_tip != tip) THEN
+		DELETE FROM admini WHERE admini.cnp = old_cnp;
+        DELETE FROM studenti WHERE studenti.cnp = old_cnp;
+        DELETE FROM profesori WHERE profesori.cnp = old_cnp;
+        
+		IF (tip = 1) THEN
+			INSERT INTO admini VALUES (cnp);
+		ELSEIF (tip = 2) THEN
+			INSERT INTO studenti VALUES (cnp, intreg1, intreg2);
+		ELSEIF (tip = 3) THEN
+			INSERT INTO profesori VALUES (cnp, intreg1, intreg2, departament);
+		END IF;
+        
+    ELSE
+		IF (tip = 2) THEN
+			UPDATE studenti s SET s.cnp = cnp, s.an_studiu = intreg1, s.nr_ore = intreg2 WHERE s.cnp = old_cnp;
+		ELSEIF (tip = 3) THEN
+			UPDATE profesori p SET p.cnp = cnp, p.nr_ore_min = intreg1, p.nr_ore_max = intreg2, p.departament = departament WHERE p.cnp = old_cnp;
+		END IF;
+		
+		IF (old_email != email) THEN
+			SET @querye = CONCAT('RENAME USER "', old_email, '"@"localhost" TO "', email, '"@"localhost"' );
+			PREPARE stmt FROM @querye; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+		END IF;
 	END IF;
     
     IF (parola != null) THEN
@@ -245,9 +271,9 @@ BEGIN
 	IF (tip1 = 1) THEN
 		SELECT * FROM persoane WHERE persoane.cnp = cnp;
 	ELSEIF (tip2 = 1) THEN
-		SELECT * FROM persoane p INNER JOIN studenti s ON p.cnp = s.cnp  WHERE persoane.cnp = cnp;
+		SELECT * FROM persoane p INNER JOIN studenti s ON p.cnp = s.cnp  WHERE p.cnp = cnp;
 	ELSEIF (tip3 = 1) THEN
-		SELECT * FROM persoane p1 INNER JOIN profesori p2 ON p1.cnp = p2.cnp  WHERE persoane.cnp = cnp;
+		SELECT * FROM persoane p1 INNER JOIN profesori p2 ON p1.cnp = p2.cnp  WHERE p1.cnp = cnp;
 	ELSE
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Utilizatorul nu exita';
 	END IF;
@@ -258,14 +284,14 @@ BEGIN
 	DECLARE exista INT DEFAULT 0;
     DECLARE email VARCHAR(50); 
 	SET exista = (SELECT 1 FROM persoane WHERE persoane.cnp = cnp);
-	SET email = (SELECT email FROM persoane WHERE persoane.cnp = cnp);
+    SET email = (SELECT persoane.email FROM persoane where persoane.cnp = cnp);
+    
+	SET @query1 = CONCAT('DROP USER IF EXISTS "', email, '"@"localhost"');
+	PREPARE stmt FROM @query1; EXECUTE stmt; DEALLOCATE PREPARE stmt;
     
 	IF (exista = 0) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tip ultilizator nu exista';
 	END IF;
-
-	SET @query1 = CONCAT('DROP USER IF EXISTS "', email, '"@"localhost"');
-	PREPARE stmt FROM @query1; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
 	DELETE FROM persoane WHERE persoane.cnp = cnp;
 END;//

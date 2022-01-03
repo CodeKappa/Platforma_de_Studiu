@@ -4,7 +4,8 @@ insert into persoane  values ("1341", "numescu", "prenumescu", "Pomilor 34", "07
 insert into persoane values ("1235", "frumusescu", "uratu", "Pomilor 12", "0770666666", "frumusescu@yahoo.com", "ROBTRL123124", null);
 insert into persoane values ("2124", "grigorescu", "grigore", "Acadelelor 12", "0770999999", "grigorescu@gmail.com", "ROBTRL456124", null);
 insert into persoane values ("5123", "gigel", "gigi", "Lalelelor 22", "0770111111", "gigel@yahoo.com", "ROBTRL264554", null);
-insert into persoane values ("6123", "bula", "strula", "1848 22", "0770444222", "bula@yahoo.com", "ROBTRL233344", null);
+#insert into persoane values ("6123", "bula", "strula", "1848 22", "0770444222", "bula@yahoo.com", "ROBTRL233344", null);
+call create_user (3,"6123", "bula", "strula","1848 22", "0770444222", "bula@yahoo.com", "ROBTRL233344", "parolabula", 2, 20, "informatica");
 insert into persoane values ("1234", "pasari lati lungila", "fomila", "Plopilor 19", "0770111333", "pasarila@gmail.com", "ROBTRL2333324", null);
 insert into persoane values ("2523", "numescu", "antonescu","Pomilor 34", "0770133123", "numescu2001@yahoo.com", "ROBTRL2166624", null);
 

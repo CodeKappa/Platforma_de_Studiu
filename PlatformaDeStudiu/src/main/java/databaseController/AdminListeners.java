@@ -38,7 +38,8 @@ public class AdminListeners{
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					theView.panelAdminView.crudUser.setData(AdminSqlQueries.read_user(MainClass.db.getCon()));
+					theView.panelAdminView.crudUser.setData(null);
+					theView.panelAdminView.crudUser.setTable(AdminSqlQueries.all_user_data(MainClass.db.getCon()));
 				}
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
