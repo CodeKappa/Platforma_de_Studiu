@@ -66,6 +66,7 @@ public class AdminListeners{
 		});
     	theView.panelAdminView.inputPanel.buttonCautaUtilizatori.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				theView.panelAdminView.cautaUtilizatori.setData();
 			}
 		});
     	theView.panelAdminView.inputPanel.buttonCRUDmaterii.addActionListener(new ActionListener() {

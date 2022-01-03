@@ -412,9 +412,6 @@ public class AdminSqlQueries {
 	
 	public static ArrayList<ArrayList<String>> cauta_user(Connection con, String nume, String prenume, int tip) throws SQLException 
 	{	
-		
-		//if(nume.equals("")) nume = "0";
-		//if(prenume.equals("")) prenume = "0";
 		 
 		ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
 		try 
@@ -450,6 +447,74 @@ public class AdminSqlQueries {
 					arr.add(rs.getString("departament"));
 				}
 				array.add(arr);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return array;
+	}
+	
+	public static ArrayList<ArrayList<String>> cauta_materie(Connection con, String nume) throws SQLException 
+	{	
+		 
+		ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call cauta_materie(?)}");
+			cs.setString(1, nume);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList <String> aux = new ArrayList <String>();
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("descriere"));
+				aux.add(rs.getString("procent_curs"));
+				aux.add(rs.getString("procent_seminar"));
+				aux.add(rs.getString("procent_laborator"));
+				aux.add(rs.getString("nr_max_studenti"));
+				aux.add(rs.getString("recurenta_c"));
+				aux.add(rs.getString("recurenta_s"));
+				aux.add(rs.getString("recurenta_l"));
+				array.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return array;
+	}
+	
+	public static ArrayList<ArrayList<String>> studentiLaMaterie(Connection con, String nume) throws SQLException 
+	{	
+		 
+		ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call studentiLaMaterie(?)}");
+			cs.setString(1, nume);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList <String> aux = new ArrayList <String>();
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("cnp"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("prenume"));
+				array.add(aux);
 			}	
 		} 
 		catch (SQLException e) 

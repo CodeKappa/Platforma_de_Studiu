@@ -120,7 +120,7 @@ public class PanelAdmin extends JPanel
 				frontPanel = cautaUtilizatori;
 			}
 		});
-		inputPanel.buttonCRUDmaterii.addActionListener(new ActionListener() {
+		inputPanel.buttonCautaMaterie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frontPanel.setVisible(false);
 				cautaMaterii.setVisible(true);

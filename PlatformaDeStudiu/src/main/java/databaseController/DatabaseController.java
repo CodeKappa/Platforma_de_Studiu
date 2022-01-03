@@ -131,6 +131,9 @@ public class DatabaseController {
 			if(MainClass.db != null && MainClass.db.getCon() != null)
 				MainClass.db.closeConnection();
 			MainClass.db = null;
+			
+			theView.panelAdminView.reset();
+			
 			theView.panelLogin.reset();
 			theView.switchPanels(theView.panelLogin);
 		}		

@@ -212,6 +212,33 @@ BEGIN
     END IF;
 END;//
 
+CREATE PROCEDURE cauta_materie(nume varchar(50))
+BEGIN
+	IF (nume = "") THEN
+		SELECT * FROM materii;
+	ELSE 
+		SELECT * FROM materii m WHERE m.nume = nume;
+	END IF;
+END;//
+
+CREATE PROCEDURE filtreaza_materie(nume varchar(50))
+BEGIN
+	IF (nume = "") THEN
+		SELECT * FROM materii;
+	ELSE 
+		SELECT * FROM materii m WHERE m.nume = nume;
+	END IF;
+END;//
+
+CREATE PROCEDURE studentiLaMaterie(nume varchar(50))
+BEGIN
+	IF (nume = "") THEN
+		SELECT m.id, p.cnp, p.nume, p.prenume FROM materii m INNER JOIN materii_studenti ms ON m.id = ms.id_materie INNER JOIN persoane p ON ms.cnp_student = p.cnp;
+	ELSE 
+		SELECT m.id, p.cnp, p.nume, p.prenume FROM materii m INNER JOIN materii_studenti ms ON m.id = ms.id_materie INNER JOIN persoane p ON ms.cnp_student = p.cnp WHERE m.nume = nume;
+	END IF;
+END;//
+
 #CRUD useri-------------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13), intreg1 int, intreg2 int, departament char(50))

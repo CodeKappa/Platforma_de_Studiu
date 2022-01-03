@@ -13,8 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.Color;
@@ -172,5 +170,18 @@ public class PanelCautaUtilizatori extends JPanel {
 	{	
 		nume = textField_nume.getText();
 		prenume = textField_prenume.getText();
+	}
+
+	public void setData() 
+	{
+		textField_nume.setText(null);
+		textField_prenume.setText(null);
+		radio_all.setSelected(true);
+		try 
+		{
+			setName();
+			setTable(AdminSqlQueries.cauta_user(MainClass.db.getCon(), nume, prenume, tip));
+		} 
+		catch (SQLException e1) { TreatException.printSQLException(e1); }
 	}
 }
