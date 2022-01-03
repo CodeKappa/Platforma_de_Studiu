@@ -227,7 +227,7 @@ BEGIN
 	END IF;
 END;//
 
-CREATE PROCEDURE read_user(cnp int)
+CREATE PROCEDURE read_user(cnp char(13))
 BEGIN
 	DECLARE tip1, tip2, tip3 INT DEFAULT 0;
     

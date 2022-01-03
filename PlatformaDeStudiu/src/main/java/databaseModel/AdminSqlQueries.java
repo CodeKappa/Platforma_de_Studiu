@@ -93,7 +93,6 @@ public class AdminSqlQueries {
 				{
 					arr.add(rs.getString("an_studiu"));
 					arr.add(rs.getString("nr_ore"));
-					;
 				}
 				else if(tip == 3)
 				{
