@@ -91,7 +91,8 @@ FOREIGN KEY (id_grup) REFERENCES grup_studiu(id) ON DELETE CASCADE ON UPDATE CAS
 FOREIGN KEY (cnp_student) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE grup_studiu_activitati
-(id_grup int not null,
+(id int unique auto_increment primary key,
+id_grup int not null,
 cnp_profesor char(13),
 nume varchar(50) not null,
 descriere varchar(250),
@@ -101,6 +102,12 @@ data_expirarii datetime not null,
 numar_minim int not null,
 FOREIGN KEY (id_grup) REFERENCES grup_studiu(id) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (cnp_profesor) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
+
+CREATE TABLE grup_studiu_activitati_studenti
+(id_activitate int not null,
+cnp_student char(13) not null,
+FOREIGN KEY (id_activitate) REFERENCES grup_studiu_activitati(id) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (cnp_student) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
 drop role if exists 'student', 'profesor', 'administrator', 'superadministrator';
 CREATE ROLE 'student', 'profesor', 'administrator', 'superadministrator';
@@ -300,6 +307,7 @@ BEGIN
 END//
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
+#Triggere-----------------------------------------------------------------------------------------------------------------------------------
 CREATE TRIGGER materii_insert BEFORE INSERT ON materii FOR EACH ROW
 BEGIN
 	IF NEW.procent_curs + NEW.procent_seminar + NEW.procent_laborator != 100
@@ -333,11 +341,14 @@ BEGIN
     END IF;
 END;//
 //
-#Toti--------------------------------------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------------------------
+
+#Toti---------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE Vizualizare_date_personale(cnp char(13))
 BEGIN
 	SELECT * FROM persoane p WHERE p.cnp = cnp;
 END; //
+#-------------------------------------------------------------------------------------------------------------------------------------------
 
 #Student------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE Cautare_materie(materie varchar(50))
@@ -419,6 +430,16 @@ BEGIN
     END IF;
 END; //
 
+CREATE PROCEDURE Vizualizare_activitati_grupuri(cnp_student char(13))
+BEGIN
+	
+END; //
+
+CREATE PROCEDURE Inscriere_activitate_grup(cnp_student char(13))
+BEGIN
+	
+END; //
+
 CREATE PROCEDURE Mesaje_vizualizare(id int)
 BEGIN
 	SELECT p.nume, p.prenume, g.mesaj, g.data_ora_trimiterii FROM grup_studiu_mesaje g JOIN persoane p WHERE g.cnp_student=p.cnp AND id_grup=id ORDER BY g.data_ora_trimiterii;
@@ -442,4 +463,16 @@ BEGIN
 	INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\activitati.csv' 
 	FIELDS TERMINATED BY ','  
 	LINES TERMINATED BY '\r\n';
+END; //
+#-------------------------------------------------------------------------------------------------------------------------------------------
+
+#profesor-----------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE Vizualizare_activitati_studiu(cnp_profesor char(13))
+BEGIN
+	SELECT * FROM persoane p 
+    JOIN materii_profesori mp ON p.cnp = mp.cnp_profesor
+    JOIN materii m ON mp.id_materie = m.id
+    JOIN grup_studiu gs ON m.id = gs.id_materie
+    JOIN grup_studiu_activitati gsa ON gs.id = gsa.id_grup
+    WHERE current_timestamp() < gsa.data_programarii();
 END; //
