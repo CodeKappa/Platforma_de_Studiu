@@ -157,6 +157,61 @@ BEGIN
 	SELECT p1.cnp, p1.nume, p1.prenume, p1.adresa, p1.nr_telefon, p1.email, p1.iban, p1.nr_contract, p2.nr_ore_min, p2.nr_ore_max, p2.departament,s.an_studiu, s.nr_ore FROM persoane p1 LEFT JOIN profesori p2 ON p1.cnp = p2.cnp LEFT JOIN studenti s ON p1.cnp = s.cnp;
 END;//
 
+CREATE PROCEDURE all_materie_data()
+BEGIN 
+	SELECT * FROM materii;
+END;//
+
+CREATE PROCEDURE all_grup_data()
+BEGIN 
+	SELECT g.id, g.id_materie, m.* FROM grup_studiu g INNER JOIN materii m ON g.id_materie = m.id;
+END;//
+
+CREATE PROCEDURE cauta_user(tip int, nume char(50), prenume char(50))
+BEGIN
+	IF (tip = 0) THEN
+		IF (nume = "" AND prenume = "") THEN
+			SELECT * FROM persoane p;
+        ELSEIF (nume != "" AND prenume = "") THEN   
+			SELECT * FROM persoane p WHERE p.nume = nume;
+		ELSEIF (nume = "" AND prenume != "") THEN
+			SELECT * FROM persoane p WHERE p.prenume = prenume;
+		ELSE
+			SELECT * FROM persoane p WHERE p.nume = nume AND p.prenume = prenume;
+        END IF;
+	ELSEIF (tip = 1) THEN 
+		IF (nume = "" AND prenume = "") THEN
+			SELECT p.* FROM persoane p INNER JOIN admini a on p.cnp = a.cnp;
+        ELSEIF (nume != "" AND prenume = "") THEN   
+			SELECT p.* FROM persoane p INNER JOIN admini a on p.cnp = a.cnp WHERE p.nume = nume ;
+		ELSEIF (nume = "" AND prenume != "") THEN
+			SELECT p.* FROM persoane p INNER JOIN admini a on p.cnp = a.cnp WHERE p.prenume = prenume;
+		ELSE
+			SELECT p.* FROM persoane p INNER JOIN admini a on p.cnp = a.cnp WHERE p.nume = nume AND p.prenume = prenume;
+        END IF;
+	ELSEIF (tip = 2) THEN 
+		IF (nume = "" AND prenume = "") THEN
+			SELECT p.*, a.an_studiu, a.nr_ore FROM persoane p INNER JOIN studenti a on p.cnp = a.cnp;
+        ELSEIF (nume != "" AND prenume = "") THEN   
+			SELECT p.*, a.an_studiu, a.nr_ore FROM persoane p INNER JOIN studenti a on p.cnp = a.cnp WHERE p.nume = nume ;
+		ELSEIF (nume = "" AND prenume != "") THEN
+			SELECT p.*, a.an_studiu, a.nr_ore FROM persoane p INNER JOIN studenti a on p.cnp = a.cnp WHERE p.prenume = prenume;
+		ELSE
+			SELECT p.*, a.an_studiu, a.nr_ore FROM persoane p INNER JOIN studenti a on p.cnp = a.cnp WHERE p.nume = nume AND p.prenume = prenume;
+        END IF;
+	ELSEIF (tip = 3) THEN 
+		IF (nume = "" AND prenume = "") THEN
+			SELECT p.*, a.nr_ore_min, a.nr_ore_max, a.departament FROM persoane p INNER JOIN profesori a on p.cnp = a.cnp;
+        ELSEIF (nume = "" AND prenume != "") THEN   
+			SELECT p.*, a.nr_ore_min, a.nr_ore_max, a.departament FROM persoane p INNER JOIN profesori a on p.cnp = a.cnp WHERE p.nume = nume ;
+		ELSEIF (nume != "" AND prenume = "") THEN
+			SELECT p.*, a.nr_ore_min, a.nr_ore_max, a.departament FROM persoane p INNER JOIN profesori a on p.cnp = a.cnp WHERE p.prenume = prenume;
+		ELSE
+			SELECT p.*, a.nr_ore_min, a.nr_ore_max, a.departament FROM persoane p INNER JOIN profesori a on p.cnp = a.cnp WHERE p.nume = nume AND p.prenume = prenume;
+        END IF;
+    END IF;
+END;//
+
 #CRUD useri-------------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13), intreg1 int, intreg2 int, departament char(50))

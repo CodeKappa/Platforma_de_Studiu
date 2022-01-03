@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import databaseController.DatabaseController;
+import databaseView.PanelFeedback;
 
 public class AdminSqlQueries {
 	
@@ -407,5 +408,57 @@ public class AdminSqlQueries {
 			TreatException.printSQLException(e);
 		}
 		con.rollback();
+	}
+	
+	public static ArrayList<ArrayList<String>> cauta_user(Connection con, String nume, String prenume, int tip) throws SQLException 
+	{	
+		
+		//if(nume.equals("")) nume = "0";
+		//if(prenume.equals("")) prenume = "0";
+		 
+		ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call cauta_user(?,?,?)}");
+			cs.setInt(1, tip);
+			cs.setString(2, nume);
+			cs.setString(3, prenume);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList <String> arr = new ArrayList <String>();
+				//arr.add(Integer.toString(tip));
+				arr.add(rs.getString("cnp"));
+				arr.add(rs.getString("nume"));
+				arr.add(rs.getString("prenume"));
+				arr.add(rs.getString("adresa"));
+				arr.add(rs.getString("nr_telefon"));
+				arr.add(rs.getString("email"));
+				arr.add(rs.getString("iban"));
+				arr.add(rs.getString("nr_contract"));
+				if(tip == 2)
+				{
+					arr.add(rs.getString("an_studiu"));
+					arr.add(rs.getString("nr_ore"));
+				}
+				else if(tip == 3)
+				{
+					arr.add(rs.getString("nr_ore_min"));
+					arr.add(rs.getString("nr_ore_max"));
+					arr.add(rs.getString("departament"));
+				}
+				array.add(arr);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return array;
 	}
 }
