@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import databaseModel.AdminSqlQueries;
 import databaseModel.DatabaseModel;
 import databaseModel.PersoaneSqlQueries;
 import databaseModel.TreatException;
@@ -25,7 +26,7 @@ public class AdminListeners{
     public void setActionListeners()
     {
     	theView.panelAdminView.inputPanel.buttonDatePersonale.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e2) {
+			public void actionPerformed(ActionEvent e) {
 				try
 				{			
 					theView.panelAdminView.datePersonale.setData(PersoaneSqlQueries.date_personale(MainClass.db.getCon()));
@@ -35,6 +36,11 @@ public class AdminListeners{
 		});
     	theView.panelAdminView.inputPanel.buttonCRUDuser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					theView.panelAdminView.crudUser.setData(AdminSqlQueries.read_user(MainClass.db.getCon()));
+				}
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
     	theView.panelAdminView.inputPanel.buttonCRUDmaterii.addActionListener(new ActionListener() {

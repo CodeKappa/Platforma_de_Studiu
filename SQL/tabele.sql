@@ -184,13 +184,12 @@ END;//
 
 CREATE PROCEDURE update_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), nr_contract int, parola char(13), intreg1 int, intreg2 int, departament char(50))
 BEGIN
-
+	DECLARE old_email varchar(50);
+    SET old_email = (SELECT persoane.email from persoane where persoane.nr_contract = nr_contract);
+    
 	IF (tip < 1 OR tip >3) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tip ultilizator nu exista';
 	END IF;
-
-	SET @query1 = CONCAT('DROP USER IF EXISTS "', email, '"@"localhost"');
-	PREPARE stmt FROM @query1; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
 	UPDATE persoane p set p.cnp = cnp, p.nume = nume, p.prenume = prenume, p.adresa = adresa, p.nr_telefon = nr_telefon, p.email = email, p.iban = iban;
 	
@@ -200,22 +199,32 @@ BEGIN
 		UPDATE profesori p SET p.cnp = cnp, p.nr_ore_min = intreg1, p.nr_ore_max = intreg2, p.depatament = departament;
 	END IF;
     
-    SET @query2 = CONCAT('CREATE USER "', email, '"@"localhost" IDENTIFIED BY "', parola,'"');
-	PREPARE stmt FROM @query2; EXECUTE stmt; DEALLOCATE PREPARE stmt;
-
-	IF (tip = 1) THEN
-		SET @queryadmin = CONCAT('GRANT administrator TO "', email, '"@"localhost"');
-		PREPARE stmt FROM @queryadmin; EXECUTE stmt; DEALLOCATE PREPARE stmt;
-	ELSEIF (tip = 2) THEN 
-		SET @querystudent = CONCAT('GRANT studet TO "', email, '"@"localhost"');
-		PREPARE stmt FROM @querystudent; EXECUTE stmt; DEALLOCATE PREPARE stmt;
-	ELSEIF (tip = 3) THEN
-		SET @queryadmin = CONCAT('GRANT profesor TO "', email, '"@"localhost"');
-		PREPARE stmt FROM @queryprofesor; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+    IF (old_email != email) THEN
+		SET @querye = CONCAT('RENAME USER "', old_email, '"@"localhost" TO "', email, '"@"localhost"' );
+		PREPARE stmt FROM @querye; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 	END IF;
     
-	SET @query3 = CONCAT('SET DEFAULT ROLE ALL TO "', email, '"@"localhost"');
-	PREPARE stmt FROM @query3; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+    IF (parola != null) THEN
+		SET @query1 = CONCAT('DROP USER IF EXISTS "', old_email, '"@"localhost"');
+		PREPARE stmt FROM @query1; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+		
+		SET @query2 = CONCAT('CREATE USER "', email, '"@"localhost" IDENTIFIED BY "', parola,'"');
+		PREPARE stmt FROM @query2; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+		IF (tip = 1) THEN
+			SET @queryadmin = CONCAT('GRANT administrator TO "', email, '"@"localhost"');
+			PREPARE stmt FROM @queryadmin; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+		ELSEIF (tip = 2) THEN 
+			SET @querystudent = CONCAT('GRANT studet TO "', email, '"@"localhost"');
+			PREPARE stmt FROM @querystudent; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+		ELSEIF (tip = 3) THEN
+			SET @queryadmin = CONCAT('GRANT profesor TO "', email, '"@"localhost"');
+			PREPARE stmt FROM @queryprofesor; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+		END IF;
+		
+		SET @query3 = CONCAT('SET DEFAULT ROLE ALL TO "', email, '"@"localhost"');
+		PREPARE stmt FROM @query3; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+	END IF;
 END;//
 
 CREATE PROCEDURE read_user(cnp int)
@@ -227,11 +236,11 @@ BEGIN
     SET tip3 = (SELECT 1 FROM profesori WHERE profesori.cnp = cnp);
     
 	IF (tip1 = 1) THEN
-		SELECT * FROM persoane;
+		SELECT * FROM persoane WHERE persoane.cnp = cnp;
 	ELSEIF (tip2 = 1) THEN
-		SELECT * FROM persoane p INNER JOIN studenti s ON p.cnp = s.cnp;
+		SELECT * FROM persoane p INNER JOIN studenti s ON p.cnp = s.cnp  WHERE persoane.cnp = cnp;
 	ELSEIF (tip3 = 1) THEN
-		SELECT * FROM persoane p1 INNER JOIN profesori p2 ON p1.cnp = p2.cnp;
+		SELECT * FROM persoane p1 INNER JOIN profesori p2 ON p1.cnp = p2.cnp  WHERE persoane.cnp = cnp;
 	ELSE
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Utilizatorul nu exita';
 	END IF;

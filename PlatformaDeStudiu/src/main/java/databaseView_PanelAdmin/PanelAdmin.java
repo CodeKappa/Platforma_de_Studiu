@@ -28,19 +28,14 @@ public class PanelAdmin extends JPanel
 	public PanelButoaneAdmin inputPanel = new PanelButoaneAdmin();
 	private JButton buttonDelogare = new JButton("Delogare");
 	
-	//private JLayeredPane layeredPane = new JLayeredPane();
-	
-	private JTable tableAfis = new JTable();
-	private JScrollPane jsp = new JScrollPane(tableAfis);
-	
 	public PanelDatePersonale datePersonale = new PanelDatePersonale();
-	private PanelCRUDuser crudUser = new PanelCRUDuser();
-	private PanelCRUDmaterii crudMaterii = new PanelCRUDmaterii();
-	private PanelCRUDgrupuri crudGrupuri = new PanelCRUDgrupuri();
-	private PanelCautaUtilizatori cautaUtilizatori = new PanelCautaUtilizatori();
-	private PanelCautaMaterii cautaMaterii = new PanelCautaMaterii();
-	private PanelAsignareProfesori asignareProfesori = new PanelAsignareProfesori();
-	private PanelAdaugaActivitati adaugaActivitati = new PanelAdaugaActivitati();
+	public PanelCRUDuser crudUser = new PanelCRUDuser();
+	public PanelCRUDmaterii crudMaterii = new PanelCRUDmaterii();
+	public PanelCRUDgrupuri crudGrupuri = new PanelCRUDgrupuri();
+	public PanelCautaUtilizatori cautaUtilizatori = new PanelCautaUtilizatori();
+	public PanelCautaMaterii cautaMaterii = new PanelCautaMaterii();
+	public PanelAsignareProfesori asignareProfesori = new PanelAsignareProfesori();
+	public PanelAdaugaActivitati adaugaActivitati = new PanelAdaugaActivitati();
 	private JPanel blankPanel = new JPanel();
 	
 	private JPanel frontPanel;
@@ -63,8 +58,6 @@ public class PanelAdmin extends JPanel
 		asignareProfesori.setBounds(10, 110, 1199, 450);
 		adaugaActivitati.setBounds(10, 110, 1199, 450);
 		
-		//jsp.setBounds(0, 0, 1199, 450);
-		
 		inputPanel.setBounds(1219, 110, 271 , 419);
 		add(inputPanel);
 
@@ -78,6 +71,7 @@ public class PanelAdmin extends JPanel
 		add(cautaMaterii);
 		add(asignareProfesori);
 		add(adaugaActivitati);
+		
 		blankPanel.setVisible(true);
 		datePersonale.setVisible(false);
 		crudUser.setVisible(false);
@@ -105,8 +99,6 @@ public class PanelAdmin extends JPanel
 				frontPanel.setVisible(false);
 				datePersonale.setVisible(true);	
 				frontPanel = datePersonale;
-				//try { PersoaneSqlQueries.date_personale(MainClass.db.getCon(), DatabaseController.user); } 
-				//catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
 		inputPanel.buttonCRUDuser.addActionListener(new ActionListener() {
@@ -182,27 +174,5 @@ public class PanelAdmin extends JPanel
 		frontPanel.setVisible(false);
 		blankPanel.setVisible(true);	
 		frontPanel = blankPanel;
-	}
-
-	public void setTable(ArrayList<ArrayList<String>> a)
-	{
-		DefaultTableModel dtm = new DefaultTableModel();
-		if(a.isEmpty() == false)
-			dtm.setColumnCount(a.get(0).size());
-		int i = 0, j = 0;
-		for(ArrayList<String> arow : a)
-		{
-			dtm.setRowCount(dtm.getRowCount() + 1);
-			j = 0;
-			for(String s : arow)
-			{
-				
-				dtm.setValueAt(s, i, j);
-				j++;
-			}
-			i++;
-		}	
-		tableAfis.setModel(dtm);
-		repaint();
 	}
 }
