@@ -160,7 +160,7 @@ END;//
 CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13), intreg1 int, intreg2 int, departament char(50))
 BEGIN
 
-	IF (tip < 1 OR tip >3) THEN
+	IF (tip < 1 OR tip > 3) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tip ultilizator nu exista';
 	END IF;
 
@@ -179,15 +179,15 @@ BEGIN
     
     SET @query2 = CONCAT('CREATE USER "', email, '"@"localhost" IDENTIFIED BY "', parola,'"');
 	PREPARE stmt FROM @query2; EXECUTE stmt; DEALLOCATE PREPARE stmt;
-
+	
 	IF (tip = 1) THEN
 		SET @queryadmin = CONCAT('GRANT administrator TO "', email, '"@"localhost"');
 		PREPARE stmt FROM @queryadmin; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 	ELSEIF (tip = 2) THEN 
-		SET @querystudent = CONCAT('GRANT studet TO "', email, '"@"localhost"');
+		SET @querystudent = CONCAT('GRANT student TO "', email, '"@"localhost"');
 		PREPARE stmt FROM @querystudent; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 	ELSEIF (tip = 3) THEN
-		SET @queryadmin = CONCAT('GRANT profesor TO "', email, '"@"localhost"');
+		SET @queryprofesor = CONCAT('GRANT profesor TO "', email, '"@"localhost"');
 		PREPARE stmt FROM @queryprofesor; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 	END IF;
     
@@ -527,4 +527,9 @@ BEGIN
     JOIN grup_studiu gs ON m.id = gs.id_materie
     JOIN grup_studiu_activitati gsa ON gs.id = gsa.id_grup
     WHERE current_timestamp() < gsa.data_programarii();
+END; //
+
+CREATE PROCEDURE Inscriere_activitati_studiu(cnp_profesor char(13), id_gsa int)
+BEGIN
+	UPDATE grup_studiu_activitati gsa SET gsa.cnp_profesor = cnp_profesor WHERE gsa.id = id_gsa;
 END; //
