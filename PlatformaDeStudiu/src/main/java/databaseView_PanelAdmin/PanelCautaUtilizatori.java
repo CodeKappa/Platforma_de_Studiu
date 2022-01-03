@@ -3,32 +3,37 @@ package databaseView_PanelAdmin;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
+import databaseModel.AdminSqlQueries;
+import databaseModel.TreatException;
+import main.MainClass;
+
 import javax.swing.JLabel;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class PanelCautaUtilizatori extends JPanel {
-	private JTextField textField_cnp;
-	private JTextField textField_nume;
-	private JTextField textField_prenume;
-	private JTextField textField_adresa;
-	private JTextField textField_telefon;
-	private JTextField textField_iban;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
-	private JLabel lblNewLabel_4;
-	private JLabel lblNewLabel_5;
-	private JLabel lblNewLabel_6;
-	private JLabel lblNewLabel_7;
-	private JTextField textField_contract;
-	private JTextField textField_parola;
+	private JTextField textField_id;
+	private JTextField textField_idMaterie;
+	private JLabel lblIdMaterie;
+	public JButton btnCreate = new JButton("Create");
+	public JButton btnUpdate = new JButton("Update");
+	public JButton btnDelete = new JButton("Delete");
+	
+	private JTable tableAfis = new JTable();
+	private JScrollPane jsp = new JScrollPane(tableAfis);
 
+	
 	/**
 	 * Create the panel.
 	 */
@@ -37,115 +42,131 @@ public class PanelCautaUtilizatori extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		textField_cnp = new JTextField();
-		textField_cnp.setBounds(1069, 28, 112, 19);
-		add(textField_cnp);
-		textField_cnp.setColumns(10);
+		jsp.setBounds(2, 2, 959, 447);
+		add(jsp);
 		
-		textField_prenume = new JTextField();
-		textField_prenume.setBounds(1069, 86, 112, 19);
-		add(textField_prenume);
-		textField_prenume.setColumns(10);
+		textField_id = new JTextField();
+		textField_id.setBounds(1074, 39, 112, 19);
+		add(textField_id);
+		textField_id.setColumns(10);
 		
-		textField_nume = new JTextField();
-		textField_nume.setBounds(1069, 57, 112, 19);
-		add(textField_nume);
-		textField_nume.setColumns(10);
+		textField_idMaterie = new JTextField();
+		textField_idMaterie.setBounds(1074, 68, 112, 19);
+		add(textField_idMaterie);
+		textField_idMaterie.setColumns(10);
 		
-		textField_adresa = new JTextField();
-		textField_adresa.setBounds(1069, 115, 112, 19);
-		add(textField_adresa);
-		textField_adresa.setColumns(10);
+		JLabel lblId = new JLabel("ID");
+		lblId.setBounds(976, 45, 33, 13);
+		add(lblId);
 		
-		textField_telefon = new JTextField();
-		textField_telefon.setBounds(1069, 147, 112, 19);
-		add(textField_telefon);
-		textField_telefon.setColumns(10);
+		lblIdMaterie = new JLabel("ID Materie");
+		lblIdMaterie.setBounds(976, 74, 77, 13);
+		add(lblIdMaterie);
 		
-		textField_iban = new JTextField();
-		textField_iban.setBounds(1069, 176, 112, 19);
-		add(textField_iban);
-		textField_iban.setColumns(10);
-		
-		JLabel lblNewLabel = new JLabel("CNP");
-		lblNewLabel.setBounds(988, 31, 33, 13);
-		add(lblNewLabel);
-		
-		lblNewLabel_1 = new JLabel("Nume");
-		lblNewLabel_1.setBounds(988, 60, 45, 13);
-		add(lblNewLabel_1);
-		
-		lblNewLabel_2 = new JLabel("Prenume");
-		lblNewLabel_2.setBounds(988, 89, 57, 13);
-		add(lblNewLabel_2);
-		
-		lblNewLabel_3 = new JLabel("Adresa");
-		lblNewLabel_3.setBounds(988, 116, 45, 16);
-		add(lblNewLabel_3);
-		
-		lblNewLabel_4 = new JLabel("Telefon");
-		lblNewLabel_4.setBounds(988, 150, 45, 13);
-		add(lblNewLabel_4);
-		
-		lblNewLabel_5 = new JLabel("IBAN");
-		lblNewLabel_5.setBounds(988, 179, 45, 13);
-		add(lblNewLabel_5);
-		
-		lblNewLabel_6 = new JLabel("Nr. Contract");
-		lblNewLabel_6.setBounds(988, 208, 74, 13);
-		add(lblNewLabel_6);
-		
-		lblNewLabel_7 = new JLabel("Parola");
-		lblNewLabel_7.setBounds(988, 237, 45, 13);
-		add(lblNewLabel_7);
-		
-		textField_contract = new JTextField();
-		textField_contract.setBounds(1069, 205, 112, 19);
-		add(textField_contract);
-		textField_contract.setColumns(10);
-		
-		textField_parola = new JTextField();
-		textField_parola.setBounds(1069, 234, 112, 19);
-		add(textField_parola);
-		textField_parola.setColumns(10);
-		
-		JButton button_create = new JButton("Create User");
-		button_create.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		button_create.setBounds(988, 331, 193, 21);
-		add(button_create);
-		
-		JButton button_update = new JButton("Update User");
-		button_update.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		button_update.setBounds(988, 356, 193, 21);
-		add(button_update);
-		
-		JButton button_delete = new JButton("Delete User");
-		button_delete.setBounds(988, 381, 193, 21);
-		add(button_delete);
-		
-		JRadioButton radio_admin = new JRadioButton("admin");
-		radio_admin.setBounds(984, 258, 78, 21);
-		add(radio_admin);
-		
-		JRadioButton radio_profesor = new JRadioButton("profesor");
-		radio_profesor.setBounds(984, 281, 78, 21);
-		add(radio_profesor);
-		
-		JRadioButton radio_student = new JRadioButton("student");
-		radio_student.setBounds(984, 304, 87, 21);
-		add(radio_student);
-		
-		final ButtonGroup group = new ButtonGroup();
+		btnCreate.setBounds(966, 381, 220, 21);
+		add(btnCreate);
 
-		group.add(radio_admin);
-		group.add(radio_profesor);
-		group.add(radio_student);
-		radio_admin.setSelected(true);
+		btnUpdate.setBounds(966, 412, 105, 21);
+		add(btnUpdate);
+
+		btnDelete.setBounds(1081, 412, 105, 21);
+		add(btnDelete);
+		
+		setActionListeners();
+		
+        tableAfis.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                tableAfisMouseClicked(evt);
+            }
+        });	
 	}
+	
+	public void setActionListeners()
+	{
+		
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					AdminSqlQueries.create_grup(MainClass.db.getCon(), getData());
+					setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
+				} 
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					AdminSqlQueries.update_grup(MainClass.db.getCon(), getData());
+					setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
+				} 
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					AdminSqlQueries.delete_grup(MainClass.db.getCon(), textField_id.getText());
+					setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
+				} 
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
+	}
+	
+	public void setTable(ArrayList<ArrayList<String>> a)
+	{
+		DefaultTableModel dtm = new DefaultTableModel();
+		if(a.isEmpty() == false)
+			dtm.setColumnCount(a.get(0).size());
+		int i = 0, j = 0;
+		for(ArrayList<String> arow : a)
+		{
+			dtm.setRowCount(dtm.getRowCount() + 1);
+			j = 0;
+			for(String s : arow)
+			{		
+				dtm.setValueAt(s, i, j);
+				j++;
+			}
+			i++;
+		}	
+		tableAfis.setModel(dtm);
+		repaint();
+	}
+	
+	public ArrayList<String> getData()
+	{
+		ArrayList<String> arr = new ArrayList<String>();
+		
+		arr.add(textField_id.getText());
+		arr.add(textField_idMaterie.getText());
+		
+		return arr;
+	}
+	
+	public void setData(ArrayList<String> arr)
+	{
+		if(arr == null)
+		{
+			textField_id.setText(null);
+			textField_idMaterie.setText(null);
+		}
+		else
+		{
+			textField_id.setText(arr.get(0));
+			textField_idMaterie.setText(arr.get(1));
+		}	
+	}
+	
+    private void tableAfisMouseClicked(MouseEvent evt) {
+        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
+        try 
+        {
+        	setData(AdminSqlQueries.read_grup(MainClass.db.getCon(), id));
+		} 
+        catch (SQLException e) { TreatException.printSQLException(e); }
+    }
 }

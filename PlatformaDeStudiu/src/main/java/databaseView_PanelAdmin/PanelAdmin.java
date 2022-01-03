@@ -3,21 +3,12 @@ package databaseView_PanelAdmin;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 
-import databaseController.DatabaseController;
-import databaseModel.PersoaneSqlQueries;
-import databaseModel.TreatException;
 import databaseView.PanelFeedback;
-import main.MainClass;
 
 import java.awt.event.ActionEvent;
 

@@ -155,6 +155,16 @@ BEGIN
 	SELECT p1.cnp, p1.nume, p1.prenume, p1.adresa, p1.nr_telefon, p1.email, p1.iban, p1.nr_contract, p2.nr_ore_min, p2.nr_ore_max, p2.departament,s.an_studiu, s.nr_ore FROM persoane p1 LEFT JOIN profesori p2 ON p1.cnp = p2.cnp LEFT JOIN studenti s ON p1.cnp = s.cnp;
 END;//
 
+CREATE PROCEDURE all_materie_data()
+BEGIN 
+	SELECT * FROM materii;
+END;//
+
+CREATE PROCEDURE all_grup_data()
+BEGIN 
+	SELECT g.id, g.id_materie, m.* FROM grup_studiu g INNER JOIN materii m ON g.id_materie = m.id;
+END;//
+
 #CRUD useri-------------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE PROCEDURE create_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), parola char(13), intreg1 int, intreg2 int, departament char(50))
@@ -307,22 +317,35 @@ END;//
 
 CREATE PROCEDURE create_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta_c int, recurenta_s int, recurenta_l int)
 BEGIN
-	INSERT INTO materii VALUES (null, nume, descriere, procent_curs, procent_seminar, procent_laborator, recurenta_c, recurenta_s, recurenta_l);
+	INSERT INTO materii VALUES (null, nume, descriere, procent_curs, procent_seminar, procent_laborator, nr_max_studenti, recurenta_c, recurenta_s, recurenta_l);
 END//
 
 CREATE PROCEDURE update_materie (id int, nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta_c int, recurenta_s int, recurenta_l int)
 BEGIN
-	UPDATE materie m set m.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta_c = recurenta_c, m.recurenta_s = recurenta_s, m.recurenta_l = recurenta_l WHERE m.id = id;
+	DECLARE exista INT DEFAULT 0;
+	SELECT 1 INTO exista FROM materii m WHERE m.id = id;
+	IF (exista = 0) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ultilizator nu exista';
+	END IF;
+	UPDATE materii m set m.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta_c = recurenta_c, m.recurenta_s = recurenta_s, m.recurenta_l = recurenta_l WHERE m.id = id;
 END//
 
 CREATE PROCEDURE read_materie (id int)
 BEGIN
-	SELECT * FROM materie where materie.id = id;
+	IF (id = NULL) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ultilizator nu exista';
+	END IF;
+	SELECT * FROM materii where materii.id = id;
 END//
 
 CREATE PROCEDURE delete_materie (id int)
 BEGIN
-	DELETE FROM materie where materie.id = id;
+	DECLARE exista INT DEFAULT 0;
+	SELECT 1 INTO exista FROM materii m WHERE m.id = id;
+	IF (exista = 0) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ultilizator nu exista';
+	END IF;
+	DELETE FROM materii where materii.id = id;
 END//
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -332,9 +355,9 @@ BEGIN
 	INSERT INTO grup_studiu VALUES (null, id_materie);
 END//
 
-CREATE PROCEDURE update_grup (id_materie int)
+CREATE PROCEDURE update_grup (id int, id_materie int)
 BEGIN
-	UPDATE grup_studiu g set g.id_materie = id_materie;
+	UPDATE grup_studiu g set g.id_materie = id_materie where g.id = id;
 END//
 
 CREATE PROCEDURE read_grup (id int)
