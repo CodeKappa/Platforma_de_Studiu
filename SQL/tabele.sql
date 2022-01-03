@@ -30,7 +30,7 @@ departament varchar(50) not null,
 FOREIGN KEY (cnp) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
 CREATE TABLE materii
-(id int not null unique auto_increment primary key,
+(id int unique auto_increment not null primary key,
 nume varchar(50) not null,
 descriere varchar(250),
 procent_curs int,
@@ -197,9 +197,22 @@ END;//
 
 CREATE PROCEDURE update_user(tip int, cnp char(13), nume varchar(50), prenume varchar(50), adresa varchar(200), nr_telefon char(12), email varchar(50), iban varchar(30), nr_contract int, parola char(13), intreg1 int, intreg2 int, departament char(50))
 BEGIN
-	DECLARE old_email varchar(50);
-	DECLARE old_cnp char(13);
-    DECLARE old_tip int;
+	DECLARE old_email VARCHAR(50);
+	DECLARE old_cnp CHAR(13);
+    DECLARE old_tip, exista INT DEFAULT 0;
+    
+    #SELECT 1 INTO @exista FROM persoane  WHERE persoane.nr_contract = nr_contract;
+	#IF (@exista = NULL) THEN
+	#	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ultilizator nu exista';
+	#END IF;
+    
+    #SELECT 1 FROM persoane WHERE persoane.nr_contract = 6;
+	#call update_user (3, "6123", "bula", "strula", "1848 22", "0770444222", "bula@yahoo.com", "ROBTRL233344", 6, null, 2, 20, "informatica");
+    
+	#SET exista = (SELECT 1 FROM persoane WHERE persoane.nr_contract = nr_contract);
+	#IF (exista = NULL) THEN
+	#	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ultilizator nu exista';
+	#END IF;
     
     SET old_email = (SELECT persoane.email from persoane where persoane.nr_contract = nr_contract);
     SET old_cnp = (SELECT persoane.cnp from persoane where persoane.nr_contract = nr_contract);
@@ -212,9 +225,9 @@ BEGIN
 	UPDATE persoane p set p.cnp = cnp, p.nume = nume, p.prenume = prenume, p.adresa = adresa, p.nr_telefon = nr_telefon, p.email = email, p.iban = iban WHERE p.nr_contract = nr_contract;
 	
     IF (old_tip != tip) THEN
-		DELETE FROM admini WHERE admini.cnp = old_cnp;
-        DELETE FROM studenti WHERE studenti.cnp = old_cnp;
-        DELETE FROM profesori WHERE profesori.cnp = old_cnp;
+		DELETE FROM admini WHERE admini.cnp = cnp;
+        DELETE FROM studenti WHERE studenti.cnp = cnp;
+        DELETE FROM profesori WHERE profesori.cnp = cnp;
         
 		IF (tip = 1) THEN
 			INSERT INTO admini VALUES (cnp);
@@ -226,9 +239,9 @@ BEGIN
         
     ELSE
 		IF (tip = 2) THEN
-			UPDATE studenti s SET s.cnp = cnp, s.an_studiu = intreg1, s.nr_ore = intreg2 WHERE s.cnp = old_cnp;
+			UPDATE studenti s SET s.an_studiu = intreg1, s.nr_ore = intreg2 WHERE s.cnp = cnp;
 		ELSEIF (tip = 3) THEN
-			UPDATE profesori p SET p.cnp = cnp, p.nr_ore_min = intreg1, p.nr_ore_max = intreg2, p.departament = departament WHERE p.cnp = old_cnp;
+			UPDATE profesori p SET p.nr_ore_min = intreg1, p.nr_ore_max = intreg2, p.departament = departament WHERE p.cnp = cnp;
 		END IF;
 		
 		IF (old_email != email) THEN
@@ -248,10 +261,10 @@ BEGIN
 			SET @queryadmin = CONCAT('GRANT administrator TO "', email, '"@"localhost"');
 			PREPARE stmt FROM @queryadmin; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 		ELSEIF (tip = 2) THEN 
-			SET @querystudent = CONCAT('GRANT studet TO "', email, '"@"localhost"');
+			SET @querystudent = CONCAT('GRANT student TO "', email, '"@"localhost"');
 			PREPARE stmt FROM @querystudent; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 		ELSEIF (tip = 3) THEN
-			SET @queryadmin = CONCAT('GRANT profesor TO "', email, '"@"localhost"');
+			SET @queryprofesor = CONCAT('GRANT profesor TO "', email, '"@"localhost"');
 			PREPARE stmt FROM @queryprofesor; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 		END IF;
 		
@@ -304,9 +317,9 @@ BEGIN
 	INSERT INTO materii VALUES (null, nume, descriere, procent_curs, procent_seminar, procent_laborator, recurenta_c, recurenta_s, recurenta_l);
 END//
 
-CREATE PROCEDURE update_materie (nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta_c int, recurenta_s int, recurenta_l int)
+CREATE PROCEDURE update_materie (id int, nume varchar(50), descriere varchar(250), procent_curs int, procent_seminar int, procent_laborator int, nr_max_studenti int, recurenta_c int, recurenta_s int, recurenta_l int)
 BEGIN
-	UPDATE materie m set m.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta_c = recurenta_c, m.recurenta_s = recurenta_s, m.recurenta_l = recurenta_l;
+	UPDATE materie m set m.nume = nume, m.descriere = descriere, m.procent_curs = procent_curs, m.procent_seminar = procent_seminar, m.procent_laborator = procent_laborator, m.recurenta_c = recurenta_c, m.recurenta_s = recurenta_s, m.recurenta_l = recurenta_l WHERE m.id = id;
 END//
 
 CREATE PROCEDURE read_materie (id int)
@@ -349,7 +362,11 @@ BEGIN
     THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nu se poate adauga inregistrarea in materii: suma ponderilor nu este 100';
 	END IF;
-    INSERT INTO grup_studiu VALUES (NEW.id);
+END;//
+
+CREATE TRIGGER materii_insert_grup AFTER INSERT ON materii FOR EACH ROW
+BEGIN
+	INSERT INTO grup_studiu VALUES (NULL, NEW.id);
 END;//
 
 CREATE TRIGGER materii_update BEFORE UPDATE ON materii FOR EACH ROW
