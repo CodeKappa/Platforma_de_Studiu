@@ -14,7 +14,8 @@ public class PanelFeedback extends JPanel{
         super.paintComponent(g);
         //g.setColor(Color.BLUE);
        // g.fillRect(0, 0, 100, 100);
-        g.drawString(feedbackMessage, 10, 10);
+        g.drawString("System mesages:", 20, 15);
+        g.drawString(feedbackMessage, 20, 26);
 		setBorder(new LineBorder(Color.BLACK, 1));
     }
     

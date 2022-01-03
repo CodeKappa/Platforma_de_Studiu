@@ -10,6 +10,7 @@ import databaseModel.TreatException;
 import main.MainClass;
 
 import javax.swing.JLabel;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -18,21 +19,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
+import java.awt.SystemColor;
 
 @SuppressWarnings("serial")
 public class PanelCautaUtilizatori extends JPanel {
-	private JTextField textField_id;
-	private JTextField textField_idMaterie;
-	private JLabel lblIdMaterie;
-	public JButton btnCreate = new JButton("Create");
-	public JButton btnUpdate = new JButton("Update");
-	public JButton btnDelete = new JButton("Delete");
+	private JTextField textField_nume;
+	private JTextField textField_prenume;
+	private JLabel label_nume;
+	private JLabel label_prenume;
+	public JButton btnCauta = new JButton("Cauta");
+	private JRadioButton radio_admin = new JRadioButton("admin");
+	private JRadioButton radio_profesor = new JRadioButton("profesor");
+	private JRadioButton radio_student = new JRadioButton("student");
+	JRadioButton radio_all = new JRadioButton("toti");
 	
 	private JTable tableAfis = new JTable();
 	private JScrollPane jsp = new JScrollPane(tableAfis);
-
+	private final JTextPane txtpnFiltruDupaTip = new JTextPane();
+	
+	private int tip;
+	private String nume;
+	private String prenume;
 	
 	/**
 	 * Create the panel.
@@ -45,71 +56,90 @@ public class PanelCautaUtilizatori extends JPanel {
 		jsp.setBounds(2, 2, 959, 447);
 		add(jsp);
 		
-		textField_id = new JTextField();
-		textField_id.setBounds(1074, 39, 112, 19);
-		add(textField_id);
-		textField_id.setColumns(10);
+		textField_prenume = new JTextField();
+		textField_prenume.setBounds(1069, 96, 112, 19);
+		add(textField_prenume);
+		textField_prenume.setColumns(10);
 		
-		textField_idMaterie = new JTextField();
-		textField_idMaterie.setBounds(1074, 68, 112, 19);
-		add(textField_idMaterie);
-		textField_idMaterie.setColumns(10);
+		textField_nume = new JTextField();
+		textField_nume.setBounds(1069, 67, 112, 19);
+		add(textField_nume);
+		textField_nume.setColumns(10);
 		
-		JLabel lblId = new JLabel("ID");
-		lblId.setBounds(976, 45, 33, 13);
-		add(lblId);
+		label_nume = new JLabel("Nume");
+		label_nume.setBounds(988, 70, 45, 13);
+		add(label_nume);
 		
-		lblIdMaterie = new JLabel("ID Materie");
-		lblIdMaterie.setBounds(976, 74, 77, 13);
-		add(lblIdMaterie);
+		label_prenume = new JLabel("Prenume");
+		label_prenume.setBounds(988, 99, 57, 13);
+		add(label_prenume);
 		
-		btnCreate.setBounds(966, 381, 220, 21);
-		add(btnCreate);
-
-		btnUpdate.setBounds(966, 412, 105, 21);
-		add(btnUpdate);
-
-		btnDelete.setBounds(1081, 412, 105, 21);
-		add(btnDelete);
+		btnCauta.setBounds(971, 278, 220, 21);
+		add(btnCauta);
 		
 		setActionListeners();
+			
+		radio_admin.setBounds(988, 187, 69, 21);
+		add(radio_admin);
 		
-        tableAfis.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tableAfisMouseClicked(evt);
-            }
-        });	
+		radio_profesor.setBounds(988, 210, 78, 21);
+		add(radio_profesor);
+
+		radio_student.setBounds(988, 233, 73, 21);
+		add(radio_student);
+			
+		radio_all.setBounds(988, 164, 73, 21);
+		add(radio_all);
+		
+		final ButtonGroup group = new ButtonGroup();
+		
+		group.add(radio_admin);
+		group.add(radio_profesor);
+		group.add(radio_student);
+		group.add(radio_all);
+		
+		tip = 0;
+		
+		radio_all.setSelected(true);
+		txtpnFiltruDupaTip.setBackground(SystemColor.menu);
+		txtpnFiltruDupaTip.setEditable(false);
+		txtpnFiltruDupaTip.setText("Filtru dupa tip");
+		txtpnFiltruDupaTip.setBounds(988, 139, 203, 19);
+		
+		add(txtpnFiltruDupaTip);
 	}
-	
+
 	public void setActionListeners()
 	{
+		radio_all.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tip = 0;
+			}
+		});
+		radio_admin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tip = 1;
+			}
+		});
 		
-		btnCreate.addActionListener(new ActionListener() {
+		radio_student.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					AdminSqlQueries.create_grup(MainClass.db.getCon(), getData());
-					setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
+				tip = 2;
 			}
 		});
-		btnUpdate.addActionListener(new ActionListener() {
+		
+		radio_profesor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					AdminSqlQueries.update_grup(MainClass.db.getCon(), getData());
-					setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
+				tip = 3;
 			}
 		});
-		btnDelete.addActionListener(new ActionListener() {
+		
+		btnCauta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					AdminSqlQueries.delete_grup(MainClass.db.getCon(), textField_id.getText());
-					setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
+					setName();
+					setTable(AdminSqlQueries.cauta_user(MainClass.db.getCon(), nume, prenume, tip));
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
@@ -118,6 +148,7 @@ public class PanelCautaUtilizatori extends JPanel {
 	
 	public void setTable(ArrayList<ArrayList<String>> a)
 	{
+		if (a == null) return;
 		DefaultTableModel dtm = new DefaultTableModel();
 		if(a.isEmpty() == false)
 			dtm.setColumnCount(a.get(0).size());
@@ -137,36 +168,9 @@ public class PanelCautaUtilizatori extends JPanel {
 		repaint();
 	}
 	
-	public ArrayList<String> getData()
-	{
-		ArrayList<String> arr = new ArrayList<String>();
-		
-		arr.add(textField_id.getText());
-		arr.add(textField_idMaterie.getText());
-		
-		return arr;
+	public void setName()
+	{	
+		nume = textField_nume.getText();
+		prenume = textField_prenume.getText();
 	}
-	
-	public void setData(ArrayList<String> arr)
-	{
-		if(arr == null)
-		{
-			textField_id.setText(null);
-			textField_idMaterie.setText(null);
-		}
-		else
-		{
-			textField_id.setText(arr.get(0));
-			textField_idMaterie.setText(arr.get(1));
-		}	
-	}
-	
-    private void tableAfisMouseClicked(MouseEvent evt) {
-        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
-        try 
-        {
-        	setData(AdminSqlQueries.read_grup(MainClass.db.getCon(), id));
-		} 
-        catch (SQLException e) { TreatException.printSQLException(e); }
-    }
 }
