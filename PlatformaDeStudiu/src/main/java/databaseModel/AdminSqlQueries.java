@@ -163,4 +163,249 @@ public class AdminSqlQueries {
 		}
 		con.rollback();
 	}
+	
+	public static ArrayList<String> create_materie(Connection con, ArrayList <String> arr) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call create_materie(?,?,?,?,?,?,?,?,?)}");
+			cs.setString(1, arr.get(1));
+			cs.setString(2, arr.get(2));
+			cs.setString(3, arr.get(3));
+			cs.setString(4, arr.get(4));
+			cs.setString(5, arr.get(5));
+			cs.setString(6, arr.get(6));
+			cs.setString(7, arr.get(7));
+			cs.setString(8, arr.get(8));
+			cs.setString(9, arr.get(9));
+			cs.execute();
+			con.commit();	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList<String> update_materie(Connection con, ArrayList<String> arr) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call update_materie(?,?,?,?,?,?,?,?,?,?)}");
+			cs.setString(1, arr.get(0));
+			cs.setString(2, arr.get(1));
+			cs.setString(3, arr.get(2));
+			cs.setString(4, arr.get(3));
+			cs.setString(5, arr.get(4));
+			cs.setString(6, arr.get(5));
+			cs.setString(7, arr.get(6));
+			cs.setString(8, arr.get(7));
+			cs.setString(9, arr.get(8));
+			cs.setString(10, arr.get(9));
+			cs.execute();
+			con.commit();	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList<String> read_materie(Connection con, String id) throws SQLException 
+	{	
+		ArrayList <String> arr = new ArrayList <String>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call read_materie(?)}");
+			cs.setString(1, id);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				arr.add(rs.getString("id"));
+				arr.add(rs.getString("nume"));
+				arr.add(rs.getString("descriere"));
+				arr.add(rs.getString("procent_curs"));
+				arr.add(rs.getString("procent_seminar"));
+				arr.add(rs.getString("procent_laborator"));
+				arr.add(rs.getString("nr_max_studenti"));
+				arr.add(rs.getString("recurenta_c"));
+				arr.add(rs.getString("recurenta_s"));
+				arr.add(rs.getString("recurenta_l"));
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList<ArrayList<String>> all_materie_data(Connection con) throws SQLException 
+	{	
+		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call all_materie_data()}");
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<String>();
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("descriere"));
+				aux.add(rs.getString("procent_curs"));
+				aux.add(rs.getString("procent_seminar"));
+				aux.add(rs.getString("procent_laborator"));
+				aux.add(rs.getString("nr_max_studenti"));
+				aux.add(rs.getString("recurenta_c"));
+				aux.add(rs.getString("recurenta_s"));
+				aux.add(rs.getString("recurenta_l"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static void delete_materie(Connection con, String id) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call delete_materie(?)}");
+			cs.setString(1, id);
+			cs.execute();
+			con.commit();
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+	}
+	
+	public static ArrayList<String> create_grup(Connection con, ArrayList <String> arr) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call create_grup(?)}");
+			cs.setString(1, arr.get(1));
+			cs.execute();
+			con.commit();	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList<String> update_grup(Connection con, ArrayList<String> arr) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call update_grup(?,?)}");
+			cs.setString(1, arr.get(0));
+			cs.setString(2, arr.get(1));
+			cs.execute();
+			con.commit();	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList<String> read_grup(Connection con, String id) throws SQLException 
+	{	
+		ArrayList <String> arr = new ArrayList <String>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call read_grup(?)}");
+			cs.setString(1, id);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				arr.add(rs.getString("id"));
+				arr.add(rs.getString("id_materie"));
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList<ArrayList<String>> all_grup_data(Connection con) throws SQLException 
+	{	
+		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call all_grup_data()}");
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<String>();
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("id_materie"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("descriere"));
+				aux.add(rs.getString("procent_curs"));
+				aux.add(rs.getString("procent_seminar"));
+				aux.add(rs.getString("procent_laborator"));
+				aux.add(rs.getString("nr_max_studenti"));
+				aux.add(rs.getString("recurenta_c"));
+				aux.add(rs.getString("recurenta_s"));
+				aux.add(rs.getString("recurenta_l"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static void delete_grup(Connection con, String id) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call delete_grup(?)}");
+			cs.setString(1, id);
+			cs.execute();
+			con.commit();
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+	}
 }

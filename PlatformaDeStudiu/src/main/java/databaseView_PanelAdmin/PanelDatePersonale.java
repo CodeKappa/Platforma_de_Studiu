@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JRadioButton;
-import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class PanelDatePersonale extends JPanel {
