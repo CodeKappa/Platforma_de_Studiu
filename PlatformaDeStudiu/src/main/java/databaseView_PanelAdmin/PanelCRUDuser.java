@@ -331,19 +331,19 @@ public class PanelCRUDuser extends JPanel {
 		arr.add(textField_iban.getText());
 		arr.add(textField_parola.getText());
 			
-		if(arr.get(0) == "1")
+		if(arr.get(0).equals("1"))
 		{
 			arr.add(null);
 			arr.add(null);
 			arr.add(null);
 		}
-		else if(arr.get(0) == "2")
+		else if(arr.get(0).equals("2"))
 		{
 			arr.add(textField_an.getText());
 			arr.add(textField_nrOre.getText());
 			arr.add(null);
 		}
-		else if(arr.get(0) == "3")
+		else if(arr.get(0).equals("3"))
 		{
 			arr.add(textField_oreMin.getText());
 			arr.add(textField_oreMax.getText());
@@ -364,17 +364,31 @@ public class PanelCRUDuser extends JPanel {
 		textField_iban.setText(arr.get(6));
 		textField_contract.setText(arr.get(7));
 		
-		if(arr.get(arr.size()-1) == "1")
+		if(arr.get(arr.size()-1).equals("1"))
+		{
 			radio_admin.setSelected(true);
-		else if(arr.get(arr.size()-1) == "2")
+			for(ActionListener a: radio_admin.getActionListeners()) {
+			    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+			    });
+			}
+		}			
+		else if(arr.get(arr.size()-1).equals("2"))
 		{
 			radio_student.setSelected(true);
+			for(ActionListener a: radio_student.getActionListeners()) {
+			    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+			    });
+			}
 			textField_an.setText(arr.get(8));
 			textField_nrOre.setText(arr.get(9));
 		}
-		else if(arr.get(arr.size()-1) == "3")
+		else if(arr.get(arr.size()-1).equals("3"))
 		{
 			radio_profesor.setSelected(true);
+			for(ActionListener a: radio_profesor.getActionListeners()) {
+			    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+			    });
+			}
 			textField_departament.setText(arr.get(8));
 			textField_oreMin.setText(arr.get(9));
 			textField_oreMax.setText(arr.get(10));
