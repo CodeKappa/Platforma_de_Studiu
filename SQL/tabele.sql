@@ -199,21 +199,14 @@ CREATE PROCEDURE update_user(tip int, cnp char(13), nume varchar(50), prenume va
 BEGIN
 	DECLARE old_email VARCHAR(50);
 	DECLARE old_cnp CHAR(13);
-    DECLARE old_tip, exista INT DEFAULT 0;
+    DECLARE old_tip INT DEFAULT 0;
+    DECLARE exista INT DEFAULT 0;
     
-    #SELECT 1 INTO @exista FROM persoane  WHERE persoane.nr_contract = nr_contract;
-	#IF (@exista = NULL) THEN
-	#	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ultilizator nu exista';
-	#END IF;
-    
-    #SELECT 1 FROM persoane WHERE persoane.nr_contract = 6;
-	#call update_user (3, "6123", "bula", "strula", "1848 22", "0770444222", "bula@yahoo.com", "ROBTRL233344", 6, null, 2, 20, "informatica");
-    
-	#SET exista = (SELECT 1 FROM persoane WHERE persoane.nr_contract = nr_contract);
-	#IF (exista = NULL) THEN
-	#	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ultilizator nu exista';
-	#END IF;
-    
+    SELECT 1 INTO exista FROM persoane p WHERE p.nr_contract = nr_contract;
+	IF (exista = 0) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ultilizator nu exista';
+	END IF;
+
     SET old_email = (SELECT persoane.email from persoane where persoane.nr_contract = nr_contract);
     SET old_cnp = (SELECT persoane.cnp from persoane where persoane.nr_contract = nr_contract);
 	SET old_tip = find_user_type(old_cnp);
