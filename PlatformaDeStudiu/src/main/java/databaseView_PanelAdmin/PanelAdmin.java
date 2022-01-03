@@ -154,7 +154,7 @@ public class PanelAdmin extends JPanel
 	 * public void addCautaMaterieListener(ActionListener listenCautaMaterieButton)
 	 * { buttonCautaMaterie.addActionListener(listenCautaMaterieButton); }
 	 */
-	
+
 	public void addDelogareListener(ActionListener delogareButton)
 	{
 		buttonDelogare.addActionListener(delogareButton);

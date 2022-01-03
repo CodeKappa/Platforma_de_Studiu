@@ -116,6 +116,8 @@ CREATE ROLE 'student', 'profesor', 'administrator', 'superadministrator';
 
 GRANT ALL ON gestiune_studenti.* TO 'superadministrator';
 GRANT ALL ON gestiune_studenti.* TO 'administrator';
+GRANT ALL ON gestiune_studenti.* TO 'profesor';
+GRANT ALL ON gestiune_studenti.* TO 'student';
 
 DROP USER IF EXISTS superadmin@localhost;
 CREATE USER superadmin@localhost IDENTIFIED BY "12345";
@@ -631,6 +633,12 @@ END; //
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
 #profesor-----------------------------------------------------------------------------------------------------------------------------------
+
+CREATE PROCEDURE Vizualizare_date_personale_profesor(cnp char(13))
+BEGIN
+	SELECT * FROM persoane p JOIN profesori pp ON p.cnp = pp.cnp WHERE p.cnp = cnp;
+END;
+
 CREATE PROCEDURE Vizualizare_activitati_studiu(cnp_profesor char(13))
 BEGIN
 	SELECT * FROM persoane p 

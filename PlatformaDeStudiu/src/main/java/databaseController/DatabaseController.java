@@ -22,6 +22,7 @@ public class DatabaseController {
 		this.theView = theView;
 		this.theModel = theModel;
 		AdminListeners al = new AdminListeners(theView, theModel);
+		ProfesorListeners pl = new ProfesorListeners(theView, theModel);
 		
 		theView.panelLogin.addLoginListener(new LoginListener());
 		//theView.panelSignUp.addSignUpListener(new SignUpListener());

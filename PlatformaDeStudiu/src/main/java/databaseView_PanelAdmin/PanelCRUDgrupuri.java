@@ -42,7 +42,7 @@ public class PanelCRUDgrupuri extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		jsp.setBounds(2, 2, 959, 447);
+		jsp.setBounds(2, 2, 959, 450);
 		add(jsp);
 		
 		textField_id = new JTextField();
