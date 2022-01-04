@@ -37,8 +37,19 @@ public class StudentListeners{
     	theView.panelStudentView.inputPanel.buttonMaterii.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					theView.panelStudentView.materii.cnp = DatabaseController.user;
-					theView.panelStudentView.materii.setData();
-					
+					theView.panelStudentView.materii.setData();		
+			}
+		});
+    	theView.panelStudentView.inputPanel.buttonGrupuri.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					theView.panelStudentView.grupuri.cnp = DatabaseController.user;
+					theView.panelStudentView.grupuri.setData();		
+			}
+		});
+    	theView.panelStudentView.inputPanel.buttonMesajeGrup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					theView.panelStudentView.mesaje.cnp = DatabaseController.user;
+					theView.panelStudentView.mesaje.setData();		
 			}
 		});
     }

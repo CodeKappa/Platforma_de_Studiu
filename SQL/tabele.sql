@@ -83,6 +83,7 @@ FOREIGN KEY (id_materie) REFERENCES materii(id) ON DELETE CASCADE ON UPDATE CASC
 CREATE TABLE grup_studiu_studenti
 (id_grup int not null,
 cnp_student char(13) not null,
+PRIMARY KEY (id_grup, cnp_student),
 FOREIGN KEY (id_grup) REFERENCES grup_studiu(id) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (cnp_student) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 

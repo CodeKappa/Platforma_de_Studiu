@@ -9,35 +9,25 @@ BEGIN
 	SELECT m.* FROM materii m INNER JOIN materii_studenti ms ON ms.id_materie = m.id WHERE ms.cnp_student = cnp GROUP BY m.id;
 END; //
 
-DELIMITER ///
-DROP PROCEDURE IF EXISTS Inscriere_materie;
-#call Inscriere_materie("bd", 10003);
 CREATE PROCEDURE Inscriere_materie(materie varchar(50), cnp_student char(13))
-BEGIN
-	DECLARE id_selectat int;
-    
+BEGIN 
+	DECLARE id_select int;
+   
 	DROP TABLE IF EXISTS lista_inscrieri;
 	CREATE TEMPORARY TABLE lista_inscrieri
-	SELECT id_materie, COUNT(*) AS magnitude 
-	FROM materii_studenti
-	#WHERE id_materie in (select id_materie from materii where nume = "bd")
-	GROUP BY id_materie 
-	ORDER BY magnitude ASC;
-    
-    SELECT * from lista_inscrieri_curata;
-    
-    DROP TABLE IF EXISTS lista_inscrieri_curata;
-    CREATE TEMPORARY TABLE lista_inscrieri_curata
-    SELECT li.id_materie, li.magnitude INTO id_selectat FROM lista_inscrieri li
-    JOIN materii m ON li.id_materie = m.id 
-    WHERE m.nr_max_studenti >= li.magnitude
+    SELECT m.id, m.nume, m.nr_max_studenti, COUNT(*) AS magnitude from materii m LEFT JOIN materii_studenti ms on m.id = ms.id_materie
+    WHERE m.nume = materie
+    GROUP BY m.id
     ORDER BY magnitude ASC;
-    #LIMIT 1;
-
-	SELECT * from lista_inscrieri_curata;
-	#SELECT id_materie INTO id_selectat FROM lista_inscrieri_curata;
-    #INSERT INTO materii_studenti VALUES(id_selectat, cnp_student, null, null);
-END;///
+    
+    DROP TABLE IF EXISTS lista1;
+	CREATE TEMPORARY TABLE lista1
+    SELECT * FROM lista_inscrieri WHERE nr_max_studenti > magnitude ORDER BY magnitude
+    LIMIT 1;
+    
+    SELECT id INTO id_select from lista1;
+    INSERT INTO materii_studenti VALUES (id_select, cnp_student, null, null);
+END; //
 
 CREATE PROCEDURE Renuntare_materie(id_materie int, cnp_student char(13))
 BEGIN
@@ -73,19 +63,12 @@ END; //
 
 CREATE PROCEDURE Vizualizare_grupuri()
 BEGIN
-	SELECT gs.id, m.nume, p.nume, p.prenume FROM grup_studiu_studenti gss JOIN persoane p ON gss.cnp_student=p.cnp JOIN grup_studiu gs ON gss.id_grup=gs.id JOIN materii m ON gs.id_materie=m.id
-ORDER BY gs.id;
+	SELECT gs.id, m.nume FROM grup_studiu gs INNER JOIN materii m ON gs.id_materie = m.id; 
 END; //
 
 CREATE PROCEDURE Inscriere_grup(id_grup int, cnp_student char(13))
 BEGIN
-	SELECT gss.id_grup INTO @id FROM grup_studiu_studenti gss WHERE gss.id_grup = id_grup;
-    IF(@id != null)
-    THEN
-		INSERT INTO grup_studiu_studenti VALUES (id_grup, cnp_stdent);
-    ELSE
-		SIGNAL SQLSTATE '45000' SET message_text='Grupul nu exista';
-    END IF;
+		INSERT INTO grup_studiu_studenti VALUES (id_grup, cnp_student);
 END;//
 
 CREATE PROCEDURE Parasire_grup(id_grup int, cnp_student char(13))
@@ -95,11 +78,7 @@ END;//
 
 CREATE PROCEDURE Vizualizare_membrii_grup(id_grup int, cnp_student char(13))
 BEGIN
-	SELECT cnp_student INTO @cnp FROM grup_studiu_studenti gss WHERE gss.id_grup = id_grup AND gss.cnp_student = cnp_student;
-    IF(@cnp != null)
-    THEN
-		SELECT p.nume, p.prenume FROM grup_studiu_studenti gss JOIN persoane p WHERE gss.cnp_student = p.cnp;
-	END IF;
+	SELECT p.nume, p.prenume FROM grup_studiu_studenti gss JOIN persoane p on p.cnp = gss.cnp_student where gss.id_grup = id_grup;
 END; //
 
 CREATE PROCEDURE Adaugare_activitate_grup(id_grup int, nume varchar(50), descriere varchar(250), durata time, durata_expirare time, numar_minim int)
@@ -111,6 +90,13 @@ BEGIN
     ELSE
 		SIGNAL SQLSTATE '45000' SET message_text='Grupul nu exista';
     END IF;
+END; //
+
+CREATE PROCEDURE Sugestii_grupuri(cnp_student char(13))
+BEGIN
+	SELECT m.nume, m.id FROM materii m LEFT JOIN grup_studiu g on m.id = g.id_materie LEFT JOIN materii_studenti ms on m.id = ms.id_materie
+    WHERE ms.cnp_student = cnp_student AND g.id NOT IN (SELECT id_grup FROM grup_studiu_studenti gss WHERE gss.cnp_student = cnp_student)
+    GROUP BY m.id;
 END; //
 
 CREATE PROCEDURE Vizualizare_activitati_grupuri(cnp_student char(13))
