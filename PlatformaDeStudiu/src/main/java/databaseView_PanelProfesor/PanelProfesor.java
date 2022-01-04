@@ -26,6 +26,7 @@ public class PanelProfesor extends JPanel
 	public PanelActivitati activitatiPanel = new PanelActivitati();
 	public PanelCalendar calendarPanel = new PanelCalendar();
 	public PanelCatalog catalogPanel = new PanelCatalog();
+	public PanelPonderi ponderiPanel = new PanelPonderi();
 	private JButton buttonDelogare = new JButton("Delogare");
 	
 	public databaseView_PanelProfesor.PanelDatePersonale datePersonale = new databaseView_PanelProfesor.PanelDatePersonale();
@@ -44,6 +45,7 @@ public class PanelProfesor extends JPanel
 		activitatiPanel.setBounds(10, 110, 1199, 450);
 		calendarPanel.setBounds(10, 110, 1199, 450);
 		catalogPanel.setBounds(10, 110, 1199, 450);
+		ponderiPanel.setBounds(10, 110, 1199, 450);
 		
 		inputPanel.setBounds(1219, 110, 271 , 419);
 		add(inputPanel);
@@ -54,12 +56,14 @@ public class PanelProfesor extends JPanel
 		add(activitatiPanel);
 		add(calendarPanel);
 		add(catalogPanel);
+		add(ponderiPanel);
 		
 		blankPanel.setVisible(true);
 		datePersonale.setVisible(false);
 		activitatiPanel.setVisible(false);
 		calendarPanel.setVisible(false);
 		catalogPanel.setVisible(false);
+		ponderiPanel.setVisible(false);
 		
 		frontPanel = blankPanel;
 		
@@ -89,11 +93,9 @@ public class PanelProfesor extends JPanel
 		});
     	inputPanel.buttonPonderiNote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
 				frontPanel.setVisible(false);
-				datePersonale.setVisible(true);	
-				frontPanel = datePersonale;
-				*/
+				ponderiPanel.setVisible(true);	
+				frontPanel = ponderiPanel;
 			}
 		});
     	inputPanel.buttonCalendar.addActionListener(new ActionListener() {

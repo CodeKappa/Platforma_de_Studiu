@@ -198,4 +198,54 @@ public class ProfesorSqlQueries {
 		}
 		con.rollback();
 	}
+	
+	public static ArrayList <ArrayList<String>> vizualizare_ponderi(Connection con) throws SQLException 
+	{	
+		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Vizualizare_ponderi(?)}");
+			cs.setString(1, DatabaseController.user);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<>();
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("procent_curs"));
+				aux.add(rs.getString("procent_seminar"));
+				aux.add(rs.getString("procent_laborator"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList <ArrayList<String>> actualizare_ponderi(Connection con, ArrayList<Integer> data) throws SQLException 
+	{	
+		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Actualizare_ponderi(?,?,?,?)}");
+			cs.setInt(1, data.get(0));
+			cs.setInt(2, data.get(1));
+			cs.setInt(3, data.get(2));
+			cs.setInt(4, data.get(3));
+			cs.execute();
+			con.commit();
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
 }

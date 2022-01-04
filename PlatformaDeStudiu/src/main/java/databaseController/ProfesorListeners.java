@@ -64,24 +64,14 @@ public class ProfesorListeners{
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
-    	/*
-    	theView.panelProfesorView.inputPanel.buttonCautaUtilizatori.addActionListener(new ActionListener() {
+    	theView.panelProfesorView.inputPanel.buttonPonderiNote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				theView.panelProfesorView.cautaUtilizatori.setData();
+				try 
+				{
+					theView.panelProfesorView.ponderiPanel.setTable(ProfesorSqlQueries.vizualizare_ponderi(MainClass.db.getCon()));
+				}
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
-    	theView.panelProfesorView.inputPanel.buttonCRUDmaterii.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-    	theView.panelProfesorView.inputPanel.buttonAsignareProfesori.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		theView.panelProfesorView.inputPanel.buttonAdaugaActivitatiGrup.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		*/
     }
 }

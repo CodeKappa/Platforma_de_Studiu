@@ -326,7 +326,7 @@ END; //
 
 CREATE PROCEDURE Vizualizare_ponderi(cnp_profesor char(13))
 BEGIN
-	SELECT nume, procent_curs, procent_seminar, procent_laborator 
+	SELECT nume, id, procent_curs, procent_seminar, procent_laborator 
     FROM materii m 
     JOIN materii_profesor mp ON m.id = mp.id_materie
     WHERE mp.cnp_profesor = cnp_profesor;
