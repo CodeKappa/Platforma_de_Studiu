@@ -340,7 +340,7 @@ BEGIN
     JOIN materii m ON mp.id_materie = m.id
     JOIN grup_studiu gs ON m.id = gs.id_materie
     JOIN grup_studiu_activitati gsa ON gs.id = gsa.id_grup
-    WHERE current_timestamp() < gsa.data_programarii();
+    WHERE current_timestamp() < gsa.data_programarii;
 END; //
 
 CREATE PROCEDURE Inscriere_activitati_studiu(cnp_profesor char(13), id_gsa int)

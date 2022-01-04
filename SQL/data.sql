@@ -22,16 +22,11 @@ insert into materii values (null, "msi", "", "10","30", "60", "150", 7, 7, 7);
 insert into materii values (null, "cpp", "better than c", "10","30", "60", "150", 7, 7, 7);
 insert into materii values (null, "java", "why", "10","30", "60", "150", 7, 7, 7);
 
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
-insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2021-10-09 00:00:00", "2:00:00", "2021-10-09 00:00:00", 0);
+insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
+insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
+insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
+insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
+insert into grup_studiu_activitati values (null, 1, null, "nu", "da", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
 
 insert into materii_studenti values (1, "7777", null, null);
 insert into materii_studenti values (1, "9999", null, null);

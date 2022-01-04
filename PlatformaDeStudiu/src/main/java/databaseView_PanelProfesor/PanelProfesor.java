@@ -111,8 +111,8 @@ public class PanelProfesor extends JPanel
     	inputPanel.buttonVizualizareActivitatiStudiu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frontPanel.setVisible(false);
-				datePersonale.setVisible(true);	
-				frontPanel = datePersonale;
+				activitatiPanel.setVisible(true);	
+				frontPanel = activitatiPanel;
 			}
 		});
     }
