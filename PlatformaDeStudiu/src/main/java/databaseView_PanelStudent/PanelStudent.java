@@ -80,7 +80,6 @@ public class PanelStudent extends JPanel
 				frontPanel = datePersonale;
 			}
 		});
-    	/*
 		inputPanel.buttonMaterii.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frontPanel.setVisible(false);
@@ -109,7 +108,6 @@ public class PanelStudent extends JPanel
 				frontPanel = calendar;
 			}
 		});
-		*/
     }
     
 	public void setBackgroungColor(Color c)
