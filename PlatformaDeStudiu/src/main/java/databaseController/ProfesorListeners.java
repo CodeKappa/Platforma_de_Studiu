@@ -59,7 +59,6 @@ public class ProfesorListeners{
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					theView.panelProfesorView.catalogPanel.setData(null);
 					theView.panelProfesorView.catalogPanel.setTable(ProfesorSqlQueries.vizualizare_studenti(MainClass.db.getCon()));
 				}
 				catch (SQLException e1) { TreatException.printSQLException(e1); }

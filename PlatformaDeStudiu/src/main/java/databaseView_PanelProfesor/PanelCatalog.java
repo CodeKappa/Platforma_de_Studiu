@@ -157,25 +157,4 @@ public class PanelCatalog extends JPanel {
 		data.add(textFieldNota.getText());
 		return data;
 	}
-	
-	public void setData(ArrayList<String> arr)
-	{
-		if(arr == null)
-		{
-			textFieldCNP.setText(null);
-		}
-		else
-		{
-			textFieldCNP.setText(arr.get(0));
-		}	
-	}
-	
-    private void tableAfisMouseClicked(MouseEvent evt) {
-        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
-        try 
-        {
-        	setData(AdminSqlQueries.read_grup(MainClass.db.getCon(), id));
-		} 
-        catch (SQLException e) { TreatException.printSQLException(e); }
-    }
 }

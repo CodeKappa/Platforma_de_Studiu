@@ -119,7 +119,7 @@ BEGIN
 	INSERT INTO grup_studiu_mesaje(id_grup, cnp_student, mesaj, data_ora_trimiterii) VALUES (id_grup, cnp_student, mesaj, current_timestamp());
 END; //
 
-CREATE PROCEDURE Descarcare_activitati(cnp_student char(13))
+CREATE PROCEDURE Descarcare_activitati2(cnp_student char(13))
 BEGIN
 	SELECT * FROM grup_studiu_activitati gsa JOIN grup_studiu gs ON gsa.id_grup=gs.id JOIN grup_studiu_studenti gss ON gss.id_grup=gs.id WHERE gss.cnp_student=cnp_student AND CURRENT_TIMESTAMP()<=gsa.data_programarii
 	ORDER by data_programarii

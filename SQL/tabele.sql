@@ -83,7 +83,6 @@ FOREIGN KEY (id_materie) REFERENCES materii(id) ON DELETE CASCADE ON UPDATE CASC
 CREATE TABLE grup_studiu_studenti
 (id_grup int not null,
 cnp_student char(13) not null,
-PRIMARY KEY (id_grup, cnp_student),
 FOREIGN KEY (id_grup) REFERENCES grup_studiu(id) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (cnp_student) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE);
 
@@ -343,21 +342,22 @@ BEGIN
 	INSERT INTO materii_studenti VALUES (id_materie, cnp_student, categorie, nota);
 END; //
 
-CREATE PROCEDURE Vizualizare_studenti_materie(cnp_profesor char(13))
+CREATE PROCEDURE Vizualizare_studenti_materii(cnp_profesor char(13))
 BEGIN
-	SELECT p.nume, p.prenume, s.an_studiu, p.nr_telefon, p.email, ms.nota FROM persoane p
+	SELECT p.nume, p.prenume, p.cnp, s.an_studiu, p.nr_telefon, p.email, ms.id_materie, ms.categorie, ms.nota FROM persoane p
     JOIN studenti s ON p.cnp = s.cnp
     JOIN materii_studenti ms ON p.cnp = ms.cnp_student
     WHERE ms.id_materie IN 
     (SELECT id_materie FROM materii_profesor mp WHERE mp.cnp_profesor = cnp_profesor);
 END; //
 
-CREATE PROCEDURE Descarcare_studenti_materie(id_materie int)
+CREATE PROCEDURE Descarcare_studenti_materii(cnp_profesor char(13))
 BEGIN
-	SELECT p.nume, p.prenume, s.an_studiu, p.nr_telefon, p.email, ms.nota FROM persoane p
+	SELECT p.nume, p.prenume, p.cnp, s.an_studiu, p.nr_telefon, p.email, ms.id_materie, ms.categorie, ms.nota FROM persoane p
     JOIN studenti s ON p.cnp = s.cnp
     JOIN materii_studenti ms ON p.cnp = ms.cnp_student
-    WHERE id_materie = ms.id_materie
+    WHERE ms.id_materie IN 
+    (SELECT id_materie FROM materii_profesor mp WHERE mp.cnp_profesor = cnp_profesor)
     INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\catalog.csv' 
 	FIELDS TERMINATED BY ','  
 	LINES TERMINATED BY '\r\n';
