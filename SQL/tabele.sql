@@ -47,6 +47,8 @@ CREATE TABLE materii_studenti
 cnp_student char(13) not null,
 categorie ENUM('Curs', 'Seminar', 'Laborator'),
 nota DECIMAL(4,2),
+CHECK (nota >= 1),
+CHECK (nota <= 10),
 FOREIGN KEY (cnp_student) REFERENCES persoane(cnp) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (id_materie) REFERENCES materii(id) ON DELETE CASCADE ON UPDATE CASCADE);
 

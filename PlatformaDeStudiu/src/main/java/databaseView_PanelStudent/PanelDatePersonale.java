@@ -3,12 +3,21 @@ package databaseView_PanelStudent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
+import databaseModel.StudentSqlQueries;
+import databaseModel.TreatException;
+import main.MainClass;
+
 import javax.swing.JLabel;
 import javax.swing.ButtonGroup;
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class PanelDatePersonale extends JPanel {
@@ -30,6 +39,9 @@ public class PanelDatePersonale extends JPanel {
 	private JRadioButton radio_student = new JRadioButton("student");
 	private JTextField textField_email;
 	private JLabel label_email;
+	
+	private JTable tableAfis = new JTable();
+	private JScrollPane jsp = new JScrollPane(tableAfis);
 	/**
 	 * Create the panel.
 	 */
@@ -37,6 +49,9 @@ public class PanelDatePersonale extends JPanel {
 		setLayout(null);
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
+		
+		jsp.setBounds(2, 2, 959, 447);
+		add(jsp);
 		
 		textField_cnp = new JTextField();
 		textField_cnp.setEditable(false);
@@ -109,7 +124,7 @@ public class PanelDatePersonale extends JPanel {
 		textField_contract.setColumns(10);
 				
 		radio_admin.setEnabled(false);
-		radio_admin.setBounds(955, 274, 74, 21);
+		radio_admin.setBounds(963, 274, 66, 21);
 		add(radio_admin);
 		
 		radio_profesor.setEnabled(false);
@@ -149,5 +164,32 @@ public class PanelDatePersonale extends JPanel {
 		textField_iban.setText(arr.get(6));
 		textField_contract.setText(arr.get(7));
 		radio_admin.setSelected(true);
+		try 
+		{
+			setTable(StudentSqlQueries.vizualizare_note(MainClass.db.getCon(),textField_cnp.getText()));
+		} 
+		catch (SQLException e1) { TreatException.printSQLException(e1); }
+	}
+	
+	public void setTable(ArrayList<ArrayList<String>> a)
+	{
+		if (a == null) return;
+		DefaultTableModel dtm = new DefaultTableModel();
+		if(a.isEmpty() == false)
+			dtm.setColumnCount(a.get(0).size());
+		int i = 0, j = 0;
+		for(ArrayList<String> arow : a)
+		{
+			dtm.setRowCount(dtm.getRowCount() + 1);
+			j = 0;
+			for(String s : arow)
+			{		
+				dtm.setValueAt(s, i, j);
+				j++;
+			}
+			i++;
+		}	
+		tableAfis.setModel(dtm);
+		repaint();
 	}
 }

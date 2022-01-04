@@ -80,6 +80,9 @@ END;//
 #Adaugare activitati-------------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE adauga_activitati(id_grup int, cnp_profesor char(13), nume varchar(50), descriere varchar(250), data_programarii varchar(30), durata varchar(30), data_expirarii varchar(30), numar_minim int)
 BEGIN
+	IF (cnp_profesor = "") THEN
+		SET cnp_profesor = null;
+	END IF;
 	INSERT INTO grup_studiu_activitati VALUES (null, id_grup, cnp_profesor, nume, descriere, CONVERT(data_programarii,DATETIME), CONVERT(durata,TIME), CONVERT(data_expirarii,DATETIME), numar_minim);
 END;//
 
@@ -98,6 +101,10 @@ BEGIN
 
 	IF (tip < 1 OR tip > 3) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tip ultilizator nu exista';
+	END IF;
+
+	IF (cnp = "" OR nume = "" OR prenume = "" OR adresa = "" OR nr_telefon = "" OR email = "" OR iban = "") THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Campuri goale';
 	END IF;
 
 	INSERT INTO persoane VALUES (cnp, nume, prenume, adresa, nr_telefon, email, iban, null);
@@ -137,6 +144,10 @@ BEGIN
 	DECLARE old_cnp CHAR(13);
     DECLARE old_tip INT DEFAULT 0;
     DECLARE exista INT DEFAULT 0;
+    
+	IF (cnp = "" OR nume = "" OR prenume = "" OR adresa = "" OR nr_telefon = "" OR email = "" OR iban = "") THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Campuri goale';
+	END IF;
     
     SELECT 1 INTO exista FROM persoane p WHERE p.nr_contract = nr_contract;
 	IF (exista = 0) THEN
@@ -251,6 +262,10 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nu ai drepturi pentru a executa aceasta operatie';
 	END IF;
     
+	IF (cnp = "" OR nume = "" OR prenume = "" OR adresa = "" OR nr_telefon = "" OR email = "" OR iban = "") THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Campuri goale';
+	END IF;
+    
 	INSERT INTO persoane VALUES (cnp, nume, prenume, adresa, nr_telefon, email, iban, null);
     
     IF (tip = 2) THEN
@@ -283,6 +298,10 @@ BEGIN
 	DECLARE old_cnp CHAR(13);
     DECLARE old_tip, tip1 INT DEFAULT 0;
     DECLARE exista INT DEFAULT 0;
+    
+	IF (cnp = "" OR nume = "" OR prenume = "" OR adresa = "" OR nr_telefon = "" OR email = "" OR iban = "") THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Campuri goale';
+	END IF;
     
     SELECT 1 INTO exista FROM persoane p WHERE p.nr_contract = nr_contract;
 	IF (exista = 0) THEN

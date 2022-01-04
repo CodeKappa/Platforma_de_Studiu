@@ -1,4 +1,4 @@
-package databaseView_PanelAdmin;
+package databaseView;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;

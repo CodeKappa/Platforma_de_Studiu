@@ -3,33 +3,41 @@ use gestiune_studenti;
 
 DELIMITER //
 
-#Student------------------------------------------------------------------------------------------------------------------------------------
-CREATE PROCEDURE Cautare_materie(materie varchar(50))
+#Proceduri legate de materie-------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE Materii_propri(cnp char(13))
 BEGIN
-	SELECT * FROM materii WHERE nume=materie;
+	SELECT m.* FROM materii m INNER JOIN materii_studenti ms ON ms.id_materie = m.id WHERE ms.cnp_student = cnp GROUP BY m.id;
 END; //
 
+DELIMITER ///
+DROP PROCEDURE IF EXISTS Inscriere_materie;
+#call Inscriere_materie("bd", 10003);
 CREATE PROCEDURE Inscriere_materie(materie varchar(50), cnp_student char(13))
 BEGIN
 	DECLARE id_selectat int;
     
+	DROP TABLE IF EXISTS lista_inscrieri;
 	CREATE TEMPORARY TABLE lista_inscrieri
 	SELECT id_materie, COUNT(*) AS magnitude 
-	FROM studenti_materie
-	WHERE id_materie in (select id_materie from materii where nume = "bd")
+	FROM materii_studenti
+	#WHERE id_materie in (select id_materie from materii where nume = "bd")
 	GROUP BY id_materie 
 	ORDER BY magnitude ASC;
     
+    SELECT * from lista_inscrieri_curata;
+    
+    DROP TABLE IF EXISTS lista_inscrieri_curata;
     CREATE TEMPORARY TABLE lista_inscrieri_curata
     SELECT li.id_materie, li.magnitude INTO id_selectat FROM lista_inscrieri li
     JOIN materii m ON li.id_materie = m.id 
     WHERE m.nr_max_studenti >= li.magnitude
-    ORDER BY magnitude ASC
-    LIMIT 1;
-    
-	SELECT id_materie INTO id_selectat FROM lista_inscrieri_curata;
-    INSERT INTO materii_studenti VALUES(id_selectat, cnp_student, null, null);
-END;//
+    ORDER BY magnitude ASC;
+    #LIMIT 1;
+
+	SELECT * from lista_inscrieri_curata;
+	#SELECT id_materie INTO id_selectat FROM lista_inscrieri_curata;
+    #INSERT INTO materii_studenti VALUES(id_selectat, cnp_student, null, null);
+END;///
 
 CREATE PROCEDURE Renuntare_materie(id_materie int, cnp_student char(13))
 BEGIN
@@ -44,6 +52,8 @@ BEGIN
     WHERE ms.cnp_student = cnp_student;
 END; //
 
+#-------------------------------------------------------------------------------------------------------------------------------------------
+
 /*
 CREATE PROCEDURE Inscriere_calendar(id_materie int, cnp_student char(13))
 BEGIN
@@ -54,10 +64,12 @@ BEGIN
 END; //
 */
 
+#Vizualizare note-------------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE Vizualizare_note(cnp_student char(13))
 BEGIN
-	SELECT x.nume, m.nota FROM materii_studenti m JOIN materii x ON m.id_materie=x.id WHERE cnp_student = m.cnp_student;
+	SELECT x.nume, m.categorie, m.nota FROM materii_studenti m JOIN materii x ON m.id_materie=x.id WHERE cnp_student = m.cnp_student;
 END; //
+#-------------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE PROCEDURE Vizualizare_grupuri()
 BEGIN
@@ -129,4 +141,3 @@ BEGIN
 	FIELDS TERMINATED BY ','  
 	LINES TERMINATED BY '\r\n';
 END; //
-#-------------------------------------------------------------------------------------------------------------------------------------------

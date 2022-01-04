@@ -24,17 +24,17 @@ public class DatabaseController {
 		this.theModel = theModel;
 		AdminListeners al = new AdminListeners(theView, theModel);
 		ProfesorListeners pl = new ProfesorListeners(theView, theModel);
+		StudentListeners sl = new StudentListeners(theView, theModel);
 		
 		theView.panelLogin.addLoginListener(new LoginListener());
 		//theView.panelSignUp.addSignUpListener(new SignUpListener());
 		//theView.panelLogin.addComuteListener(new LoginComuteListener());
 		//theView.panelSignUp.addComuteListener(new SignUpComuteListener());
 		
+		theView.panelSuperAdminView.addDelogareListener(new DelogareListener());
 		theView.panelAdminView.addDelogareListener(new DelogareListener());
 		theView.panelStudentView.addDelogareListener(new DelogareListener());
 		theView.panelProfesorView.addDelogareListener(new DelogareListener());
-		
-		//theView.panelStudentView.addCautaMaterieListener(new CautaMaterieListener());
 	}
 
 	class LoginListener implements ActionListener 
@@ -106,24 +106,7 @@ public class DatabaseController {
 			}
 		}
 	}
-	/*
-	class CautaMaterieListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e) 
-		{	
-			try 
-			{
-				theView.panelStudentView.feedbackPanel.feedbackMessage = "Ati cautat materia BD";
-				theView.panelStudentView.setTable(PersoaneSqlQueries.cautare_materie (MainClass.db.getCon()));
-			} 
-			catch (SQLException e1) 
-			{
-				e1.printStackTrace();
-			}
-		}	
-	}
-	*/
+	
 	class DelogareListener implements ActionListener
 	{
 		@Override
