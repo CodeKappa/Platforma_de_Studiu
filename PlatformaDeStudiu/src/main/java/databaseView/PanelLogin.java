@@ -14,8 +14,8 @@ import javax.swing.border.LineBorder;
 @SuppressWarnings("serial")
 public class PanelLogin extends JPanel
 {	
-	private JTextField usernameField = new JTextField("numescu@yahoo.com");
-	private JTextField passwordField = new JPasswordField("parola111");
+	private JTextField usernameField = new JTextField("superadmin");
+	private JTextField passwordField = new JPasswordField("12345");
 	private JButton buttonLogin = new JButton("Log in");
 	//private JButton buttonSignUpComute = new JButton("Sign Up");
 	

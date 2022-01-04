@@ -415,7 +415,7 @@ public class PanelAdminCRUDuser extends JPanel {
         String cnp = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
         try 
         {
-        	setData(AdminSqlQueries.read_user(MainClass.db.getCon(), cnp));
+        	setData(AdminSqlQueries.admin_read_user(MainClass.db.getCon(), cnp));
 		} 
         catch (SQLException e) { TreatException.printSQLException(e); }
     }
