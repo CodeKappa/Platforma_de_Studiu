@@ -3,56 +3,6 @@ use gestiune_studenti;
 
 DELIMITER //
 
-#Small random procedures-------------------------------------------------------------------------------------------------------------------------------------------
-CREATE FUNCTION get_cnp(email varchar(50)) 
-RETURNS CHAR(13)
-NOT DETERMINISTIC
-READS SQL DATA
-BEGIN 
-	DECLARE cnp char(13);
-	SET cnp = (SELECT persoane.cnp FROM persoane WHERE persoane.email = email);
-	RETURN cnp;
-END//
-
-CREATE FUNCTION find_user_type(cnp varchar(50)) 
-RETURNS INT
-NOT DETERMINISTIC
-READS SQL DATA
-BEGIN 
-	DECLARE tip1, tip2, tip3 INT DEFAULT 0;
-	SET tip1 = (SELECT 1 FROM admini WHERE admini.cnp = cnp);
-    SET tip2 = (SELECT 1 FROM studenti WHERE studenti.cnp = cnp);
-    SET tip3 = (SELECT 1 FROM profesori WHERE profesori.cnp = cnp);
-    IF (tip1 = 1) THEN RETURN 1;
-    ELSEIF (tip2 = 1) THEN RETURN 2;
-    ELSEIF (tip3 = 1) THEN RETURN 3;
-    ELSE RETURN 0;
-    END IF;
-END//
-#-------------------------------------------------------------------------------------------------------------------------------------------
-
-#Select all relevant data about user, materie or grup-------------------------------------------------------------------------------------------------------------------------------------------
-CREATE PROCEDURE all_user_data()
-BEGIN 
-	SELECT p1.cnp, p1.nume, p1.prenume, p1.adresa, p1.nr_telefon, p1.email, p1.iban, p1.nr_contract, p2.nr_ore_min, p2.nr_ore_max, p2.departament,s.an_studiu, s.nr_ore FROM persoane p1 LEFT JOIN profesori p2 ON p1.cnp = p2.cnp LEFT JOIN studenti s ON p1.cnp = s.cnp;
-END;//
-
-CREATE PROCEDURE all_materie_data()
-BEGIN 
-	SELECT * FROM materii;
-END;//
-
-CREATE PROCEDURE all_grup_data()
-BEGIN 
-	SELECT g.id, g.id_materie, m.* FROM grup_studiu g INNER JOIN materii m ON g.id_materie = m.id;
-END;//
-
-CREATE PROCEDURE all_group_activities()
-BEGIN 
-	SELECT * FROM grup_studiu_activitati;
-END;//
-#-------------------------------------------------------------------------------------------------------------------------------------------
-
 #Cautare si filtrare user-------------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE cauta_user(tip int, nume char(50), prenume char(50))
 BEGIN
