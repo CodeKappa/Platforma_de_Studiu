@@ -221,6 +221,58 @@ public class StudentSqlQueries {
 		return arr;
 	}
 	
+	public static ArrayList<ArrayList<String>> trimite_mesaj(Connection con, String msj, String grup, String cnp) throws SQLException 
+	{	
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Mesaje_scriere(?,?,?)}");
+			cs.setString(1, msj);
+			cs.setString(2, grup);
+			cs.setString(3, cnp);
+			cs.execute();
+			con.commit();
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList<ArrayList<String>> preia_mesaje(Connection con, String id) throws SQLException 
+	{	
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Mesaje_vizualizare(?)}");
+			cs.setString(1, id);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<String>();
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("prenume"));
+				aux.add(rs.getString("mesaj"));
+				aux.add(rs.getString("data_ora_trimiterii"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return arr;
+	}
+	
 	public static ArrayList<ArrayList<String>> sugestii_grup(Connection con, String cnp) throws SQLException 
 	{	
 		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();

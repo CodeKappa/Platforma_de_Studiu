@@ -6,6 +6,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import databaseModel.AdminSqlQueries;
+import databaseModel.StudentSqlQueries;
 import databaseModel.TreatException;
 import main.MainClass;
 
@@ -21,15 +22,17 @@ import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class PanelStudentMesajeGrup extends JPanel {
-	private JTextField textField_materie;
-	private JLabel lblMaterie;
-	public JButton btnToateMaterii = new JButton("Vezi Toate Materii");
-	public JButton btnCautaMaterie = new JButton("Cauta Materie");
-	public JButton btnVeziStudentiLaMaterie = new JButton("Vezi Studenti la Materie");
+	private JTextField textField_mesaj;
+	private JLabel lblMesaj;
+	public JButton btnTrimite = new JButton("Trimite");
+	public JButton btnMesaje = new JButton("Mesaje Grup");
 	
 	private JTable tableAfis = new JTable();
 	private JScrollPane jsp = new JScrollPane(tableAfis);
+	private final JTextField textField_grup = new JTextField();
+	private final JLabel lblVeziGrup = new JLabel("Vezi Mesaje Grup");
 	
+	public String cnp;
 	/**
 	 * Create the panel.
 	 */
@@ -41,52 +44,48 @@ public class PanelStudentMesajeGrup extends JPanel {
 		jsp.setBounds(2, 2, 959, 447);
 		add(jsp);
 		
-		textField_materie = new JTextField();
-		textField_materie.setBounds(1068, 157, 112, 19);
-		add(textField_materie);
-		textField_materie.setColumns(10);
+		textField_mesaj = new JTextField();
+		textField_mesaj.setBounds(1068, 157, 112, 19);
+		add(textField_mesaj);
+		textField_mesaj.setColumns(10);
 		
-		lblMaterie = new JLabel("Materie");
-		lblMaterie.setBounds(987, 160, 45, 13);
-		add(lblMaterie);
+		lblMesaj = new JLabel("Mesaj");
+		lblMesaj.setBounds(987, 160, 51, 13);
+		add(lblMesaj);
 		
-		btnToateMaterii.setBounds(971, 200, 220, 21);
-		add(btnToateMaterii);
+		btnTrimite.setBounds(971, 186, 220, 21);
+		add(btnTrimite);
 		
 		setActionListeners();
 		
-		btnCautaMaterie.setBounds(971, 225, 220, 21);
-		add(btnCautaMaterie);
-
-		btnVeziStudentiLaMaterie.setBounds(971, 250, 220, 21);
-		add(btnVeziStudentiLaMaterie);
+		btnMesaje.setBounds(971, 251, 220, 21);
+		add(btnMesaje);
+		textField_grup.setColumns(10);
+		textField_grup.setBounds(1068, 222, 112, 19);
+		
+		add(textField_grup);
+		lblVeziGrup.setBounds(987, 225, 71, 13);
+		
+		add(lblVeziGrup);
 	}
 
 	public void setActionListeners()
 	{	
-		btnToateMaterii.addActionListener(new ActionListener() {
+		btnTrimite.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
+					StudentSqlQueries.trimite_mesaj(MainClass.db.getCon(),textField_mesaj.getText(),textField_grup.getText(), cnp);
+					setTable(StudentSqlQueries.preia_mesaje(MainClass.db.getCon(), textField_grup.getText()));
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
-		btnCautaMaterie.addActionListener(new ActionListener() {
+		btnMesaje.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(AdminSqlQueries.cauta_materie(MainClass.db.getCon(), textField_materie.getText()));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
-		btnVeziStudentiLaMaterie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					setTable(AdminSqlQueries.studentiLaMaterie(MainClass.db.getCon(), textField_materie.getText()));
+					setTable(StudentSqlQueries.preia_mesaje(MainClass.db.getCon(), textField_grup.getText()));
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
@@ -117,11 +116,7 @@ public class PanelStudentMesajeGrup extends JPanel {
 	
 	public void setData()
 	{
-		textField_materie.setText(null);
-		try 
-		{
-			setTable(AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
-		} 
-		catch (SQLException e1) { TreatException.printSQLException(e1); }
+		textField_mesaj.setText(null);
+		textField_grup.setText(null);
 	}
 }
