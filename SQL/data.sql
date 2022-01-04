@@ -6,10 +6,13 @@ call create_user (3, "3333", "grigorescu", "grigore", "Acadelelor 12", "07703333
 call create_user (3, "4444", "gigel", "gigi", "Lalelelor 22", "07704444444", "gigel@yahoo.com", "ROBTRL264554", "parola4444", 2, 20, "informatica");
 call create_user (3, "5555", "bula", "strula", "1848 22", "0770555555", "bula@yahoo.com", "ROBTRL233344", "parolabula", 2, 20, "informatica");
 call create_user (3, "6666", "pasari lati lungila", "fomila", "Plopilor 19", "0770666666", "pasarila@gmail.com", "ROBTRL2333324", "parola5555", 2, 20, "informatica");
-call create_user (2, "7777", "numescu", "antonescu", "Pomilor 34", "0770777777", "numescu2001@yahoo.com", "ROBTRL777777", "parola9999", 2, 20, "informatica");
-call create_user (2, "8888", "numescu", "prenumescu", "Pomilor 34", "0770888888", "numescu888@yahoo.com", "ROBTRL888888", "parola8888", 2, 20, "informatica");
-call create_user (2, "9999", "numescu9", "prenumescu9", "Pomilor 34", "0770999999", "numescu999@yahoo.com", "ROBTRL999999", "parola9999", 2, 20, "informatica");
-call create_user (2, "10001", "numescu10", "prenumescu10", "Pomilor 34", "0770100001", "numescu1001@yahoo.com", "ROBTRL10001", "parola10001", 2, 20, "informatica");
+call create_user (2, "7777", "numescu", "antonescu", "Pomilor 34", "0770777777", "numescu2001@yahoo.com", "ROBTRL777777", "parola9999", 2, 5, null);
+call create_user (2, "8888", "numescu", "prenumescu", "Pomilor 34", "0770888888", "numescu888@yahoo.com", "ROBTRL888888", "parola8888", 2, 6, null);
+call create_user (2, "9999", "numescu9", "prenumescu9", "Pomilor 34", "0770999999", "numescu999@yahoo.com", "ROBTRL999999", "parola9999", 2, 7, null);
+call create_user (2, "10001", "numescu10", "prenumescu10", "Pomilor 34", "0770100001", "numescu1001@yahoo.com", "ROBTRL10001", "parola10001", 2, 9, null);
+call create_user (1, "10002", "Kovacs", "Paul", "Pomilor 34", "0770321321", "admin", "ROBTRL31212", "parola10001", 2, 20, "informatica");
+call create_user (2, "10003", "numescu", "prenumescu", "Pomilor 38", "0770100003", "student", "ROBTRL32131", "parola10001", 2, 3, null);
+call create_user (3, "10004", "Budiul", "Cristian", "Pomilor 39", "0770123123", "profesor", "ROBTRL32131", "parola10001", 2, 20, "informatica");
 
 insert into materii values (null, "bd", "baze de date", 10,30, 60, 150, 7, 7, 7);
 insert into materii values (null, "poo", "programare orientata obiect", "10","30", "60", "150", 7, 7, 7);
