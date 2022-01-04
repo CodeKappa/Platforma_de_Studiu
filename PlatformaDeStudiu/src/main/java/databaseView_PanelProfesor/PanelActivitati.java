@@ -98,9 +98,9 @@ public class PanelActivitati extends JPanel {
 		repaint();
 	}
 	
-	public String getData()
+	public int getData()
 	{
-		return textField_id.getText();
+		return Integer.parseInt(textField_id.getText());
 	}
 	
 	public void setData(ArrayList<String> arr)

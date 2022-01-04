@@ -42,15 +42,14 @@ public class ProfesorSqlQueries {
 		return arr;
 	}
 	
-	public static ArrayList<String> inscriere_activitati_studiu(Connection con, String id_gsa) throws SQLException 
+	public static void inscriere_activitati_studiu(Connection con, int id_gsa) throws SQLException 
 	{	
-		ArrayList <String> arr = new ArrayList <String>();
 		try 
 		{
-			CallableStatement cs = con.prepareCall("{call Inscriere_activitati_studiu(?)}"); //TODO
+			CallableStatement cs = con.prepareCall("{call Inscriere_activitati_studiu(?,?)}");
 			cs.setString(1, DatabaseController.user);
-			cs.setString(2, id_gsa);
-			ResultSet rs = cs.executeQuery();
+			cs.setInt(2, id_gsa);
+			cs.execute();
 			con.commit();
 		} 
 		catch (SQLException e) 
@@ -58,7 +57,6 @@ public class ProfesorSqlQueries {
 			TreatException.printSQLException(e);
 		}
 		con.rollback();
-		return arr;
 	}
 	
 	public static ArrayList <ArrayList<String>> vizualizare_activitati_studiu(Connection con) throws SQLException 

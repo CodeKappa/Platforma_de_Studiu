@@ -257,7 +257,7 @@ END;
 
 CREATE PROCEDURE Vizualizare_activitati_studiu(cnp_profesor char(13))
 BEGIN
-	SELECT * FROM persoane p 
+	SELECT gsa.id, gsa.id_grup, gsa.cnp_profesor, gsa.nume, gsa.descriere, gsa.data_programarii, gsa.durata, gsa.data_expirarii, gsa.numar_minim FROM persoane p 
     JOIN materii_profesor mp ON p.cnp = mp.cnp_profesor
     JOIN materii m ON mp.id_materie = m.id
     JOIN grup_studiu gs ON m.id = gs.id_materie
