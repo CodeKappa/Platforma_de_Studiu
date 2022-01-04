@@ -64,7 +64,7 @@ public class PanelStudentMesajeGrup extends JPanel {
 		textField_grup.setBounds(1068, 222, 112, 19);
 		
 		add(textField_grup);
-		lblVeziGrup.setBounds(987, 225, 71, 13);
+		lblVeziGrup.setBounds(960, 228, 105, 13);
 		
 		add(lblVeziGrup);
 	}
