@@ -347,8 +347,9 @@ BEGIN
     SET old_cnp = (SELECT persoane.cnp from persoane where persoane.nr_contract = nr_contract);
 	SET old_tip = find_user_type(old_cnp);
 
+	
 	SELECT 1 INTO tip1 FROM admini WHERE admini.cnp = old_cnp;
-	IF (old_tip = 1 OR tip1 = 1) THEN
+	IF (tip1 = 1) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nu ai drepturi pentru a executa aceasta operatie';
 	END IF;
 
