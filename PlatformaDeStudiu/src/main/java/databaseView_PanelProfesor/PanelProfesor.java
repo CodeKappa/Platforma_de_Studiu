@@ -23,6 +23,7 @@ public class PanelProfesor extends JPanel
 {	
 	public PanelFeedback feedbackPanel = new PanelFeedback();
 	public PanelButoaneProfesor inputPanel = new PanelButoaneProfesor();
+	public PanelActivitati activitatiPanel = new PanelActivitati();
 	private JButton buttonDelogare = new JButton("Delogare");
 	
 	public databaseView_PanelProfesor.PanelDatePersonale datePersonale = new databaseView_PanelProfesor.PanelDatePersonale();
@@ -38,6 +39,7 @@ public class PanelProfesor extends JPanel
 		
 		blankPanel.setBounds(10, 110, 1199, 450);
 		datePersonale.setBounds(10, 110, 1199, 450);
+		activitatiPanel.setBounds(10, 110, 1199, 450);
 		
 		inputPanel.setBounds(1219, 110, 271 , 419);
 		add(inputPanel);
@@ -45,9 +47,11 @@ public class PanelProfesor extends JPanel
 		blankPanel.setBorder(new LineBorder(Color.BLACK, 1));
 		add(blankPanel);
 		add(datePersonale);
+		add(activitatiPanel);
 		
 		blankPanel.setVisible(true);
 		datePersonale.setVisible(false);
+		activitatiPanel.setVisible(false);
 		
 		frontPanel = blankPanel;
 		
@@ -106,11 +110,9 @@ public class PanelProfesor extends JPanel
 		});
     	inputPanel.buttonVizualizareActivitatiStudiu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
 				frontPanel.setVisible(false);
 				datePersonale.setVisible(true);	
 				frontPanel = datePersonale;
-				*/
 			}
 		});
     }

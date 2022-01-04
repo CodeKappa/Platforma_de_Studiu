@@ -38,10 +38,10 @@ public class PanelStudent extends JPanel
 		
 		blankPanel.setBounds(10, 110, 1199, 450);
 		datePersonale.setBounds(10, 110, 1199, 450);
-		materii.setBounds(10, 110, 1199, 450);
-		grupuri.setBounds(10, 110, 1199, 450);
-		mesaje.setBounds(10, 110, 1199, 450);
-		calendar.setBounds(10, 110, 1199, 450);
+		//materii.setBounds(10, 110, 1199, 450);
+		//grupuri.setBounds(10, 110, 1199, 450);
+		//mesaje.setBounds(10, 110, 1199, 450);
+		//calendar.setBounds(10, 110, 1199, 450);
 		
 		inputPanel.setBounds(1219, 110, 271 , 419);
 		add(inputPanel);
@@ -49,17 +49,17 @@ public class PanelStudent extends JPanel
 		blankPanel.setBorder(new LineBorder(Color.BLACK, 1));
 		add(blankPanel);
 		add(datePersonale);
-		add(materii);
-		add(grupuri);
-		add(mesaje);
-		add(calendar);
+		//add(materii);
+		//add(grupuri);
+		//add(mesaje);
+		//add(calendar);
 		
 		blankPanel.setVisible(true);
 		datePersonale.setVisible(false);
-		materii.setVisible(false);
-		grupuri.setVisible(false);
-		mesaje.setVisible(false);
-		calendar.setVisible(false);
+		//materii.setVisible(false);
+		//grupuri.setVisible(false);
+		//mesaje.setVisible(false);
+		//calendar.setVisible(false);
 		
 		frontPanel = blankPanel;
 		
@@ -80,6 +80,7 @@ public class PanelStudent extends JPanel
 				frontPanel = datePersonale;
 			}
 		});
+    	/*
 		inputPanel.buttonMaterii.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frontPanel.setVisible(false);
@@ -108,6 +109,7 @@ public class PanelStudent extends JPanel
 				frontPanel = calendar;
 			}
 		});
+		*/
     }
     
 	public void setBackgroungColor(Color c)

@@ -35,17 +35,17 @@ public class ProfesorListeners{
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
-    	/*
-    	theView.panelProfesorView.inputPanel.buttonCRUDuser.addActionListener(new ActionListener() {
+    	theView.panelProfesorView.inputPanel.buttonVizualizareActivitatiStudiu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					theView.panelProfesorView.crudUser.setData(null);
-					theView.panelProfesorView.crudUser.setTable(AdminSqlQueries.all_user_data(MainClass.db.getCon()));
+					theView.panelProfesorView.activitatiPanel.setData(null);
+					theView.panelProfesorView.activitatiPanel.setTable(ProfesorSqlQueries.vizualizare_activitati_studiu(MainClass.db.getCon()));
 				}
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
+    	/*
     	theView.panelProfesorView.inputPanel.buttonCRUDmaterii.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 

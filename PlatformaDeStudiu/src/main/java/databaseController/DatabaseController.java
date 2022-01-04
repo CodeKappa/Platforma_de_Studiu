@@ -33,7 +33,7 @@ public class DatabaseController {
 		theView.panelStudentView.addDelogareListener(new DelogareListener());
 		theView.panelProfesorView.addDelogareListener(new DelogareListener());
 		
-		theView.panelStudentView.addCautaMaterieListener(new CautaMaterieListener());
+		//theView.panelStudentView.addCautaMaterieListener(new CautaMaterieListener());
 	}
 
 	class LoginListener implements ActionListener 
@@ -105,7 +105,7 @@ public class DatabaseController {
 			}
 		}
 	}
-	
+	/*
 	class CautaMaterieListener implements ActionListener
 	{
 		@Override
@@ -122,7 +122,7 @@ public class DatabaseController {
 			}
 		}	
 	}
-	
+	*/
 	class DelogareListener implements ActionListener
 	{
 		@Override

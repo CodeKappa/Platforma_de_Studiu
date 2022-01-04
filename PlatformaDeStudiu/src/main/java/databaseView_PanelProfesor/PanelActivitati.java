@@ -70,7 +70,7 @@ public class PanelActivitati extends JPanel {
 				try 
 				{
 					ProfesorSqlQueries.inscriere_activitati_studiu(MainClass.db.getCon(), getData());
-					setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
+					setTable(ProfesorSqlQueries.vizualizare_activitati_studiu(MainClass.db.getCon()));
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}

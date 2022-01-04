@@ -61,9 +61,9 @@ public class ProfesorSqlQueries {
 		return arr;
 	}
 	
-	public static ArrayList<String> vizualizare_activitati_studiu(Connection con) throws SQLException 
+	public static ArrayList <ArrayList<String>> vizualizare_activitati_studiu(Connection con) throws SQLException 
 	{	
-		ArrayList <String> arr = new ArrayList <String>();
+		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
 		try 
 		{
 			CallableStatement cs = con.prepareCall("{call Vizualizare_activitati_studiu(?)}");
@@ -73,15 +73,17 @@ public class ProfesorSqlQueries {
 			
 			while (rs.next()) 
 			{
-				arr.add(rs.getString("id"));
-				arr.add(rs.getString("id_grup"));
-				arr.add(rs.getString("cnp_profesor"));
-				arr.add(rs.getString("nume"));
-				arr.add(rs.getString("descriere"));
-				arr.add(rs.getString("data_programarii"));
-				arr.add(rs.getString("durata"));
-				arr.add(rs.getString("data_expirarii"));
-				arr.add(rs.getString("numar_minim"));
+				ArrayList<String> aux = new ArrayList<>();
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("id_grup"));
+				aux.add(rs.getString("cnp_profesor"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("descriere"));
+				aux.add(rs.getString("data_programarii"));
+				aux.add(rs.getString("durata"));
+				aux.add(rs.getString("data_expirarii"));
+				aux.add(rs.getString("numar_minim"));
+				arr.add(aux);
 			}	
 		} 
 		catch (SQLException e) 
