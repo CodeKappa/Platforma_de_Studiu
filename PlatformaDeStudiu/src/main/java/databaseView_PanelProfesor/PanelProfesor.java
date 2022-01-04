@@ -35,7 +35,7 @@ public class PanelProfesor extends JPanel
 		
 		feedbackPanel.setBounds(10, 9, 1480, 100);
 		add(feedbackPanel);
-		feedbackPanel.reset();
+		PanelFeedback.reset();
 		
 		blankPanel.setBounds(10, 110, 1199, 450);
 		datePersonale.setBounds(10, 110, 1199, 450);

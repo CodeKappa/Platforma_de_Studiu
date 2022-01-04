@@ -8,6 +8,7 @@ import databaseModel.DatabaseModel;
 import databaseModel.PersoaneSqlQueries;
 import databaseModel.TreatException;
 import databaseView.DatabaseView;
+import databaseView.PanelFeedback;
 import main.DatabaseConnection;
 import main.MainClass;
 import java.awt.Point;
@@ -61,11 +62,10 @@ public class DatabaseController {
 					}
 				    
 					MainClass.db = new DatabaseConnection(url, username, password, dbName);			
-
-					user = PersoaneSqlQueries.get_cnp(MainClass.db.getCon(), username);
-								
+						
 				    if(MainClass.db.getCon() != null)
 				    {
+				    	user = PersoaneSqlQueries.get_cnp(MainClass.db.getCon(), username);
 				    	int tipUser = 0;
 				    	tipUser = PersoaneSqlQueries.determina_tip_utilizator(MainClass.db.getCon(), user);
 				    	if(tipUser == 1 && username.equals("superadmin"))
@@ -77,6 +77,7 @@ public class DatabaseController {
 				    	else if (tipUser == 3)
 				    		theView.switchPanels(theView.panelProfesorView);
 				    	
+				    	PanelFeedback.reset();
 				    	//theView.panelLogin.setBackground(java.awt.Color.GREEN);
 				    }					
 					else

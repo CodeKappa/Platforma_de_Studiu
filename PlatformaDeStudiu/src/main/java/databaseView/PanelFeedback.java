@@ -19,7 +19,7 @@ public class PanelFeedback extends JPanel{
 		setBorder(new LineBorder(Color.BLACK, 1));
     }
     
-    public void reset()
+    public static void reset()
     {
     	feedbackMessage = "Bine te-ai intors";
     }
