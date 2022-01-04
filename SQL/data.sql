@@ -26,7 +26,10 @@ insert into materii values (null, "cpp", "better than c", "10","30", "60", "150"
 insert into materii values (null, "java", "why", "10","30", "60", "150", 7, 7, 7);
 insert into materii values (null, "bd", "why", "10","30", "60", "150", 7, 7, 7);
 
-insert into grup_studiu_activitati values (null, 1, null, "Activitate 1", "Activitate Grup BD", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
+insert into calendar values(null, "2022-10-08 00:00:00", "2:00:00", 1, "10004", "Curs", 150);
+insert into calendar values(null, "2022-10-15 00:00:00", "2:00:00", 1, "10004", "Curs", 150);
+
+insert into grup_studiu_activitati values (null, 1, "10004", "Activitate 1", "Activitate Grup BD", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
 insert into grup_studiu_activitati values (null, 1, null, "Activitate 2", "Activitate Grup BD", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
 insert into grup_studiu_activitati values (null, 1, null, "Activitate 3", "Activitate Grup BD", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
 insert into grup_studiu_activitati values (null, 1, null, "Activitate 4", "Activitate Grup BD", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
@@ -41,3 +44,5 @@ insert into materii_studenti values (1, "10003", 'Seminar', 10);
 insert into materii_studenti values (1, "10003", 'Laborator', 10);
 insert into materii_studenti values (2, "10003", 'Curs', 9);
 insert into materii_studenti values (2, "10003", 'Laborator', null);
+
+insert into materii_profesor values (1, "10004");

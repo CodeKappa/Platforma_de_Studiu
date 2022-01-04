@@ -154,7 +154,7 @@ END;//
 
 CREATE TRIGGER calendar_insert_verificare_data BEFORE INSERT ON calendar FOR EACH ROW
 BEGIN
-	IF CAST(NEW.data_programarii AS DATE) < GETDATE()
+	IF CAST(NEW.data_programarii AS DATE) < current_timestamp()
     THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nu se poate adauga inregistrarea in calendar: programare in trecut';
     END IF;
@@ -162,7 +162,7 @@ END;//
 
 CREATE TRIGGER calendar_update_verificare_data BEFORE UPDATE ON calendar FOR EACH ROW
 BEGIN
-	IF CAST(NEW.data_programarii AS DATE) < GETDATE()
+	IF CAST(NEW.data_programarii AS DATE) < current_timestamp()
     THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nu se poate actualiza inregistrarea din calendar: programare in trecut';
     END IF;
@@ -179,23 +179,56 @@ END; //
 CREATE PROCEDURE Vizualizare_activitati(cnp char(13), tip bool)
 BEGIN
 	IF (tip = true) THEN
-		SELECT gsa.nume, gsa.data_programarii FROM grup_studiu_activitati gsa 
+		SELECT gsa.nume, gsa.data_programarii, gsa.durata, gsa.numar_minim, "Extra" FROM grup_studiu_activitati gsa 
 		JOIN grup_studiu gs ON gsa.id_grup=gs.id 
 		JOIN grup_studiu_studenti gss ON gss.id_grup=gs.id 
 		WHERE gss.cnp_student=cnp AND current_timestamp()<=gsa.data_programarii
 		UNION ALL
-		SELECT m.nume, c.data_programarii FROM calendar c
+		SELECT m.nume, c.data_programarii, c.durata, c.nr_maxim, c.categorie FROM calendar c
 		JOIN materii m ON c.id_materie = m.id
 		JOIN materii_studenti ms ON m.id = ms.id_materie
         WHERE ms.cnp_student=cnp AND current_timestamp()<=c.data_programarii
 		ORDER by data_programarii;
 	ELSE
-		SELECT gsa.nume, gsa.data_programarii FROM grup_studiu_activitati gsa 
+		SELECT gsa.nume, gsa.data_programarii, gsa.durata, gsa.numar_minim, "Extra" FROM grup_studiu_activitati gsa 
 		WHERE gsa.cnp_profesor=cnp AND current_timestamp()<=gsa.data_programarii
 		UNION ALL
-		SELECT m.nume, c.data_programarii FROM calendar c
-		WHERE m.cnp_profesor=cnp AND current_timestamp()<=c.data_programarii
+		SELECT m.nume, c.data_programarii, c.durata, c.nr_maxim, c.categorie FROM calendar c
+        JOIN materii m ON c.id_materie = m.id
+        JOIN materii_profesor mp ON m.id = mp.id_materie
+		WHERE mp.cnp_profesor=cnp AND current_timestamp()<=c.data_programarii
 		ORDER by data_programarii;
+    END IF;
+END; //
+
+CREATE PROCEDURE Descarcare_activitati(cnp char(13), tip bool)
+BEGIN
+	IF (tip = true) THEN
+		SELECT gsa.nume, gsa.data_programarii, gsa.durata, gsa.numar_minim, "Extra" FROM grup_studiu_activitati gsa 
+		JOIN grup_studiu gs ON gsa.id_grup=gs.id 
+		JOIN grup_studiu_studenti gss ON gss.id_grup=gs.id 
+		WHERE gss.cnp_student=cnp AND current_timestamp()<=gsa.data_programarii
+		UNION ALL
+		SELECT m.nume, c.data_programarii, c.durata, c.nr_maxim, c.categorie FROM calendar c
+		JOIN materii m ON c.id_materie = m.id
+		JOIN materii_studenti ms ON m.id = ms.id_materie
+        WHERE ms.cnp_student=cnp AND current_timestamp()<=c.data_programarii
+		ORDER by data_programarii
+        INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\calendarStudent.csv' 
+		FIELDS TERMINATED BY ','  
+		LINES TERMINATED BY '\r\n';
+	ELSE
+		SELECT gsa.nume, gsa.data_programarii, gsa.durata, gsa.numar_minim, "Extra" FROM grup_studiu_activitati gsa 
+		WHERE gsa.cnp_profesor=cnp AND current_timestamp()<=gsa.data_programarii
+		UNION ALL
+		SELECT m.nume, c.data_programarii, c.durata, c.nr_maxim, c.categorie FROM calendar c
+        JOIN materii m ON c.id_materie = m.id
+        JOIN materii_profesor mp ON m.id = mp.id_materie
+		WHERE mp.cnp_profesor=cnp AND current_timestamp()<=c.data_programarii
+		ORDER by data_programarii
+        INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\calendarProfesor.csv' 
+		FIELDS TERMINATED BY ','  
+		LINES TERMINATED BY '\r\n';
     END IF;
 END; //
 #-------------------------------------------------------------------------------------------------------------------------------------------
@@ -272,7 +305,7 @@ BEGIN
 	UPDATE grup_studiu_activitati gsa SET gsa.cnp_profesor = cnp_profesor WHERE gsa.id = id_gsa;
 END; //
 
-CREATE PROCEDURE Programare_calendar(cnp_profesor char(13), data_inceput datetime, data_final datetime, durata time, id_materie int, categorie enum('Curs','Seminar','Laborator'), nr_maxim int)
+CREATE PROCEDURE Programare_calendar(cnp_profesor char(13), data_inceput varchar(50), data_final varchar(50), durata varchar(50), id_materie int, categorie enum('Curs','Seminar','Laborator'), nr_maxim int)
 BEGIN
 	DECLARE recurenta int;
     DECLARE current_datetime datetime;
@@ -284,8 +317,9 @@ BEGIN
 		SELECT recurenta_l INTO recurenta FROM materii m WHERE m.id = id_materie;
     END IF;
     
-    WHILE current_datetime < data_final DO
-		INSERT INTO calendar VALUES (current_datetime, durata, id_materie, cnp_profesor, categorie, nr_maxim);
+    SET current_datetime = CONVERT(data_inceput, datetime);
+    WHILE current_datetime <= CONVERT(data_final,datetime) DO
+		INSERT INTO calendar VALUES (null, CONVERT(current_datetime, datetime), CONVERT(durata,time), id_materie, cnp_profesor, categorie, nr_maxim);
         SET current_datetime = ADDDATE(current_datetime, recurenta);
 	END WHILE;
 END; //
@@ -308,12 +342,13 @@ BEGIN
 	INSERT INTO materii_studenti VALUES (id_materie, cnp_student, categorie, nota);
 END; //
 
-CREATE PROCEDURE Vizualizare_studenti_materie(id_materie int)
+CREATE PROCEDURE Vizualizare_studenti_materie(cnp_profesor char(13))
 BEGIN
 	SELECT p.nume, p.prenume, s.an_studiu, p.nr_telefon, p.email, ms.nota FROM persoane p
     JOIN studenti s ON p.cnp = s.cnp
     JOIN materii_studenti ms ON p.cnp = ms.cnp_student
-    WHERE id_materie = ms.id_materie;
+    WHERE ms.id_materie IN 
+    (SELECT id_materie FROM materii_profesor mp WHERE mp.cnp_profesor = cnp_profesor);
 END; //
 
 CREATE PROCEDURE Descarcare_studenti_materie(id_materie int)

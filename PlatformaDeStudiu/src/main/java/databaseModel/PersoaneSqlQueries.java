@@ -119,6 +119,36 @@ public class PersoaneSqlQueries {
 		return arr;
 	}
 	
+	public static ArrayList<ArrayList<String>> vizualizare_calendar(Connection con, boolean type) throws SQLException 
+	{	
+		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Vizualizare_activitati(?,?)}");
+			cs.setString(1, DatabaseController.user);
+			cs.setBoolean(2,  type);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<String>();
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("data_programarii"));
+				aux.add(rs.getString("durata"));
+				aux.add(rs.getString("numar_minim"));
+				aux.add(rs.getString("Extra"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
 	/*
 	 * public static boolean insertIntoPersoane(Connection con, ArrayList<String>
 	 * data) throws SQLException { String query =

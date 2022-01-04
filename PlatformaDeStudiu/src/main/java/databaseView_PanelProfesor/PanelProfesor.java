@@ -24,6 +24,8 @@ public class PanelProfesor extends JPanel
 	public PanelFeedback feedbackPanel = new PanelFeedback();
 	public PanelButoaneProfesor inputPanel = new PanelButoaneProfesor();
 	public PanelActivitati activitatiPanel = new PanelActivitati();
+	public PanelCalendar calendarPanel = new PanelCalendar();
+	public PanelCatalog catalogPanel = new PanelCatalog();
 	private JButton buttonDelogare = new JButton("Delogare");
 	
 	public databaseView_PanelProfesor.PanelDatePersonale datePersonale = new databaseView_PanelProfesor.PanelDatePersonale();
@@ -40,6 +42,8 @@ public class PanelProfesor extends JPanel
 		blankPanel.setBounds(10, 110, 1199, 450);
 		datePersonale.setBounds(10, 110, 1199, 450);
 		activitatiPanel.setBounds(10, 110, 1199, 450);
+		calendarPanel.setBounds(10, 110, 1199, 450);
+		catalogPanel.setBounds(10, 110, 1199, 450);
 		
 		inputPanel.setBounds(1219, 110, 271 , 419);
 		add(inputPanel);
@@ -48,10 +52,14 @@ public class PanelProfesor extends JPanel
 		add(blankPanel);
 		add(datePersonale);
 		add(activitatiPanel);
+		add(calendarPanel);
+		add(catalogPanel);
 		
 		blankPanel.setVisible(true);
 		datePersonale.setVisible(false);
 		activitatiPanel.setVisible(false);
+		calendarPanel.setVisible(false);
+		catalogPanel.setVisible(false);
 		
 		frontPanel = blankPanel;
 		
@@ -67,11 +75,9 @@ public class PanelProfesor extends JPanel
     {
     	inputPanel.buttonCatalog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
 				frontPanel.setVisible(false);
-				datePersonale.setVisible(true);	
-				frontPanel = datePersonale;
-				*/
+				catalogPanel.setVisible(true);	
+				frontPanel = catalogPanel;
 			}
 		});
     	inputPanel.buttonDatePersonale.addActionListener(new ActionListener() {
@@ -79,15 +85,6 @@ public class PanelProfesor extends JPanel
 				frontPanel.setVisible(false);
 				datePersonale.setVisible(true);	
 				frontPanel = datePersonale;
-			}
-		});
-    	inputPanel.buttonOrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				/*
-				frontPanel.setVisible(false);
-				datePersonale.setVisible(true);	
-				frontPanel = datePersonale;
-				*/
 			}
 		});
     	inputPanel.buttonPonderiNote.addActionListener(new ActionListener() {
@@ -99,13 +96,13 @@ public class PanelProfesor extends JPanel
 				*/
 			}
 		});
-    	inputPanel.buttonProgramareCalendar.addActionListener(new ActionListener() {
+    	inputPanel.buttonCalendar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
+				
 				frontPanel.setVisible(false);
-				datePersonale.setVisible(true);	
-				frontPanel = datePersonale;
-				*/
+				calendarPanel.setVisible(true);	
+				frontPanel = calendarPanel;
+				
 			}
 		});
     	inputPanel.buttonVizualizareActivitatiStudiu.addActionListener(new ActionListener() {

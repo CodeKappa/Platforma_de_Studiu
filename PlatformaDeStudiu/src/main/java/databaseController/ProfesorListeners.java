@@ -45,27 +45,27 @@ public class ProfesorListeners{
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
+    	theView.panelProfesorView.inputPanel.buttonCalendar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					theView.panelProfesorView.calendarPanel.setData(null);
+					theView.panelProfesorView.calendarPanel.setTable(PersoaneSqlQueries.vizualizare_calendar(MainClass.db.getCon(), false));
+				}
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
+    	theView.panelProfesorView.inputPanel.buttonCatalog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					theView.panelProfesorView.catalogPanel.setData(null);
+					theView.panelProfesorView.catalogPanel.setTable(ProfesorSqlQueries.vizualizare_studenti(MainClass.db.getCon()));
+				}
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
     	/*
-    	theView.panelProfesorView.inputPanel.buttonCRUDmaterii.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					theView.panelProfesorView.crudMaterii.setData(null);
-					theView.panelProfesorView.crudMaterii.setTable(AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
-				}
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
-    	theView.panelProfesorView.inputPanel.buttonCRUDgrupuri.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					theView.panelProfesorView.crudGrupuri.setData(null);
-					theView.panelProfesorView.crudGrupuri.setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
-				}
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
     	theView.panelProfesorView.inputPanel.buttonCautaUtilizatori.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				theView.panelProfesorView.cautaUtilizatori.setData();
