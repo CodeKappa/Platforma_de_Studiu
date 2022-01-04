@@ -12,6 +12,7 @@ call create_user (2, "9999", "numescu", "prenumescu9", "Pomilor 34", "0770999999
 call create_user (2, "10001", "numescu10", "prenumescu10", "Pomilor 34", "0770100001", "numescu1001@yahoo.com", "ROBTRL10001", "parola10001", 2, 9, null);
 call create_user (1, "10002", "Kovacs", "Paul", "Pomilor 34", "0770321321", "admin", "ROBTRL31212", "12345", 2, 20, "informatica");
 call create_user (2, "10003", "numescu", "studentescu", "Pomilor 38", "0770100003", "student", "ROBTRL32131", "12345", 2, 3, null);
+call create_user (2, "10233", "numescu", "studentescu", "Pomilor 38", "0770103203", "student2", "ROBTRL37831", "12345", 2, 3, null);
 call create_user (3, "10004", "Budiul", "Cristian", "Pomilor 39", "0770123423", "profesor", "ROBTRL42131", "12345", 2, 20, "informatica");
 
 insert into materii values (null, "bd", "baze de date", 10,30, 60, 150, 7, 7, 7);
@@ -41,3 +42,7 @@ insert into materii_studenti values (1, "10003", 'Seminar', 10);
 insert into materii_studenti values (1, "10003", 'Laborator', 10);
 insert into materii_studenti values (2, "10003", 'Curs', 9);
 insert into materii_studenti values (2, "10003", 'Laborator', null);
+
+insert into grup_studiu values (null, 1);
+insert into grup_studiu values (null, 2);
+

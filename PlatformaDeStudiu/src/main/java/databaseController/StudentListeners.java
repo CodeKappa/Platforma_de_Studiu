@@ -41,5 +41,12 @@ public class StudentListeners{
 					
 			}
 		});
+    	theView.panelStudentView.inputPanel.buttonGrupuri.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					theView.panelStudentView.grupuri.cnp = DatabaseController.user;
+					theView.panelStudentView.grupuri.setData();
+					
+			}
+		});
     }
 }
