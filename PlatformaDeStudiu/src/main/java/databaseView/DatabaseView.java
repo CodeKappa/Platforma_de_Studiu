@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import databaseView_PanelAdmin.PanelAdmin;
+import databaseView_PanelAdmin.PanelSuperAdmin;
 import databaseView_PanelProfesor.PanelProfesor;
 import databaseView_PanelStudent.PanelStudent;
 
@@ -14,6 +15,7 @@ public class DatabaseView extends JFrame{
 	
 	public PanelLogin panelLogin = new PanelLogin();	
 	//public PanelSignUp panelSignUp = new PanelSignUp();
+	public PanelSuperAdmin panelSuperAdminView = new PanelSuperAdmin();
 	public PanelAdmin panelAdminView = new PanelAdmin();
 	public PanelStudent panelStudentView = new PanelStudent();
 	public PanelProfesor panelProfesorView = new PanelProfesor();

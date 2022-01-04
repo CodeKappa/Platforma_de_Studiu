@@ -10,18 +10,14 @@ import databaseModel.TreatException;
 import main.MainClass;
 
 import javax.swing.JLabel;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextPane;
-import java.awt.SystemColor;
 
 @SuppressWarnings("serial")
 public class PanelCautaMaterii extends JPanel {
@@ -124,7 +120,7 @@ public class PanelCautaMaterii extends JPanel {
 		textField_materie.setText(null);
 		try 
 		{
-			setTable(AdminSqlQueries.studentiLaMaterie(MainClass.db.getCon(), textField_materie.getText()));
+			setTable(AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
 		} 
 		catch (SQLException e1) { TreatException.printSQLException(e1); }
 	}

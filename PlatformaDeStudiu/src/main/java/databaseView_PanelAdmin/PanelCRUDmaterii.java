@@ -80,50 +80,50 @@ public class PanelCRUDmaterii extends JPanel {
 		textField_pcurs.setColumns(10);
 		
 		textField_psem = new JTextField();
-		textField_psem.setBounds(1069, 129, 112, 19);
+		textField_psem.setBounds(1069, 126, 112, 19);
 		add(textField_psem);
 		textField_psem.setColumns(10);
 		
 		textField_nrMax = new JTextField();
-		textField_nrMax.setBounds(1069, 187, 112, 19);
+		textField_nrMax.setBounds(1069, 184, 112, 19);
 		add(textField_nrMax);
 		textField_nrMax.setColumns(10);
 		
 		JLabel lblId = new JLabel("ID");
-		lblId.setBounds(971, 16, 33, 13);
+		lblId.setBounds(971, 13, 33, 13);
 		add(lblId);
 		
 		label_nume = new JLabel("Nume");
-		label_nume.setBounds(971, 45, 45, 13);
+		label_nume.setBounds(971, 42, 45, 13);
 		add(label_nume);
 		
 		lblDescriere = new JLabel("Descriere");
-		lblDescriere.setBounds(971, 74, 57, 13);
+		lblDescriere.setBounds(971, 71, 57, 13);
 		add(lblDescriere);
 		
 		lblProcentCurs = new JLabel("Procent Curs");
-		lblProcentCurs.setBounds(971, 101, 83, 16);
+		lblProcentCurs.setBounds(971, 98, 83, 16);
 		add(lblProcentCurs);
 		
 		lblProcentSeminar = new JLabel("Procent Seminar");
-		lblProcentSeminar.setBounds(971, 135, 105, 13);
+		lblProcentSeminar.setBounds(971, 129, 105, 13);
 		add(lblProcentSeminar);
 		
 		lblNumarMax = new JLabel("Numar Max");
-		lblNumarMax.setBounds(971, 193, 71, 13);
+		lblNumarMax.setBounds(971, 187, 71, 13);
 		add(lblNumarMax);
 		
 		lblRecurentaLab = new JLabel("Recurenta Lab");
-		lblRecurentaLab.setBounds(971, 222, 83, 13);
+		lblRecurentaLab.setBounds(971, 216, 83, 13);
 		add(lblRecurentaLab);
 		
 		textField_recLab = new JTextField();
-		textField_recLab.setBounds(1069, 216, 112, 19);
+		textField_recLab.setBounds(1069, 213, 112, 19);
 		add(textField_recLab);
 		textField_recLab.setColumns(10);
 		
 		textField_recSem = new JTextField();
-		textField_recSem.setBounds(1069, 245, 112, 19);
+		textField_recSem.setBounds(1069, 242, 112, 19);
 		add(textField_recSem);
 		textField_recSem.setColumns(10);
 		
@@ -140,24 +140,24 @@ public class PanelCRUDmaterii extends JPanel {
 		
 		textField_plab = new JTextField();
 		textField_plab.setColumns(10);
-		textField_plab.setBounds(1069, 158, 112, 19);
+		textField_plab.setBounds(1069, 155, 112, 19);
 		add(textField_plab);
 		
 		lblProcentLab = new JLabel("Procent Lab");
-		lblProcentLab.setBounds(971, 167, 83, 13);
+		lblProcentLab.setBounds(971, 158, 83, 13);
 		add(lblProcentLab);
 		
 		JLabel lblRecurentaSem = new JLabel("Recurenta Sem");
-		lblRecurentaSem.setBounds(971, 251, 95, 13);
+		lblRecurentaSem.setBounds(971, 245, 95, 13);
 		add(lblRecurentaSem);
 		
 		JLabel lblRecurentaCurs = new JLabel("Recurenta Curs");
-		lblRecurentaCurs.setBounds(971, 280, 95, 13);
+		lblRecurentaCurs.setBounds(971, 274, 95, 13);
 		add(lblRecurentaCurs);
 		
 		textField_recCurs = new JTextField();
 		textField_recCurs.setColumns(10);
-		textField_recCurs.setBounds(1069, 274, 112, 19);
+		textField_recCurs.setBounds(1069, 271, 112, 19);
 		add(textField_recCurs);
 		
         tableAfis.addMouseListener(new MouseAdapter() {

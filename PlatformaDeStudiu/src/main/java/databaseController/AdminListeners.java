@@ -69,16 +69,80 @@ public class AdminListeners{
 				theView.panelAdminView.cautaUtilizatori.setData();
 			}
 		});
-    	theView.panelAdminView.inputPanel.buttonCRUDmaterii.addActionListener(new ActionListener() {
+    	theView.panelAdminView.inputPanel.buttonCautaMaterie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				theView.panelAdminView.cautaMaterii.setData();
 			}
 		});
     	theView.panelAdminView.inputPanel.buttonAsignareProfesori.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				theView.panelAdminView.asignareProfesori.setData();
 			}
 		});
 		theView.panelAdminView.inputPanel.buttonAdaugaActivitatiGrup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				theView.panelAdminView.adaugaActivitati.setData();
+			}
+		});
+		
+		
+		theView.panelSuperAdminView.inputPanel.buttonDatePersonale.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try
+				{			
+					theView.panelSuperAdminView.datePersonale.setData(PersoaneSqlQueries.date_personale(MainClass.db.getCon()));
+				} 
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
+    	theView.panelSuperAdminView.inputPanel.buttonCRUDuser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					theView.panelSuperAdminView.crudUser.setData(null);
+					theView.panelSuperAdminView.crudUser.setTable(AdminSqlQueries.all_user_data(MainClass.db.getCon()));
+				}
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
+    	theView.panelSuperAdminView.inputPanel.buttonCRUDmaterii.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					theView.panelSuperAdminView.crudMaterii.setData(null);
+					theView.panelSuperAdminView.crudMaterii.setTable(AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
+				}
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
+    	theView.panelSuperAdminView.inputPanel.buttonCRUDgrupuri.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					theView.panelSuperAdminView.crudGrupuri.setData(null);
+					theView.panelSuperAdminView.crudGrupuri.setTable(AdminSqlQueries.all_grup_data(MainClass.db.getCon()));
+				}
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
+    	theView.panelSuperAdminView.inputPanel.buttonCautaUtilizatori.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				theView.panelSuperAdminView.cautaUtilizatori.setData();
+			}
+		});
+    	theView.panelSuperAdminView.inputPanel.buttonCautaMaterie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				theView.panelSuperAdminView.cautaMaterii.setData();
+			}
+		});
+    	theView.panelSuperAdminView.inputPanel.buttonAsignareProfesori.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				theView.panelSuperAdminView.asignareProfesori.setData();
+			}
+		});
+		theView.panelSuperAdminView.inputPanel.buttonAdaugaActivitatiGrup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				theView.panelSuperAdminView.adaugaActivitati.setData();
 			}
 		});
     }

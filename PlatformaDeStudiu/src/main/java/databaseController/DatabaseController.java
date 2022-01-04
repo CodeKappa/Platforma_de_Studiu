@@ -68,16 +68,16 @@ public class DatabaseController {
 				    {
 				    	int tipUser = 0;
 				    	tipUser = PersoaneSqlQueries.determina_tip_utilizator(MainClass.db.getCon(), user);
-				    	//System.out.println(tipUser);
-				    	
-				    	theView.panelLogin.setBackground(java.awt.Color.GREEN);
-						
-				    	if(tipUser == 1)
+				    	if(tipUser == 1 && username.equals("superadmin"))
+				    		theView.switchPanels(theView.panelSuperAdminView);
+				    	else if(tipUser == 1)
 				    		theView.switchPanels(theView.panelAdminView);
 				    	else if(tipUser == 2)
 				    		theView.switchPanels(theView.panelStudentView);
 				    	else if (tipUser == 3)
 				    		theView.switchPanels(theView.panelProfesorView);
+				    	
+				    	//theView.panelLogin.setBackground(java.awt.Color.GREEN);
 				    }					
 					else
 					{

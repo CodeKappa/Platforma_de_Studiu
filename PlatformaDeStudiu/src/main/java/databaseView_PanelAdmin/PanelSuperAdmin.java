@@ -13,14 +13,14 @@ import databaseView.PanelFeedback;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
-public class PanelAdmin extends JPanel
+public class PanelSuperAdmin extends JPanel
 {
     public PanelFeedback feedbackPanel = new PanelFeedback();
 	public PanelButoaneAdmin inputPanel = new PanelButoaneAdmin();
 	private JButton buttonDelogare = new JButton("Delogare");
 	
 	public PanelDatePersonale datePersonale = new PanelDatePersonale();
-	public PanelAdminCRUDuser crudUser = new PanelAdminCRUDuser();
+	public PanelCRUDuser crudUser = new PanelCRUDuser();
 	public PanelCRUDmaterii crudMaterii = new PanelCRUDmaterii();
 	public PanelCRUDgrupuri crudGrupuri = new PanelCRUDgrupuri();
 	public PanelCautaUtilizatori cautaUtilizatori = new PanelCautaUtilizatori();
@@ -31,7 +31,7 @@ public class PanelAdmin extends JPanel
 	
 	private JPanel frontPanel;
 	
-    public PanelAdmin()
+    public PanelSuperAdmin()
 	{
 		setLayout(null);
 		
