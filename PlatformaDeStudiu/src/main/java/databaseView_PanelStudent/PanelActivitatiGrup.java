@@ -20,12 +20,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 @SuppressWarnings("serial")
-public class PanelStudentCalendar extends JPanel {
+public class PanelActivitatiGrup extends JPanel {
 	private JTextField textField_materie;
 	private JLabel lblMaterie;
-	public JButton btnToateMaterii = new JButton("Vezi Toate Materii");
-	public JButton btnCautaMaterie = new JButton("Cauta Materie");
-	public JButton btnVeziStudentiLaMaterie = new JButton("Vezi Studenti la Materie");
+	public JButton btnActivitatiGrup = new JButton("Activitati Grupuri");
+	public JButton btnInscrieActivitate = new JButton("Inscriere activitate");
+	public JButton btnDescarcaActivitati = new JButton("Descarca Activitati");
 	
 	private JTable tableAfis = new JTable();
 	private JScrollPane jsp = new JScrollPane(tableAfis);
@@ -33,7 +33,7 @@ public class PanelStudentCalendar extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelStudentCalendar() {
+	public PanelActivitatiGrup() {
 		setLayout(null);
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
@@ -50,21 +50,21 @@ public class PanelStudentCalendar extends JPanel {
 		lblMaterie.setBounds(987, 160, 45, 13);
 		add(lblMaterie);
 		
-		btnToateMaterii.setBounds(971, 200, 220, 21);
-		add(btnToateMaterii);
+		btnActivitatiGrup.setBounds(971, 200, 220, 21);
+		add(btnActivitatiGrup);
 		
 		setActionListeners();
 		
-		btnCautaMaterie.setBounds(971, 225, 220, 21);
-		add(btnCautaMaterie);
+		btnInscrieActivitate.setBounds(971, 225, 220, 21);
+		add(btnInscrieActivitate);
 
-		btnVeziStudentiLaMaterie.setBounds(971, 250, 220, 21);
-		add(btnVeziStudentiLaMaterie);
+		btnDescarcaActivitati.setBounds(971, 250, 220, 21);
+		add(btnDescarcaActivitati);
 	}
 
 	public void setActionListeners()
 	{	
-		btnToateMaterii.addActionListener(new ActionListener() {
+		btnActivitatiGrup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
@@ -73,7 +73,7 @@ public class PanelStudentCalendar extends JPanel {
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
-		btnCautaMaterie.addActionListener(new ActionListener() {
+		btnInscrieActivitate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
@@ -82,7 +82,7 @@ public class PanelStudentCalendar extends JPanel {
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
-		btnVeziStudentiLaMaterie.addActionListener(new ActionListener() {
+		btnDescarcaActivitati.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{

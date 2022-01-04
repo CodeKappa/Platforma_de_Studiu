@@ -23,7 +23,7 @@ public class PanelStudent extends JPanel
 	public PanelStudentMaterii materii = new PanelStudentMaterii();
 	public PanelStudentGrup grupuri = new PanelStudentGrup();
 	public PanelStudentMesajeGrup mesaje = new PanelStudentMesajeGrup();
-	public PanelStudentCalendar calendar = new PanelStudentCalendar();
+	public PanelActivitatiGrup calendar = new PanelActivitatiGrup();
 	private JPanel blankPanel = new JPanel();
 	
 	private JPanel frontPanel;
@@ -101,7 +101,7 @@ public class PanelStudent extends JPanel
 				frontPanel = mesaje;
 			}
 		});
-		inputPanel.buttonCalendar.addActionListener(new ActionListener() {
+		inputPanel.buttonActivitatiGrup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frontPanel.setVisible(false);
 				calendar.setVisible(true);
