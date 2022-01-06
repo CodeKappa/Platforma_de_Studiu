@@ -18,6 +18,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -88,6 +89,12 @@ public class PanelPonderi extends JPanel {
 		
 		setActionListeners();
 		
+		tableAfis.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                tableAfisMouseClicked(evt);
+            }
+		});
+		
 	}
 	
 	public void setActionListeners()
@@ -134,4 +141,31 @@ public class PanelPonderi extends JPanel {
 		data.add(Integer.parseInt(textFieldPL.getText()));
 		return data;
 	}
+	
+	public void setData(HashMap<String, String> map)
+	{
+		if(map == null)
+		{
+			textFieldId.setText(null);
+			textFieldPC.setText(null);
+			textFieldPS.setText(null);
+			textFieldPL.setText(null);
+		}
+		else
+		{
+			textFieldId.setText(map.get("id_materie"));
+			textFieldPC.setText(map.get("procent_curs"));
+			textFieldPS.setText(map.get("procent_seminar"));
+			textFieldPL.setText(map.get("procent_laborator"));
+		}	
+	}
+	
+	private void tableAfisMouseClicked(MouseEvent evt) {
+    	HashMap<String, String> dataMap = new HashMap<String, String>();
+    	dataMap.put("id_materie", tableAfis.getValueAt(tableAfis.getSelectedRow(), 1).toString());
+    	dataMap.put("procent_curs", tableAfis.getValueAt(tableAfis.getSelectedRow(), 2).toString());
+    	dataMap.put("procent_seminar", tableAfis.getValueAt(tableAfis.getSelectedRow(), 3).toString());
+    	dataMap.put("procent_laborator", tableAfis.getValueAt(tableAfis.getSelectedRow(), 4).toString());
+        setData(dataMap);
+    }
 }

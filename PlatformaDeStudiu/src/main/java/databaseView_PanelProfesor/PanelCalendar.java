@@ -18,6 +18,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -25,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.Component;
 
 @SuppressWarnings("serial")
 public class PanelCalendar extends JPanel {
@@ -32,9 +35,9 @@ public class PanelCalendar extends JPanel {
 	public JButton btnProgramareCalendar = new JButton("Programare");
 	public JButton btnDescarcareCalendar = new JButton("Descarcare");
 	public JComboBox comboBoxCategorie = new JComboBox();
-	
-	private JTable tableAfis = new JTable();
-	private JScrollPane jsp = new JScrollPane(tableAfis);
+	public JTable tableCalendar = new JTable();
+	public JTable tableMaterii;
+	private JScrollPane jsp = new JScrollPane(tableCalendar);
 	private JTextField textFieldDataFinal;
 	private JTextField textFieldDurata;
 	private JTextField textFieldIdMaterie;
@@ -49,7 +52,7 @@ public class PanelCalendar extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		jsp.setBounds(2, 2, 959, 450);
+		jsp.setBounds(2, 2, 959, 225);
 		add(jsp);
 		
 		textFieldDataInceput = new JTextField();
@@ -111,7 +114,20 @@ public class PanelCalendar extends JPanel {
 		btnDescarcareCalendar.setBounds(971, 415, 105, 21);
 		add(btnDescarcareCalendar);
 		
+		JScrollPane jsp_1 = new JScrollPane((Component) null);
+		jsp_1.setBounds(2, 223, 959, 225);
+		add(jsp_1);
+		
+		tableMaterii = new JTable();
+		jsp_1.setViewportView(tableMaterii);
+		
 		setActionListeners();
+		
+		tableMaterii.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                tableMateriiMouseClicked(evt);
+            }
+		});
 	}
 	
 	public void setActionListeners()
@@ -121,7 +137,7 @@ public class PanelCalendar extends JPanel {
 				try 
 				{
 					ProfesorSqlQueries.programare_calendar(MainClass.db.getCon(), getData()); //TODO
-					setTable(PersoaneSqlQueries.vizualizare_calendar(MainClass.db.getCon(), false));
+					setTable(tableCalendar, PersoaneSqlQueries.vizualizare_calendar(MainClass.db.getCon(), false));
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
@@ -139,7 +155,7 @@ public class PanelCalendar extends JPanel {
 		});
 	}
 	
-	public void setTable(ArrayList<ArrayList<String>> a)
+	public void setTable(JTable table, ArrayList<ArrayList<String>> a)
 	{
 		DefaultTableModel dtm = new DefaultTableModel();
 		if(a.isEmpty() == false)
@@ -156,7 +172,7 @@ public class PanelCalendar extends JPanel {
 			}
 			i++;
 		}	
-		tableAfis.setModel(dtm);
+		table.setModel(dtm);
 		repaint();
 	}
 	
@@ -180,24 +196,28 @@ public class PanelCalendar extends JPanel {
 		return data;
 	}
 	
-	public void setData(ArrayList<String> arr)
+	public void setData(HashMap<String, String> map)
 	{
-		if(arr == null)
+		if(map == null)
 		{
 			textFieldDataInceput.setText(null);
+			textFieldDataFinal.setText(null);
+			textFieldDurata.setText(null);
+			textFieldIdMaterie.setText(null);
+			textFieldNrMaxElevi.setText(null);
+			comboBoxCategorie.setSelectedIndex(0);
 		}
 		else
 		{
-			textFieldDataInceput.setText(arr.get(0));
+			textFieldIdMaterie.setText(map.get("id_materie"));
+			textFieldNrMaxElevi.setText(map.get("nr_max_elevi"));
 		}	
 	}
 	
-    private void tableAfisMouseClicked(MouseEvent evt) {
-        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
-        try 
-        {
-        	setData(AdminSqlQueries.read_grup(MainClass.db.getCon(), id));
-		} 
-        catch (SQLException e) { TreatException.printSQLException(e); }
+    private void tableMateriiMouseClicked(MouseEvent evt) {
+    	HashMap<String, String> dataMap = new HashMap<String, String>();
+    	dataMap.put("id_materie", tableMaterii.getValueAt(tableMaterii.getSelectedRow(), 0).toString());
+    	dataMap.put("nr_max_elevi", tableMaterii.getValueAt(tableMaterii.getSelectedRow(), 3).toString());
+        setData(dataMap);
     }
 }

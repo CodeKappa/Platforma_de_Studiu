@@ -131,12 +131,12 @@ public class ProfesorSqlQueries {
 		con.rollback();
 	}
 	
-	public static ArrayList <ArrayList<String>> vizualizare_studenti(Connection con) throws SQLException 
+	public static ArrayList <ArrayList<String>> vizualizare_studenti_inscrisi(Connection con) throws SQLException 
 	{	
 		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
 		try 
 		{
-			CallableStatement cs = con.prepareCall("{call Vizualizare_studenti_materii(?)}");
+			CallableStatement cs = con.prepareCall("{call Vizualizare_studenti_inscrisi(?)}");
 			cs.setString(1, DatabaseController.user);
 			ResultSet rs = cs.executeQuery();
 			con.commit();
@@ -144,13 +144,46 @@ public class ProfesorSqlQueries {
 			while (rs.next()) 
 			{
 				ArrayList<String> aux = new ArrayList<>();
+				aux.add(rs.getString("id_materie"));
+				aux.add(rs.getString("nume_materie"));
 				aux.add(rs.getString("nume"));
 				aux.add(rs.getString("prenume"));
 				aux.add(rs.getString("cnp"));
 				aux.add(rs.getString("an_studiu"));
 				aux.add(rs.getString("nr_telefon"));
 				aux.add(rs.getString("email"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList <ArrayList<String>> vizualizare_studenti_note(Connection con) throws SQLException 
+	{	
+		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Vizualizare_studenti_note(?)}");
+			cs.setString(1, DatabaseController.user);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<>();
 				aux.add(rs.getString("id_materie"));
+				aux.add(rs.getString("nume_materie"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("prenume"));
+				aux.add(rs.getString("cnp"));
+				aux.add(rs.getString("an_studiu"));
+				aux.add(rs.getString("nr_telefon"));
+				aux.add(rs.getString("email"));
 				aux.add(rs.getString("categorie"));
 				aux.add(rs.getString("nota"));
 				arr.add(aux);
@@ -240,6 +273,34 @@ public class ProfesorSqlQueries {
 			cs.setInt(4, data.get(3));
 			cs.execute();
 			con.commit();
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList <ArrayList<String>> vizualizare_materii(Connection con) throws SQLException 
+	{	
+		ArrayList <ArrayList<String>> arr = new ArrayList <ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Vizualizare_materii_profesor(?)}");
+			cs.setString(1, DatabaseController.user);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<>();
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("descriere"));
+				aux.add(rs.getString("nr_max_studenti"));
+				arr.add(aux);
+			}	
 		} 
 		catch (SQLException e) 
 		{

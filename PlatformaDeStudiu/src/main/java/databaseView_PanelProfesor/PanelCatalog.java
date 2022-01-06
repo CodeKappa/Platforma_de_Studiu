@@ -18,6 +18,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -25,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.Component;
 
 @SuppressWarnings("serial")
 public class PanelCatalog extends JPanel {
@@ -32,9 +34,10 @@ public class PanelCatalog extends JPanel {
 	public JButton btnNotareCatalog = new JButton("Notare");
 	public JButton btnDescarcareCatalog = new JButton("Descarcare");
 	public JComboBox comboBoxCategorie = new JComboBox();
+	public JTable tableCatalog = new JTable();
+	public JTable tableStudenti;
 	
-	private JTable tableAfis = new JTable();
-	private JScrollPane jsp = new JScrollPane(tableAfis);
+	private JScrollPane jsp = new JScrollPane(tableCatalog);
 	private JTextField textFieldNota;
 	private JLabel lblIdmaterie = new JLabel("ID_Materie");
 	private JTextField textFieldMaterie = new JTextField();
@@ -48,7 +51,7 @@ public class PanelCatalog extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		jsp.setBounds(2, 2, 959, 450);
+		jsp.setBounds(2, 2, 959, 225);
 		add(jsp);
 		
 		textFieldCNP = new JTextField();
@@ -90,8 +93,20 @@ public class PanelCatalog extends JPanel {
 		
 		add(textFieldMaterie);
 		
+		JScrollPane jsp_1 = new JScrollPane((Component) null);
+		jsp_1.setBounds(2, 225, 959, 225);
+		add(jsp_1);
+		
+		tableStudenti = new JTable();
+		jsp_1.setViewportView(tableStudenti);
+		
 		setActionListeners();
 		
+		tableStudenti.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                tableStudentiMouseClicked(evt);
+            }
+		});
 	}
 	
 	public void setActionListeners()
@@ -101,7 +116,7 @@ public class PanelCatalog extends JPanel {
 				try 
 				{
 					ProfesorSqlQueries.notare_studenti(MainClass.db.getCon(), getData()); //TODO
-					setTable(ProfesorSqlQueries.vizualizare_studenti(MainClass.db.getCon()));
+					setTable(tableCatalog, ProfesorSqlQueries.vizualizare_studenti_note(MainClass.db.getCon()));
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
@@ -119,7 +134,7 @@ public class PanelCatalog extends JPanel {
 		});
 	}
 	
-	public void setTable(ArrayList<ArrayList<String>> a)
+	public void setTable(JTable table, ArrayList<ArrayList<String>> a)
 	{
 		DefaultTableModel dtm = new DefaultTableModel();
 		if(a.isEmpty() == false)
@@ -136,8 +151,24 @@ public class PanelCatalog extends JPanel {
 			}
 			i++;
 		}	
-		tableAfis.setModel(dtm);
+		table.setModel(dtm);
 		repaint();
+	}
+	
+	public void setData(HashMap<String, String> map)
+	{
+		if(map == null)
+		{
+			textFieldMaterie.setText(null);
+			textFieldCNP.setText(null);
+			textFieldNota.setText(null);
+			comboBoxCategorie.setSelectedIndex(0);
+		}
+		else
+		{
+			textFieldMaterie.setText(map.get("id_materie"));
+			textFieldCNP.setText(map.get("cnp"));
+		}	
 	}
 	
 	public ArrayList<String> getData()
@@ -157,4 +188,11 @@ public class PanelCatalog extends JPanel {
 		data.add(textFieldNota.getText());
 		return data;
 	}
+	
+    private void tableStudentiMouseClicked(MouseEvent evt) {
+    	HashMap<String, String> dataMap = new HashMap<String, String>();
+    	dataMap.put("id_materie", tableStudenti.getValueAt(tableStudenti.getSelectedRow(), 0).toString());
+    	dataMap.put("cnp", tableStudenti.getValueAt(tableStudenti.getSelectedRow(), 4).toString());
+        setData(dataMap);
+    }
 }

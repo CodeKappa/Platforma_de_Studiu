@@ -50,7 +50,8 @@ public class ProfesorListeners{
 				try 
 				{
 					theView.panelProfesorView.calendarPanel.setData(null);
-					theView.panelProfesorView.calendarPanel.setTable(PersoaneSqlQueries.vizualizare_calendar(MainClass.db.getCon(), false));
+					theView.panelProfesorView.calendarPanel.setTable(theView.panelProfesorView.calendarPanel.tableCalendar, PersoaneSqlQueries.vizualizare_calendar(MainClass.db.getCon(), false));
+					theView.panelProfesorView.calendarPanel.setTable(theView.panelProfesorView.calendarPanel.tableMaterii, ProfesorSqlQueries.vizualizare_materii(MainClass.db.getCon()));
 				}
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
@@ -59,7 +60,9 @@ public class ProfesorListeners{
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					theView.panelProfesorView.catalogPanel.setTable(ProfesorSqlQueries.vizualizare_studenti(MainClass.db.getCon()));
+					theView.panelProfesorView.catalogPanel.setData(null);
+					theView.panelProfesorView.catalogPanel.setTable(theView.panelProfesorView.catalogPanel.tableCatalog, ProfesorSqlQueries.vizualizare_studenti_note(MainClass.db.getCon()));
+					theView.panelProfesorView.catalogPanel.setTable(theView.panelProfesorView.catalogPanel.tableStudenti, ProfesorSqlQueries.vizualizare_studenti_inscrisi(MainClass.db.getCon()));
 				}
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
