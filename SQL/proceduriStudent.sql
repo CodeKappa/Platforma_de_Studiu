@@ -58,7 +58,7 @@ BEGIN
     SELECT c.nr_maxim INTO nr_elevi_max FROM calendar c WHERE c.id = id_calendar;
     IF (nr_elevi < nr_elevi_max) THEN
 		CREATE TEMPORARY TABLE programari_existente
-        SELECT c.data_programarii as data_inceperii, addtime(c.data_programarii, c.durata) as data_finalizarii from calendar c 
+        SELECT c.data_programarii, addtime(c.data_programarii, c.durata) as data_finalizarii from calendar c 
 		JOIN calendar_studenti cs ON c.id = cs.id_calendar
 		WHERE cs.cnp_student = cnp_student;
         SELECT 1 INTO exista_suprapuneri FROM programari_existente pe JOIN date_programari dp ON (dp.data_programarii < pe.data_finalizarii AND pe.data_programarii < dp.data_finalizarii);
