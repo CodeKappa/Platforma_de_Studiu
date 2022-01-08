@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import databaseController.DatabaseController;
 import databaseView.PanelFeedback;
+import main.MainClass;
 
 public class StudentSqlQueries {
 	/**
@@ -41,13 +43,13 @@ public class StudentSqlQueries {
 		return arr;
 	}
 	
-	public static ArrayList<ArrayList<String>> materii_propri(Connection con, String cnp) throws SQLException 
+	public static ArrayList<ArrayList<String>> materii_proprii(Connection con) throws SQLException 
 	{	
 		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
 		try 
 		{
 			CallableStatement cs = con.prepareCall("{call Materii_propri(?)}");
-			cs.setString(1, cnp);
+			cs.setString(1, DatabaseController.user);
 			ResultSet rs = cs.executeQuery();
 			con.commit();
 			
@@ -77,7 +79,7 @@ public class StudentSqlQueries {
 		return arr;
 	}
 	
-	public static ArrayList<ArrayList<String>> inscriere_materie(Connection con, String materie, String cnp) throws SQLException 
+	public static void inscriere_materie(Connection con, String materie, String cnp) throws SQLException 
 	{	
 		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
 		try 
@@ -93,13 +95,11 @@ public class StudentSqlQueries {
 		{
 			TreatException.printSQLException(e);
 			con.rollback();
-			return null;
 		}
 		con.rollback();
-		return arr;
 	}
 	
-	public static ArrayList<ArrayList<String>> renuntare_materie(Connection con, String id_mat, String cnp) throws SQLException 
+	public static void renuntare_materie(Connection con, String id_mat, String cnp) throws SQLException 
 	{	
 		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
 		try 
@@ -115,10 +115,8 @@ public class StudentSqlQueries {
 		{
 			TreatException.printSQLException(e);
 			con.rollback();
-			return null;
 		}
 		con.rollback();
-		return arr;
 	}
 	
 	public static ArrayList<ArrayList<String>> vezi_grupuri(Connection con) throws SQLException 
@@ -177,9 +175,9 @@ public class StudentSqlQueries {
 		return arr;
 	}
 	
-	public static ArrayList<ArrayList<String>> inscriere_grup(Connection con, String id, String cnp) throws SQLException 
+	public static void inscriere_grup(Connection con, String id, String cnp) throws SQLException 
 	{	
-		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		
 		try 
 		{
 			CallableStatement cs = con.prepareCall("{call Inscriere_grup(?,?)}");
@@ -193,15 +191,12 @@ public class StudentSqlQueries {
 		{
 			TreatException.printSQLException(e);
 			con.rollback();
-			return null;
 		}
 		con.rollback();
-		return arr;
 	}
 	
-	public static ArrayList<ArrayList<String>> renuntare_grup(Connection con, String id, String cnp) throws SQLException 
+	public static void renuntare_grup(Connection con, String id, String cnp) throws SQLException 
 	{	
-		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
 		try 
 		{
 			CallableStatement cs = con.prepareCall("{call Renuntare_materie(?,?)}");
@@ -215,10 +210,8 @@ public class StudentSqlQueries {
 		{
 			TreatException.printSQLException(e);
 			con.rollback();
-			return null;
 		}
 		con.rollback();
-		return arr;
 	}
 	
 	public static ArrayList<ArrayList<String>> trimite_mesaj(Connection con, String msj, String grup, String cnp) throws SQLException 
@@ -301,4 +294,139 @@ public class StudentSqlQueries {
 		return arr;
 	}
 	
+	public static ArrayList<ArrayList<String>> vizualizare_calendar(Connection con) throws SQLException 
+	{	
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Vizualizare_calendar(?)}");
+			cs.setString(1, DatabaseController.user);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<String>();
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("nume_materie"));
+				aux.add(rs.getString("categorie"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("prenume"));
+				aux.add(rs.getString("data_programarii"));
+				aux.add(rs.getString("durata"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static ArrayList<ArrayList<String>> vizualizare_ore_disponibile(Connection con) throws SQLException 
+	{	
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Vizualizare_ore_disponibile(?)}");
+			cs.setString(1, DatabaseController.user);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<String>();
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("nume_materie"));
+				aux.add(rs.getString("categorie"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("prenume"));
+				aux.add(rs.getString("data_programarii"));
+				aux.add(rs.getString("data_terminarii"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static void inscriere_calendar(Connection con, String id_calendar) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Inscriere_calendar(?,?)}");
+			cs.setInt(1, Integer.parseInt(id_calendar));
+			cs.setString(2, DatabaseController.user);
+			cs.execute();
+			con.commit();
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+		}
+		con.rollback();
+	}
+	
+	public static void generare_calendar(Connection con) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Generare_orar(?)}");
+			cs.setString(1, DatabaseController.user);
+			cs.execute();
+			con.commit();
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+		}
+		con.rollback();
+	}
+	
+	public static void renuntare_calendar_activitate(Connection con, String id_calendar) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Renuntare_calendar_activitate(?,?)}");
+			cs.setString(1, DatabaseController.user);
+			cs.setInt(2, Integer.parseInt(id_calendar));
+			cs.execute();
+			con.commit();
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+		}
+		con.rollback();
+	}
+	
+	public static void renuntare_calendar(Connection con) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Renuntare_calendar(?)}");
+			cs.setString(1, DatabaseController.user);
+			cs.execute();
+			con.commit();
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+		}
+		con.rollback();
+	}
 }

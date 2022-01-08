@@ -36,30 +36,50 @@ END; //
 
 CREATE PROCEDURE Vizualizare_calendar(cnp_student char(13))
 BEGIN
-	SELECT c.* FROM calendar c
+	SELECT c.id, m.nume AS nume_materie, c.categorie, p.nume, p.prenume, c.data_programarii, c.durata FROM calendar c
     JOIN materii m ON c.id_materie = m.id
-    JOIN materii_studenti ms ON m.id = ms.id_materie
-    WHERE ms.cnp_student = cnp_student;
+    JOIN persoane p ON p.cnp = c.cnp_profesor
+    JOIN calendar_studenti cs ON c.id = cs.id_calendar
+    WHERE cs.cnp_student = cnp_student
+    GROUP BY c.id
+    ORDER BY c.data_programarii;
 END; //
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-CREATE PROCEDURE Inscriere_calendar(id_materie int, cnp_student char(13))
-BEGIN
-	IF(((SELECT COUNT(*) FROM calendar_studenti cs
-    JOIN calendar c ON cs.id_calendar = c.id
-    WHERE c.id_materie = id_materie) < (SELECT nr_maxim FROM calendar c WHERE c.id_materie = id_materie)) AND current_timestamp() < (SELECT data_programarii)) THEN
-		
-END; //
-*/
 
-#Vizualizare note-------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE Inscriere_calendar(id_calendar int, cnp_student char(13))
+BEGIN
+	DECLARE nr_elevi, nr_elevi_max, exista_suprapuneri int default 0;
+    DECLARE data_programarii, data_terminarii datetime;
+    CREATE TEMPORARY TABLE date_programari
+    SELECT c.data_programarii, addtime(c.data_programarii, c.durata) as data_finalizarii FROM calendar c WHERE c.id = id_calendar;
+	SELECT COUNT(*) INTO nr_elevi FROM calendar_studenti cs WHERE cs.id_calendar = id_calendar;
+    SELECT c.nr_maxim INTO nr_elevi_max FROM calendar c WHERE c.id = id_calendar;
+    IF (nr_elevi < nr_elevi_max) THEN
+		CREATE TEMPORARY TABLE programari_existente
+        SELECT c.data_programarii as data_inceperii, addtime(c.data_programarii, c.durata) as data_finalizarii from calendar c 
+		JOIN calendar_studenti cs ON c.id = cs.id_calendar
+		WHERE cs.cnp_student = cnp_student;
+        SELECT 1 INTO exista_suprapuneri FROM programari_existente pe JOIN date_programari dp ON (dp.data_programarii < pe.data_finalizarii AND pe.data_programarii < dp.data_finalizarii);
+        DROP TEMPORARY TABLE programari_existente;
+		IF(exista_suprapuneri = 0) THEN
+			INSERT INTO calendar_studenti VALUES (cnp_student, id_calendar);
+        ELSE
+			DROP TEMPORARY TABLE date_programari;
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Intersectie date programari!';
+        END IF;
+    ELSE
+		DROP TEMPORARY TABLE date_programari;
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Numar maxim participanti atins!';
+    END IF;
+    DROP TEMPORARY TABLE date_programari;
+END; //
+
 CREATE PROCEDURE Vizualizare_note(cnp_student char(13))
 BEGIN
 	SELECT x.nume, m.categorie, m.nota FROM materii_studenti m JOIN materii x ON m.id_materie=x.id WHERE cnp_student = m.cnp_student;
 END; //
-#-------------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE PROCEDURE Vizualizare_grupuri()
 BEGIN
@@ -126,4 +146,114 @@ BEGIN
 	INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\activitati.csv' 
 	FIELDS TERMINATED BY ','  
 	LINES TERMINATED BY '\r\n';
+END; //
+
+CREATE PROCEDURE Generare_orar(cnp_student char(13))
+BEGIN
+	DECLARE nr_activitati, i, j int default 0;
+    
+    SELECT COUNT(DISTINCT c.id_materie, c.categorie)
+    INTO nr_activitati
+	FROM calendar c 
+	JOIN materii m ON c.id_materie = m.id
+	JOIN materii_studenti ms ON m.id = ms.id_materie
+	WHERE ms.cnp_student = "10003" AND adddate(current_timestamp(), 7) > data_programarii;
+	
+    CREATE TEMPORARY TABLE lista_ore
+    SELECT c.id, c.id_materie, c.data_programarii, addtime(c.data_programarii, c.durata) as data_terminarii, c.categorie
+    FROM calendar c 
+    JOIN materii m ON c.id_materie = m.id
+    JOIN materii_studenti ms ON m.id = ms.id_materie
+    WHERE ms.cnp_student = cnp_student AND adddate(current_timestamp(), 7) > data_programarii
+    GROUP BY id;
+    IF nr_activitati = 1 THEN
+		INSERT INTO calendar_studenti VALUES (cnp_student, (SELECT id FROM lista_ore LIMIT 1));
+    ELSEIF nr_activitati > 1 THEN
+		CREATE TEMPORARY TABLE self
+        SELECT id AS id0, id_materie AS id_materie0, data_programarii AS data_programarii0, data_terminarii AS data_terminarii0, categorie AS categorie0 FROM lista_ore;
+        WHILE i+1 < nr_activitati DO
+			CREATE TEMPORARY TABLE lo
+			SELECT * FROM self;
+            CREATE TEMPORARY TABLE lo2
+			SELECT * FROM lista_ore;
+			DROP TEMPORARY TABLE self;
+            SET i = i + 1;
+            SET @id = CONCAT("id", i);
+            SET @id_materie = CONCAT("id_materie", i);
+            SET @data_programarii = CONCAT("data_programarii", i);
+            SET @data_terminarii = CONCAT("data_terminarii", i);
+            SET @categorie = CONCAT("categorie", i);
+            SET @s = CONCAT("CREATE TEMPORARY TABLE self SELECT lo.*, lo2.id AS ", @id, ", lo2.id_materie AS ", @id_materie, ", lo2.data_programarii AS ", @data_programarii, ", lo2.data_terminarii AS ", @data_terminarii, ", lo2.categorie AS ", @categorie, " FROM lo JOIN lo2");
+            PREPARE stmt FROM @s;
+            EXECUTE stmt;
+            DROP TEMPORARY TABLE lo;
+            DROP TEMPORARY TABLE lo2;
+		END WHILE;
+        SET i = 0;
+        SET SQL_SAFE_UPDATES = 0;
+        WHILE i < nr_activitati - 1 DO
+			SET j = i + 1;
+            WHILE j < nr_activitati DO
+				SET @idi = CONCAT("id", i);
+                SET @idj = CONCAT("id", j);
+                SET @data_programariii = CONCAT("data_programarii", i);
+                SET @data_programariij = CONCAT("data_programarii", j);
+                SET @data_terminariii = CONCAT("data_terminarii", i);
+				SET @data_terminariij = CONCAT("data_terminarii", j);
+                SET @id_materiei = CONCAT("id_materie", i);
+                SET @id_materiej = CONCAT("id_materie", j);
+                SET @categoriei = CONCAT("categorie", i);
+                SET @categoriej = CONCAT("categorie", j);
+                SET @s = CONCAT("DELETE FROM self WHERE 
+								(", @idi, " = ", @idj, ") OR
+								(", @data_programariii, " < ", @data_terminariij, " AND ", @data_programariij, " < ", @data_terminariii, ") OR
+								(", @id_materiei, " = ", @id_materiej, " AND ", @categoriei, " = ", @categoriej, ")");
+				PREPARE stmt FROM @s;
+                EXECUTE stmt;
+                SET j = j + 1;
+			END WHILE;
+            SET i = i + 1;
+        END WHILE;
+        SET SQL_SAFE_UPDATES = 1;
+        SET j = 0;
+        SELECT COUNT(*) INTO j FROM self;
+        IF j != 0 THEN 
+			SET i = 0;
+			DELETE FROM calendar_studenti cs WHERE cs.cnp_student = cnp_student; 
+			WHILE i < nr_activitati DO
+				SET @idi = CONCAT("id", i);
+				SET @s = CONCAT("SELECT ", @idi, " INTO @temp FROM self LIMIT 1");
+				PREPARE stmt FROM @s;
+				EXECUTE stmt;
+				INSERT INTO calendar_studenti VALUES (cnp_student, @temp);
+				SET i = i + 1;
+			END WHILE;
+		ELSE
+			DROP TEMPORARY TABLE self;
+			DROP TEMPORARY TABLE lista_ore;
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nu s-a gasit o varianta de orar!';
+		END IF;
+        DROP TEMPORARY TABLE self;
+	END IF;
+    DROP TEMPORARY TABLE lista_ore;
+END; //
+
+CREATE PROCEDURE Renuntare_calendar_activitate(cnp_student char(13), id_calendar int)
+BEGIN
+	DELETE FROM calendar_studenti cs WHERE cs.cnp_student = cnp_student AND cs.id_calendar = id_calendar;
+END; //
+
+CREATE PROCEDURE Renuntare_calendar(cnp_student char(13))
+BEGIN
+	DELETE FROM calendar_studenti cs WHERE cs.cnp_student = cnp_student;
+END; //
+
+CREATE PROCEDURE Vizualizare_ore_disponibile(cnp_student char(13))
+BEGIN
+	SELECT c.id, m.nume AS nume_materie, c.categorie, p.nume, p.prenume, c.data_programarii, addtime(c.data_programarii, c.durata) as data_terminarii FROM calendar c
+    JOIN materii m ON c.id_materie = m.id
+    JOIN materii_studenti ms ON m.id = ms.id_materie
+    JOIN persoane p ON p.cnp = c.cnp_profesor
+    WHERE ms.cnp_student = cnp_student AND adddate(current_timestamp(), 7) > data_programarii
+    GROUP BY id;
 END; //

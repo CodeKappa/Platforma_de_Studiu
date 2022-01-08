@@ -115,7 +115,7 @@ public class PanelStudentGrup extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(StudentSqlQueries.inscriere_grup(MainClass.db.getCon(), textField_id.getText(), cnp));
+					StudentSqlQueries.inscriere_grup(MainClass.db.getCon(), textField_id.getText(), cnp);
 					setData();
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
@@ -125,7 +125,7 @@ public class PanelStudentGrup extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(StudentSqlQueries.renuntare_grup(MainClass.db.getCon(), textField_id.getText(), cnp));
+					StudentSqlQueries.renuntare_grup(MainClass.db.getCon(), textField_id.getText(), cnp);
 					setData();
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }

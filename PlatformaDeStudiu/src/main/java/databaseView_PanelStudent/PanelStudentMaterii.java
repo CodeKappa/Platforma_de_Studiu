@@ -21,21 +21,23 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.Component;
 
 @SuppressWarnings("serial")
 public class PanelStudentMaterii extends JPanel {
 	private JTextField textField_materie;
 	private JLabel lblMaterie;
-	public JButton btnMateriiPropri = new JButton("Materiile Tale");
 	public JButton btnCautaMaterieDupaNume = new JButton("Cauta Materie Dupa Nume");
 	public JButton btnInscriereMaterie = new JButton("Inscriete La Materie (nume)");
 	public JButton btnRenuntaLaMaterie = new JButton("Renunta La Materie (id)");
+	public JTable tableInscrise = new JTable();
+	public JTable tableMaterii = new JTable();
 	
-	private JTable tableAfis = new JTable();
-	private JScrollPane jsp = new JScrollPane(tableAfis);
+	private JScrollPane jsp = new JScrollPane(tableInscrise);
 	
 	public String cnp;
 	private JTextField textField_id;
+	private final JScrollPane jsp_1 = new JScrollPane((Component) null);
 	
 	/**
 	 * Create the panel.
@@ -45,7 +47,7 @@ public class PanelStudentMaterii extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		jsp.setBounds(2, 2, 959, 447);
+		jsp.setBounds(2, 2, 959, 225);
 		add(jsp);
 		
 		textField_materie = new JTextField();
@@ -56,9 +58,6 @@ public class PanelStudentMaterii extends JPanel {
 		lblMaterie = new JLabel("Materie");
 		lblMaterie.setBounds(987, 160, 45, 13);
 		add(lblMaterie);
-		
-		btnMateriiPropri.setBounds(971, 200, 220, 21);
-		add(btnMateriiPropri);
 		
 		setActionListeners();
 		
@@ -80,30 +79,32 @@ public class PanelStudentMaterii extends JPanel {
 		JLabel lblId = new JLabel("ID");
 		lblId.setBounds(987, 131, 45, 13);
 		add(lblId);
+		jsp_1.setBounds(2, 225, 959, 225);
 		
-        tableAfis.addMouseListener(new MouseAdapter() {
+		add(jsp_1);
+		
+		jsp_1.setViewportView(tableMaterii);
+		
+		tableMaterii.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                tableAfisMouseClicked(evt);
+                tableMateriiMouseClicked(evt);
+            }
+        });
+		
+		tableInscrise.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+            	tableInscriseMouseClicked(evt);
             }
         });
 	}
 
 	public void setActionListeners()
-	{	
-		btnMateriiPropri.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					setTable(StudentSqlQueries.materii_propri(MainClass.db.getCon(),cnp));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
+	{
 		btnCautaMaterieDupaNume.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(AdminSqlQueries.cauta_materie(MainClass.db.getCon(), textField_materie.getText()));
+					setTable(tableMaterii, AdminSqlQueries.cauta_materie(MainClass.db.getCon(), textField_materie.getText()));
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
@@ -112,7 +113,7 @@ public class PanelStudentMaterii extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(StudentSqlQueries.inscriere_materie(MainClass.db.getCon(), textField_materie.getText(), cnp));
+					StudentSqlQueries.inscriere_materie(MainClass.db.getCon(), textField_materie.getText(), cnp);
 					setData();
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
@@ -122,7 +123,7 @@ public class PanelStudentMaterii extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(StudentSqlQueries.renuntare_materie(MainClass.db.getCon(), textField_id.getText(), cnp));
+					StudentSqlQueries.renuntare_materie(MainClass.db.getCon(), textField_id.getText(), cnp);
 					setData();
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
@@ -130,9 +131,8 @@ public class PanelStudentMaterii extends JPanel {
 		});
 	}
 	
-	public void setTable(ArrayList<ArrayList<String>> a)
+	public void setTable(JTable table, ArrayList<ArrayList<String>> a)
 	{
-		if (a == null) return;
 		DefaultTableModel dtm = new DefaultTableModel();
 		if(a.isEmpty() == false)
 			dtm.setColumnCount(a.get(0).size());
@@ -148,7 +148,7 @@ public class PanelStudentMaterii extends JPanel {
 			}
 			i++;
 		}	
-		tableAfis.setModel(dtm);
+		table.setModel(dtm);
 		repaint();
 	}
 	
@@ -157,14 +157,22 @@ public class PanelStudentMaterii extends JPanel {
 		textField_materie.setText(null);
 		try 
 		{
-			setTable(AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
+			setTable(tableMaterii, AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
+			setTable(tableInscrise, StudentSqlQueries.materii_proprii(MainClass.db.getCon()));
 		} 
 		catch (SQLException e1) { TreatException.printSQLException(e1); }
 	}
 	
-    private void tableAfisMouseClicked(MouseEvent evt) {
-        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
-        String nume = tableAfis.getValueAt(tableAfis.getSelectedRow(), 1).toString();
+    private void tableMateriiMouseClicked(MouseEvent evt) {
+        String id = tableMaterii.getValueAt(tableMaterii.getSelectedRow(), 0).toString();
+        String nume = tableMaterii.getValueAt(tableMaterii.getSelectedRow(), 1).toString();
+        textField_materie.setText(nume);
+        textField_id.setText(id);
+    }
+    
+    private void tableInscriseMouseClicked(MouseEvent evt) {
+        String id = tableInscrise.getValueAt(tableInscrise.getSelectedRow(), 0).toString();
+        String nume = tableInscrise.getValueAt(tableInscrise.getSelectedRow(), 1).toString();
         textField_materie.setText(nume);
         textField_id.setText(id);
     }

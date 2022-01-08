@@ -52,5 +52,10 @@ public class StudentListeners{
 					theView.panelStudentView.mesaje.setData();		
 			}
 		});
+    	theView.panelStudentView.inputPanel.buttonCalendar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					theView.panelStudentView.calendar.setData();		
+			}
+		});
     }
 }

@@ -14,6 +14,7 @@ public class PanelButoaneStudent extends JPanel
 	public final JButton buttonGrupuri = new JButton("Grupuri");
 	public final JButton buttonMesajeGrup = new JButton("Mesaje Grup");
 	public final JButton buttonActivitatiGrup = new JButton("Activitati Grup");
+	public final JButton buttonCalendar = new JButton("Calendar");
 	
 	PanelButoaneStudent()
 	{
@@ -33,6 +34,9 @@ public class PanelButoaneStudent extends JPanel
 		
 		buttonActivitatiGrup.setBounds(51, 206, 181, 20);
 		add(buttonActivitatiGrup);
+		
+		buttonCalendar.setBounds(51, 237, 181, 20);
+		add(buttonCalendar);
 		
 		this.setBorder(new LineBorder(Color.BLACK, 1));
 	}

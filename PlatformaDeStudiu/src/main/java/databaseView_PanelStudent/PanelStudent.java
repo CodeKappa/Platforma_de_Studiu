@@ -23,7 +23,8 @@ public class PanelStudent extends JPanel
 	public PanelStudentMaterii materii = new PanelStudentMaterii();
 	public PanelStudentGrup grupuri = new PanelStudentGrup();
 	public PanelStudentMesajeGrup mesaje = new PanelStudentMesajeGrup();
-	public PanelActivitatiGrup calendar = new PanelActivitatiGrup();
+	public PanelActivitatiGrup activitati = new PanelActivitatiGrup();
+	public PanelCalendar calendar = new PanelCalendar();
 	private JPanel blankPanel = new JPanel();
 	
 	private JPanel frontPanel;
@@ -41,6 +42,7 @@ public class PanelStudent extends JPanel
 		materii.setBounds(10, 110, 1199, 450);
 		grupuri.setBounds(10, 110, 1199, 450);
 		mesaje.setBounds(10, 110, 1199, 450);
+		activitati.setBounds(10, 110, 1199, 450);
 		calendar.setBounds(10, 110, 1199, 450);
 		
 		inputPanel.setBounds(1219, 110, 271 , 419);
@@ -52,6 +54,7 @@ public class PanelStudent extends JPanel
 		add(materii);
 		add(grupuri);
 		add(mesaje);
+		add(activitati);
 		add(calendar);
 		
 		blankPanel.setVisible(true);
@@ -59,6 +62,7 @@ public class PanelStudent extends JPanel
 		materii.setVisible(false);
 		grupuri.setVisible(false);
 		mesaje.setVisible(false);
+		activitati.setVisible(false);
 		calendar.setVisible(false);
 		
 		frontPanel = blankPanel;
@@ -102,6 +106,13 @@ public class PanelStudent extends JPanel
 			}
 		});
 		inputPanel.buttonActivitatiGrup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frontPanel.setVisible(false);
+				activitati.setVisible(true);
+				frontPanel = activitati;
+			}
+		});
+		inputPanel.buttonCalendar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frontPanel.setVisible(false);
 				calendar.setVisible(true);

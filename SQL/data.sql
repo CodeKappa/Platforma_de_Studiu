@@ -15,7 +15,7 @@ call create_user (2, "10003", "numescu", "studentescu", "Pomilor 38", "077010000
 call create_user (2, "10233", "numescu", "studentescu", "Pomilor 38", "0770103203", "student2", "ROBTRL37831", "12345", 2, 3, null);
 call create_user (3, "10004", "Budiul", "Cristian", "Pomilor 39", "0770123423", "profesor", "ROBTRL42131", "12345", 2, 20, "informatica");
 
-insert into materii values (null, "bd", "baze de date", 10,30, 60, 150, 7, 7, 7);
+insert into materii values (null, "bd", "baze de date", 10, 30, 60, 150, 7, 7, 7);
 insert into materii values (null, "poo", "programare orientata obiect", "10","30", "60", "150", 7, 7, 7);
 insert into materii values (null, "can", "can", "10","30", "60", "150", 7, 7, 7);
 insert into materii values (null, "af", "af", "10","30", "60", "150", 7, 7, 7);
@@ -27,8 +27,11 @@ insert into materii values (null, "cpp", "better than c", "10","30", "60", "150"
 insert into materii values (null, "java", "why", "10","30", "60", "150", 7, 7, 7);
 insert into materii values (null, "bd", "why", "10","30", "60", "150", 7, 7, 7);
 
-insert into calendar values(null, "2022-10-08 00:00:00", "2:00:00", 1, "10004", "Curs", 150);
-insert into calendar values(null, "2022-10-15 00:00:00", "2:00:00", 1, "10004", "Curs", 150);
+call Programare_calendar("10004", "2022-01-10 08:00:00", "2022-05-12 08:00:00", "2:00:00", 1, "Curs", 150); 
+call Programare_calendar("10004", "2022-01-10 08:00:00", "2022-05-12 08:00:00", "2:00:00", 1, "Seminar", 30); 
+call Programare_calendar("10004", "2022-01-10 08:00:00", "2022-05-12 08:00:00", "2:00:00", 1, "Laborator", 15); 
+#call Programare_calendar("10004", "2022-01-10 10:00:00", "2022-05-12 10:00:00", "2:00:00", 1, "Seminar", 30); 
+#call Programare_calendar("10004", "2022-01-10 12:00:00", "2022-05-12 12:00:00", "2:00:00", 1, "Laborator", 15); 
 
 insert into grup_studiu_activitati values (null, 1, "10004", "Activitate 1", "Activitate Grup BD", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
 insert into grup_studiu_activitati values (null, 1, null, "Activitate 2", "Activitate Grup BD", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
@@ -49,4 +52,6 @@ insert into materii_studenti values (2, "10003", 'Laborator', null);
 insert into materii_profesor values (1, "10004");
 insert into grup_studiu values (null, 1);
 insert into grup_studiu values (null, 2);
+
+call Inscriere_calendar(1, "10003");
 
