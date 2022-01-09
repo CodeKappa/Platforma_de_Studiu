@@ -101,12 +101,13 @@ BEGIN
 	SELECT p.nume, p.prenume FROM grup_studiu_studenti gss JOIN persoane p on p.cnp = gss.cnp_student where gss.id_grup = id_grup;
 END; //
 
-CREATE PROCEDURE Adaugare_activitate_grup(id_grup int, nume varchar(50), descriere varchar(250), durata time, durata_expirare time, numar_minim int)
+CREATE PROCEDURE Adaugare_activitate_grup(id_grup int, nume varchar(50), descriere varchar(250), data_programarii varchar(50), durata varchar(50), data_expirare varchar(50), numar_minim int)
 BEGIN
-	SELECT 1 INTO @cgs FROM grup_studiu gs WHERE gs.id = id_grup;
+	DECLARE cgs int;
+	SELECT 1 INTO cgs FROM grup_studiu gs WHERE gs.id = id_grup;
     IF(@cgs = 1)
     THEN
-		INSERT INTO grup_studiu_activitati VALUES (id_grup, nume, descriere, current_timestamp(), durata, current_timestamp() + durata_expirare, numar_minim);
+		INSERT INTO grup_studiu_activitati VALUES (id_grup, nume, descriere, CONVERT(data_programarii, datetime), CONVERT(durata, time), CONVERT(data_expirare, datetime), numar_minim);
     ELSE
 		SIGNAL SQLSTATE '45000' SET message_text='Grupul nu exista';
     END IF;
