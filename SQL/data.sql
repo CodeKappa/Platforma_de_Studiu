@@ -30,8 +30,8 @@ insert into materii values (null, "bd", "why", "10","30", "60", "150", 7, 7, 7);
 call Programare_calendar("10004", "2022-01-10 08:00:00", "2022-05-12 08:00:00", "2:00:00", 1, "Curs", 150); 
 call Programare_calendar("10004", "2022-01-10 08:00:00", "2022-05-12 08:00:00", "2:00:00", 1, "Seminar", 30); 
 call Programare_calendar("10004", "2022-01-10 08:00:00", "2022-05-12 08:00:00", "2:00:00", 1, "Laborator", 15); 
-call Programare_calendar("10004", "2022-01-10 10:00:00", "2022-05-12 10:00:00", "2:00:00", 1, "Seminar", 30); 
-call Programare_calendar("10004", "2022-01-10 12:00:00", "2022-05-12 12:00:00", "2:00:00", 1, "Laborator", 15); 
+call Programare_calendar("10004", "2022-01-10 12:00:00", "2022-05-12 12:00:00", "2:00:00", 1, "Seminar", 30); 
+call Programare_calendar("10004", "2022-01-10 16:00:00", "2022-05-12 16:00:00", "2:00:00", 1, "Laborator", 15); 
 
 insert into grup_studiu_activitati values (null, 1, "10004", "Activitate 1", "Activitate Grup BD", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
 insert into grup_studiu_activitati values (null, 1, null, "Activitate 2", "Activitate Grup BD", "2022-10-09 00:00:00", "2:00:00", "2022-10-09 00:00:00", 0);
