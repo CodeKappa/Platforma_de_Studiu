@@ -1,3 +1,4 @@
+#procedures used by profesors
 USE gestiune_studenti;
 
 DELIMITER //

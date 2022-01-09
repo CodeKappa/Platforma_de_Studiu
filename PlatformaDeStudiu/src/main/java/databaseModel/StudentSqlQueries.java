@@ -195,6 +195,25 @@ public class StudentSqlQueries {
 		con.rollback();
 	}
 	
+	public static void descarca_activitati_grup(Connection con, String cnp) throws SQLException 
+	{	
+		
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Descarcare_activitati2(?)}");
+			cs.setString(1, cnp);
+			cs.execute();
+			con.commit();
+			PanelFeedback.feedbackMessage = "Descarcat";	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+		}
+		con.rollback();
+	}
+	
 	public static void renuntare_grup(Connection con, String id, String cnp) throws SQLException 
 	{	
 		try 
@@ -205,6 +224,58 @@ public class StudentSqlQueries {
 			cs.execute();
 			con.commit();
 			PanelFeedback.feedbackMessage = "Ai renuntat";
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+		}
+		con.rollback();
+	}
+	
+	public static ArrayList<ArrayList<String>> vezi_activitati_grupuri(Connection con) throws SQLException 
+	{	
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Vizualizare_activitati_grupuri()}");
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<String>();
+				aux.add(rs.getString("id"));
+				aux.add(rs.getString("id_grup"));
+				aux.add(rs.getString("cnp_profesor"));
+				aux.add(rs.getString("nume"));
+				aux.add(rs.getString("descriere"));
+				aux.add(rs.getString("data_programarii"));
+				aux.add(rs.getString("durata"));
+				aux.add(rs.getString("numar_minim"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return arr;
+	}
+	
+	public static void inscriere_activitati_grup(Connection con, String id, String cnp) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Inscriere_activitate_grup(?,?)}");
+			cs.setString(1, id);
+			cs.setString(2, cnp);
+			cs.execute();
+			con.commit();
+			PanelFeedback.feedbackMessage = "Inscris";	
 		} 
 		catch (SQLException e) 
 		{

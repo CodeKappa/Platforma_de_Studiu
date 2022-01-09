@@ -5,13 +5,17 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import databaseController.DatabaseController;
 import databaseModel.AdminSqlQueries;
+import databaseModel.StudentSqlQueries;
 import databaseModel.TreatException;
 import main.MainClass;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.Color;
@@ -21,8 +25,8 @@ import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class PanelActivitatiGrup extends JPanel {
-	private JTextField textField_materie;
-	private JLabel lblMaterie;
+	private JTextField textField_grup;
+	private JLabel lblGrup;
 	public JButton btnActivitatiGrup = new JButton("Activitati Grupuri");
 	public JButton btnInscrieActivitate = new JButton("Inscriere activitate");
 	public JButton btnDescarcaActivitati = new JButton("Descarca Activitati");
@@ -41,14 +45,14 @@ public class PanelActivitatiGrup extends JPanel {
 		jsp.setBounds(2, 2, 959, 447);
 		add(jsp);
 		
-		textField_materie = new JTextField();
-		textField_materie.setBounds(1068, 157, 112, 19);
-		add(textField_materie);
-		textField_materie.setColumns(10);
+		textField_grup = new JTextField();
+		textField_grup.setBounds(1068, 157, 112, 19);
+		add(textField_grup);
+		textField_grup.setColumns(10);
 		
-		lblMaterie = new JLabel("Materie");
-		lblMaterie.setBounds(987, 160, 45, 13);
-		add(lblMaterie);
+		lblGrup = new JLabel("Grup");
+		lblGrup.setBounds(987, 160, 45, 13);
+		add(lblGrup);
 		
 		btnActivitatiGrup.setBounds(971, 200, 220, 21);
 		add(btnActivitatiGrup);
@@ -60,6 +64,12 @@ public class PanelActivitatiGrup extends JPanel {
 
 		btnDescarcaActivitati.setBounds(971, 250, 220, 21);
 		add(btnDescarcaActivitati);
+		
+        tableAfis.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                tableAfisMouseClicked(evt);
+            }
+        });
 	}
 
 	public void setActionListeners()
@@ -68,7 +78,7 @@ public class PanelActivitatiGrup extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
+					setTable(StudentSqlQueries.vezi_activitati_grupuri(MainClass.db.getCon()));
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
@@ -77,7 +87,7 @@ public class PanelActivitatiGrup extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(AdminSqlQueries.cauta_materie(MainClass.db.getCon(), textField_materie.getText()));
+					StudentSqlQueries.inscriere_activitati_grup(MainClass.db.getCon(), textField_grup.getText(), DatabaseController.user);
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
@@ -86,7 +96,7 @@ public class PanelActivitatiGrup extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					setTable(AdminSqlQueries.studentiLaMaterie(MainClass.db.getCon(), textField_materie.getText()));
+					StudentSqlQueries.descarca_activitati_grup(MainClass.db.getCon(), DatabaseController.user);
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
@@ -117,11 +127,16 @@ public class PanelActivitatiGrup extends JPanel {
 	
 	public void setData()
 	{
-		textField_materie.setText(null);
+		textField_grup.setText(null);
 		try 
 		{
-			setTable(AdminSqlQueries.all_materie_data(MainClass.db.getCon()));
+			setTable(StudentSqlQueries.vezi_grupuri(MainClass.db.getCon()));
 		} 
 		catch (SQLException e1) { TreatException.printSQLException(e1); }
 	}
+	
+    private void tableAfisMouseClicked(MouseEvent evt) {
+        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
+        textField_grup.setText(id);
+    }
 }

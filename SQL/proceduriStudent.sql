@@ -119,14 +119,14 @@ BEGIN
     GROUP BY m.id;
 END; //
 
-CREATE PROCEDURE Vizualizare_activitati_grupuri(cnp_student char(13))
+CREATE PROCEDURE Vizualizare_activitati_grupuri()
 BEGIN
-	
+	SELECT * FROM grup_studiu_activitati; 
 END; //
 
-CREATE PROCEDURE Inscriere_activitate_grup(cnp_student char(13))
+CREATE PROCEDURE Inscriere_activitate_grup(id_grup int, cnp_student char(13))
 BEGIN
-	
+	INSERT INTO grup_studiu_activitati_studenti VALUES (id_grup, cnp_student);
 END; //
 
 CREATE PROCEDURE Mesaje_vizualizare(id int)
