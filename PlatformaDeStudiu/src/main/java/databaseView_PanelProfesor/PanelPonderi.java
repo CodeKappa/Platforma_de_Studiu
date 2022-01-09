@@ -5,20 +5,11 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseModel.ProfesorSqlQueries;
-import databaseModel.TreatException;
-import main.MainClass;
-
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -27,7 +18,7 @@ public class PanelPonderi extends JPanel {
 	private JTextField textFieldPC;
 	public JButton btnActualizare = new JButton("Actualizare");
 	
-	private JTable tableAfis = new JTable();
+	public JTable tableAfis = new JTable();
 	private JScrollPane jsp = new JScrollPane(tableAfis);
 	private JTextField textFieldPS;
 	private JLabel lblIdmaterie = new JLabel("Laborator(%)");
@@ -82,29 +73,6 @@ public class PanelPonderi extends JPanel {
 		lblIdMaterie.setBounds(971, 41, 87, 19);
 		
 		add(lblIdMaterie);
-		
-		setActionListeners();
-		
-		tableAfis.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tableAfisMouseClicked(evt);
-            }
-		});
-		
-	}
-	
-	public void setActionListeners()
-	{
-		btnActualizare.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					ProfesorSqlQueries.actualizare_ponderi(MainClass.db.getCon(), getData()); //TODO
-					setTable(ProfesorSqlQueries.vizualizare_ponderi(MainClass.db.getCon()));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
 	}
 	
 	public void setTable(ArrayList<ArrayList<String>> a)
@@ -155,13 +123,4 @@ public class PanelPonderi extends JPanel {
 			textFieldPL.setText(map.get("procent_laborator"));
 		}	
 	}
-	
-	private void tableAfisMouseClicked(MouseEvent evt) {
-    	HashMap<String, String> dataMap = new HashMap<String, String>();
-    	dataMap.put("id_materie", tableAfis.getValueAt(tableAfis.getSelectedRow(), 1).toString());
-    	dataMap.put("procent_curs", tableAfis.getValueAt(tableAfis.getSelectedRow(), 2).toString());
-    	dataMap.put("procent_seminar", tableAfis.getValueAt(tableAfis.getSelectedRow(), 3).toString());
-    	dataMap.put("procent_laborator", tableAfis.getValueAt(tableAfis.getSelectedRow(), 4).toString());
-        setData(dataMap);
-    }
 }

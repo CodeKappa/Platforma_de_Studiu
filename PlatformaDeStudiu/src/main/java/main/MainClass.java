@@ -1,7 +1,7 @@
 package main;
 
 import databaseController.DatabaseController;
-import databaseModel.DatabaseModel;
+//import databaseModel.DatabaseModel;
 import databaseView.DatabaseView;
 
 /**
@@ -20,9 +20,10 @@ public class MainClass {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				DatabaseView theView = new DatabaseView();
-				DatabaseModel theModel = new DatabaseModel();
+				//DatabaseModel theModel = new DatabaseModel();
+				//DatabaseController theController = new DatabaseController(theView, theModel);
 				@SuppressWarnings("unused")
-				DatabaseController theController = new DatabaseController(theView, theModel);
+				DatabaseController theController = new DatabaseController(theView);
 				theView.setVisible(true);
 			}
 		});

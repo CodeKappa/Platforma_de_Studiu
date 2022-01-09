@@ -2,7 +2,6 @@ package databaseView_PanelProfesor;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -25,7 +24,7 @@ public class PanelProfesor extends JPanel
 	public databaseView_PanelProfesor.PanelDatePersonale datePersonale = new databaseView_PanelProfesor.PanelDatePersonale();
 	private JPanel blankPanel = new JPanel();
 	
-	private JPanel frontPanel;
+	public JPanel frontPanel;
 	public PanelProfesor() {
 		setLayout(null);
 		
@@ -60,54 +59,12 @@ public class PanelProfesor extends JPanel
 		
 		frontPanel = blankPanel;
 		
-		setActionListeners();
-		
 		buttonDelogare.setBounds(1220, 539, 270, 20);
 		add(buttonDelogare);
 			
 		this.setBorder(new LineBorder(Color.BLUE, 5));
 	}
 	
-	public void setActionListeners()
-    {
-    	inputPanel.buttonCatalog.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				catalogPanel.setVisible(true);	
-				frontPanel = catalogPanel;
-			}
-		});
-    	inputPanel.buttonDatePersonale.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				datePersonale.setVisible(true);	
-				frontPanel = datePersonale;
-			}
-		});
-    	inputPanel.buttonPonderiNote.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				ponderiPanel.setVisible(true);	
-				frontPanel = ponderiPanel;
-			}
-		});
-    	inputPanel.buttonCalendar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				frontPanel.setVisible(false);
-				calendarPanel.setVisible(true);	
-				frontPanel = calendarPanel;
-				
-			}
-		});
-    	inputPanel.buttonVizualizareActivitatiStudiu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				activitatiPanel.setVisible(true);	
-				frontPanel = activitatiPanel;
-			}
-		});
-    }
 	public void setBackgroungColor(Color c)
 	{
 		this.setBackground(c);	

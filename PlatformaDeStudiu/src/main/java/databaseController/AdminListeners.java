@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import databaseModel.AdminSqlQueries;
-import databaseModel.DatabaseModel;
+//import databaseModel.DatabaseModel;
 import databaseModel.PersoaneSqlQueries;
 import databaseModel.TreatException;
 import databaseView.DatabaseView;
@@ -14,12 +14,13 @@ import main.MainClass;
 public class AdminListeners{
 
 	private DatabaseView theView;
-	private DatabaseModel theModel;
+	//private DatabaseModel theModel;
 	
-	AdminListeners(DatabaseView v, DatabaseModel m)
+	//AdminListeners(DatabaseView v, DatabaseModel m)
+	AdminListeners(DatabaseView v)
 	{
 		this.theView = v;
-		this.theModel = m;
+		//this.theModel = m;
 		setActionListeners();
 	}
 	

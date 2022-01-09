@@ -5,20 +5,12 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseModel.ProfesorSqlQueries;
-import databaseModel.TreatException;
-import main.MainClass;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
@@ -100,39 +92,6 @@ public class PanelCatalog extends JPanel {
 		
 		tableStudenti = new JTable();
 		jsp_1.setViewportView(tableStudenti);
-		
-		setActionListeners();
-		
-		tableStudenti.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tableStudentiMouseClicked(evt);
-            }
-		});
-	}
-	
-	public void setActionListeners()
-	{
-		btnNotareCatalog.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					ProfesorSqlQueries.notare_studenti(MainClass.db.getCon(), getData()); //TODO
-					setTable(tableCatalog, ProfesorSqlQueries.vizualizare_studenti_note(MainClass.db.getCon()));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
-		
-
-		btnDescarcareCatalog.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					ProfesorSqlQueries.descarcare_studenti(MainClass.db.getCon());//TODO
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
 	}
 	
 	public void setTable(JTable table, ArrayList<ArrayList<String>> a)
@@ -189,11 +148,4 @@ public class PanelCatalog extends JPanel {
 		data.add(textFieldNota.getText());
 		return data;
 	}
-	
-    private void tableStudentiMouseClicked(MouseEvent evt) {
-    	HashMap<String, String> dataMap = new HashMap<String, String>();
-    	dataMap.put("id_materie", tableStudenti.getValueAt(tableStudenti.getSelectedRow(), 0).toString());
-    	dataMap.put("cnp", tableStudenti.getValueAt(tableStudenti.getSelectedRow(), 4).toString());
-        setData(dataMap);
-    }
 }

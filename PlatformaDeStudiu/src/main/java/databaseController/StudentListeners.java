@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
 import databaseModel.AdminSqlQueries;
-import databaseModel.DatabaseModel;
+//import databaseModel.DatabaseModel;
 import databaseModel.PersoaneSqlQueries;
 import databaseModel.StudentSqlQueries;
 import databaseModel.TreatException;
@@ -17,12 +17,13 @@ import main.MainClass;
 public class StudentListeners{
 
 	private DatabaseView theView;
-	private DatabaseModel theModel;
+	//private DatabaseModel theModel;
 	
-	StudentListeners(DatabaseView v, DatabaseModel m)
+	//StudentListeners(DatabaseView v, DatabaseModel m)
+	StudentListeners(DatabaseView v)
 	{
 		this.theView = v;
-		this.theModel = m;
+		//this.theModel = m;
 		setActionListeners();
 	}
 	

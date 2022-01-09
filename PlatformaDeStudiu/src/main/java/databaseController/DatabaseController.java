@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import databaseModel.DatabaseModel;
+//import databaseModel.DatabaseModel;
 import databaseModel.PersoaneSqlQueries;
 import databaseModel.TreatException;
 import databaseView.DatabaseView;
@@ -15,16 +15,22 @@ import java.awt.Point;
 
 public class DatabaseController {
 	private DatabaseView theView;
-	private DatabaseModel theModel;
+	//private DatabaseModel theModel;
 	public static String user = new String();
 	
-	public DatabaseController(DatabaseView theView, DatabaseModel theModel) {
+	//public DatabaseController(DatabaseView theView, DatabaseModel theModel) 
+	@SuppressWarnings("unused")
+	public DatabaseController(DatabaseView theView) 
+	{
 		super();
 		this.theView = theView;
-		this.theModel = theModel;
-		AdminListeners al = new AdminListeners(theView, theModel);
-		ProfesorListeners pl = new ProfesorListeners(theView, theModel);
-		StudentListeners sl = new StudentListeners(theView, theModel);
+		//this.theModel = theModel;
+		//AdminListeners al = new AdminListeners(theView, theModel);
+		//ProfesorListeners pl = new ProfesorListeners(theView, theModel);
+		//StudentListeners sl = new StudentListeners(theView, theModel);
+		AdminListeners al = new AdminListeners(theView);
+		ProfesorListeners pl = new ProfesorListeners(theView);
+		StudentListeners sl = new StudentListeners(theView);
 		
 		theView.panelLogin.addLoginListener(new LoginListener());
 		//theView.panelSignUp.addSignUpListener(new SignUpListener());

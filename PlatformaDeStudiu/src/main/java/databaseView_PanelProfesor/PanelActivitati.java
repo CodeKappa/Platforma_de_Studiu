@@ -5,20 +5,10 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseModel.AdminSqlQueries;
-import databaseModel.ProfesorSqlQueries;
-import databaseModel.TreatException;
-import main.MainClass;
-
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -27,7 +17,7 @@ public class PanelActivitati extends JPanel {
 	private JTextField textField_id;
 	public JButton btnInscriere = new JButton("Inscriere");
 	
-	private JTable tableAfis = new JTable();
+	public JTable tableAfis = new JTable();
 	private JScrollPane jsp = new JScrollPane(tableAfis);
 
 	
@@ -54,28 +44,6 @@ public class PanelActivitati extends JPanel {
 
 		btnInscriere.setBounds(1052, 411, 105, 21);
 		add(btnInscriere);
-		
-		setActionListeners();
-		
-        tableAfis.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tableAfisMouseClicked(evt);
-            }
-        });	
-	}
-	
-	public void setActionListeners()
-	{
-		btnInscriere.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					ProfesorSqlQueries.inscriere_activitati_studiu(MainClass.db.getCon(), getData());
-					setTable(ProfesorSqlQueries.vizualizare_activitati_studiu(MainClass.db.getCon()));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
 	}
 	
 	public void setTable(ArrayList<ArrayList<String>> a)
@@ -115,13 +83,4 @@ public class PanelActivitati extends JPanel {
 			textField_id.setText(arr.get(0));
 		}	
 	}
-	
-    private void tableAfisMouseClicked(MouseEvent evt) {
-        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
-        try 
-        {
-        	setData(AdminSqlQueries.read_grup(MainClass.db.getCon(), id));
-		} 
-        catch (SQLException e) { TreatException.printSQLException(e); }
-    }
 }

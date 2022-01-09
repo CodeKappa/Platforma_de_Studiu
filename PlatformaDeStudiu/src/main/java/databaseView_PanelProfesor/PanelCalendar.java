@@ -5,21 +5,12 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseModel.PersoaneSqlQueries;
-import databaseModel.ProfesorSqlQueries;
-import databaseModel.TreatException;
-import main.MainClass;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
@@ -120,39 +111,6 @@ public class PanelCalendar extends JPanel {
 		
 		tableMaterii = new JTable();
 		jsp_1.setViewportView(tableMaterii);
-		
-		setActionListeners();
-		
-		tableMaterii.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tableMateriiMouseClicked(evt);
-            }
-		});
-	}
-	
-	public void setActionListeners()
-	{
-		btnProgramareCalendar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					ProfesorSqlQueries.programare_calendar(MainClass.db.getCon(), getData()); //TODO
-					setTable(tableCalendar, PersoaneSqlQueries.vizualizare_calendar(MainClass.db.getCon(), false));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
-		
-
-		btnDescarcareCalendar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					ProfesorSqlQueries.descarcare_calendar(MainClass.db.getCon(), false);
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
 	}
 	
 	public void setTable(JTable table, ArrayList<ArrayList<String>> a)
@@ -213,11 +171,4 @@ public class PanelCalendar extends JPanel {
 			textFieldNrMaxElevi.setText(map.get("nr_max_elevi"));
 		}	
 	}
-	
-    private void tableMateriiMouseClicked(MouseEvent evt) {
-    	HashMap<String, String> dataMap = new HashMap<String, String>();
-    	dataMap.put("id_materie", tableMaterii.getValueAt(tableMaterii.getSelectedRow(), 0).toString());
-    	dataMap.put("nr_max_elevi", tableMaterii.getValueAt(tableMaterii.getSelectedRow(), 3).toString());
-        setData(dataMap);
-    }
 }
