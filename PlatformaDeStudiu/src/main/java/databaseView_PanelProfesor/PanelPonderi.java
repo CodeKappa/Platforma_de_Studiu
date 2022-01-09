@@ -5,8 +5,6 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseModel.AdminSqlQueries;
-import databaseModel.PersoaneSqlQueries;
 import databaseModel.ProfesorSqlQueries;
 import databaseModel.TreatException;
 import main.MainClass;
@@ -23,9 +21,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JList;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 @SuppressWarnings("serial")
 public class PanelPonderi extends JPanel {
@@ -79,6 +74,7 @@ public class PanelPonderi extends JPanel {
 		textFieldPL.setBounds(1073, 131, 112, 19);
 		
 		add(textFieldPL);
+		textFieldId.setEditable(false);
 		textFieldId.setColumns(10);
 		textFieldId.setBounds(1073, 40, 112, 19);
 		

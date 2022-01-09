@@ -43,6 +43,7 @@ public class PanelActivitati extends JPanel {
 		add(jsp);
 		
 		textField_id = new JTextField();
+		textField_id.setEditable(false);
 		textField_id.setBounds(1052, 41, 112, 19);
 		add(textField_id);
 		textField_id.setColumns(10);

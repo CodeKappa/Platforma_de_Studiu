@@ -6,7 +6,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import databaseController.DatabaseController;
-import databaseModel.AdminSqlQueries;
 import databaseModel.StudentSqlQueries;
 import databaseModel.TreatException;
 import main.MainClass;

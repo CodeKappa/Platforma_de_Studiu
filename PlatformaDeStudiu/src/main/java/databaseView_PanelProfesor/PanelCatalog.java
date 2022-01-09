@@ -5,8 +5,6 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseModel.AdminSqlQueries;
-import databaseModel.PersoaneSqlQueries;
 import databaseModel.ProfesorSqlQueries;
 import databaseModel.TreatException;
 import main.MainClass;
@@ -23,7 +21,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Component;
@@ -33,6 +30,7 @@ public class PanelCatalog extends JPanel {
 	private JTextField textFieldCNP;
 	public JButton btnNotareCatalog = new JButton("Notare");
 	public JButton btnDescarcareCatalog = new JButton("Descarcare");
+	@SuppressWarnings("rawtypes")
 	public JComboBox comboBoxCategorie = new JComboBox();
 	public JTable tableCatalog = new JTable();
 	public JTable tableStudenti;
@@ -46,6 +44,7 @@ public class PanelCatalog extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public PanelCatalog() {
 		setLayout(null);
 		
@@ -55,6 +54,7 @@ public class PanelCatalog extends JPanel {
 		add(jsp);
 		
 		textFieldCNP = new JTextField();
+		textFieldCNP.setEditable(false);
 		textFieldCNP.setBounds(1073, 40, 112, 19);
 		add(textFieldCNP);
 		textFieldCNP.setColumns(10);
@@ -88,6 +88,7 @@ public class PanelCatalog extends JPanel {
 		lblIdmaterie.setBounds(965, 102, 105, 19);
 		
 		add(lblIdmaterie);
+		textFieldMaterie.setEditable(false);
 		textFieldMaterie.setColumns(10);
 		textFieldMaterie.setBounds(1073, 101, 112, 19);
 		

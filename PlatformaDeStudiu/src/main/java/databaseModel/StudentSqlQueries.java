@@ -8,12 +8,8 @@ import java.util.ArrayList;
 
 import databaseController.DatabaseController;
 import databaseView.PanelFeedback;
-import main.MainClass;
 
 public class StudentSqlQueries {
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public static ArrayList<ArrayList<String>> vizualizare_note(Connection con, String cnp) throws SQLException 
 	{	
 		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
@@ -81,7 +77,6 @@ public class StudentSqlQueries {
 	
 	public static void inscriere_materie(Connection con, String materie, String cnp) throws SQLException 
 	{	
-		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
 		try 
 		{
 			CallableStatement cs = con.prepareCall("{call Inscriere_materie(?,?)}");
@@ -101,7 +96,6 @@ public class StudentSqlQueries {
 	
 	public static void renuntare_materie(Connection con, String id_mat, String cnp) throws SQLException 
 	{	
-		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
 		try 
 		{
 			CallableStatement cs = con.prepareCall("{call Renuntare_materie(?,?)}");

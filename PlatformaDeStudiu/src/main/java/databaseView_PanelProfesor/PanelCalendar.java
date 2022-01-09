@@ -5,7 +5,6 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseModel.AdminSqlQueries;
 import databaseModel.PersoaneSqlQueries;
 import databaseModel.ProfesorSqlQueries;
 import databaseModel.TreatException;
@@ -19,12 +18,10 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Component;
@@ -34,6 +31,7 @@ public class PanelCalendar extends JPanel {
 	private JTextField textFieldDataInceput;
 	public JButton btnProgramareCalendar = new JButton("Programare");
 	public JButton btnDescarcareCalendar = new JButton("Descarcare");
+	@SuppressWarnings("rawtypes")
 	public JComboBox comboBoxCategorie = new JComboBox();
 	public JTable tableCalendar = new JTable();
 	public JTable tableMaterii;
@@ -47,6 +45,7 @@ public class PanelCalendar extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public PanelCalendar() {
 		setLayout(null);
 		
@@ -78,6 +77,7 @@ public class PanelCalendar extends JPanel {
 		add(textFieldDurata);
 		
 		textFieldIdMaterie = new JTextField();
+		textFieldIdMaterie.setEditable(false);
 		textFieldIdMaterie.setColumns(10);
 		textFieldIdMaterie.setBounds(1073, 131, 112, 19);
 		add(textFieldIdMaterie);

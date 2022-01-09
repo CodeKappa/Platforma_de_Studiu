@@ -5,7 +5,6 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseModel.AdminSqlQueries;
 import databaseModel.StudentSqlQueries;
 import databaseModel.TreatException;
 import main.MainClass;
