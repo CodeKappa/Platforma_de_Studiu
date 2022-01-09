@@ -177,6 +177,13 @@ public class StudentListeners{
 				theView.panelStudentView.frontPanel = theView.panelStudentView.calendar;
 			}
 		});
+    	theView.panelStudentView.inputPanel.btnCreazaActivitati.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				theView.panelStudentView.frontPanel.setVisible(false);
+				theView.panelStudentView.creazaActivitati.setVisible(true);
+				theView.panelStudentView.frontPanel = theView.panelStudentView.creazaActivitati;
+			}
+		});
     	
     	
     	theView.panelStudentView.calendar.tableOreDisponibile.addMouseListener(new MouseAdapter() {
@@ -324,6 +331,18 @@ public class StudentListeners{
 				try 
 				{
 					theView.panelStudentView.grupuri.setTable(StudentSqlQueries.sugestii_grup(MainClass.db.getCon(), theView.panelStudentView.grupuri.cnp));
+				} 
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
+    	
+    	
+    	theView.panelStudentView.creazaActivitati.btnCreazaActivitate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					StudentSqlQueries.creaza_activitate(MainClass.db.getCon(), theView.panelStudentView.creazaActivitati.getData());
+					theView.panelStudentView.creazaActivitati.setData();
 				} 
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}

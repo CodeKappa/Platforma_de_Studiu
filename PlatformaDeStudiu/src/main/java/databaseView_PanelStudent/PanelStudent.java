@@ -23,6 +23,7 @@ public class PanelStudent extends JPanel
 	public PanelStudentMesajeGrup mesaje = new PanelStudentMesajeGrup();
 	public PanelActivitatiGrup activitati = new PanelActivitatiGrup();
 	public PanelCalendar calendar = new PanelCalendar();
+	public PanelStudentCreazaActivitatiGrup creazaActivitati = new PanelStudentCreazaActivitatiGrup();
 	private JPanel blankPanel = new JPanel();
 	
 	public JPanel frontPanel;
@@ -42,6 +43,7 @@ public class PanelStudent extends JPanel
 		mesaje.setBounds(10, 110, 1199, 450);
 		activitati.setBounds(10, 110, 1199, 450);
 		calendar.setBounds(10, 110, 1199, 450);
+		creazaActivitati.setBounds(10, 110, 1199, 450);
 		
 		inputPanel.setBounds(1219, 110, 271 , 419);
 		add(inputPanel);
@@ -54,6 +56,7 @@ public class PanelStudent extends JPanel
 		add(mesaje);
 		add(activitati);
 		add(calendar);
+		add(creazaActivitati);
 		
 		blankPanel.setVisible(true);
 		datePersonale.setVisible(false);

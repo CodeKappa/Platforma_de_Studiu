@@ -494,4 +494,28 @@ public class StudentSqlQueries {
 		}
 		con.rollback();
 	}
+	
+	public static ArrayList<String> creaza_activitate(Connection con, ArrayList <String> arr) throws SQLException 
+	{	
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Adaugare_activitate_grup(?,?,?,?,?,?,?)}");
+			cs.setInt(1, Integer.parseInt(arr.get(0)));
+			cs.setString(2, arr.get(1));
+			cs.setString(3, arr.get(2));
+			cs.setString(4, arr.get(3));
+			cs.setString(5, arr.get(4));
+			cs.setString(6, arr.get(5));
+			cs.setInt(7, Integer.parseInt(arr.get(6)));
+			cs.execute();
+			con.commit();	
+			PanelFeedback.feedbackMessage = "Activitate creata";
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+		}
+		con.rollback();
+		return arr;
+	}
 }
