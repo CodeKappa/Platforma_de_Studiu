@@ -10,8 +10,6 @@ import javax.swing.border.LineBorder;
 
 import databaseView.PanelFeedback;
 
-import java.awt.event.ActionEvent;
-
 @SuppressWarnings("serial")
 public class PanelStudent extends JPanel
 {
@@ -27,7 +25,7 @@ public class PanelStudent extends JPanel
 	public PanelCalendar calendar = new PanelCalendar();
 	private JPanel blankPanel = new JPanel();
 	
-	private JPanel frontPanel;
+	public JPanel frontPanel;
 	
     public PanelStudent()
 	{
@@ -67,59 +65,11 @@ public class PanelStudent extends JPanel
 		
 		frontPanel = blankPanel;
 		
-		setActionListeners();
-		
 		buttonDelogare.setBounds(1220, 539, 270, 20);
 		add(buttonDelogare);
 			
 		this.setBorder(new LineBorder(Color.BLUE, 5));
 	}
-   
-    public void setActionListeners()
-    {
-    	inputPanel.buttonDatePersonale.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				datePersonale.setVisible(true);	
-				frontPanel = datePersonale;
-			}
-		});
-		inputPanel.buttonMaterii.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				materii.setVisible(true);
-				frontPanel = materii;
-			}
-		});
-		inputPanel.buttonGrupuri.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				grupuri.setVisible(true);	
-				frontPanel = grupuri;
-			}
-		});
-		inputPanel.buttonMesajeGrup.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				mesaje.setVisible(true);
-				frontPanel = mesaje;
-			}
-		});
-		inputPanel.buttonActivitatiGrup.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				activitati.setVisible(true);
-				frontPanel = activitati;
-			}
-		});
-		inputPanel.buttonCalendar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frontPanel.setVisible(false);
-				calendar.setVisible(true);
-				frontPanel = calendar;
-			}
-		});
-    }
     
 	public void setBackgroungColor(Color c)
 	{

@@ -11,20 +11,16 @@ import main.MainClass;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Component;
 
 @SuppressWarnings("serial")
 public class PanelCalendar extends JPanel {
-	private JTextField textField_idProgramare;
+	public JTextField textField_idProgramare;
 	private JLabel lblMaterie;
 	public JButton btnInscriere = new JButton("Inscriere");
 	public JButton btnGenerare = new JButton("Inscriere Automata");
@@ -58,8 +54,6 @@ public class PanelCalendar extends JPanel {
 		lblMaterie.setBounds(987, 160, 71, 13);
 		add(lblMaterie);
 		
-		setActionListeners();
-		
 		btnInscriere.setBounds(971, 225, 220, 21);
 		add(btnInscriere);
 
@@ -76,63 +70,6 @@ public class PanelCalendar extends JPanel {
 		
 		btnRenuntaTotal.setBounds(971, 301, 220, 21);
 		add(btnRenuntaTotal);
-		
-		tableOreDisponibile.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-            	tableOreDisponibileMouseClicked(evt);
-            }
-        });
-		
-		tableCalendar.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-            	tableCalendarMouseClicked(evt);
-            }
-        });
-	}
-
-	public void setActionListeners()
-	{
-		btnInscriere.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					StudentSqlQueries.inscriere_calendar(MainClass.db.getCon(), textField_idProgramare.getText());
-					setData();
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
-		
-		btnGenerare.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					StudentSqlQueries.generare_calendar(MainClass.db.getCon());
-					setData();
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
-		btnRenunta.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					StudentSqlQueries.renuntare_calendar_activitate(MainClass.db.getCon(), textField_idProgramare.getText());
-					setData();
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
-		btnRenuntaTotal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					StudentSqlQueries.renuntare_calendar(MainClass.db.getCon());
-					setData();
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
 	}
 	
 	public void setTable(JTable table, ArrayList<ArrayList<String>> a)
@@ -166,14 +103,4 @@ public class PanelCalendar extends JPanel {
 		} 
 		catch (SQLException e1) { TreatException.printSQLException(e1); }
 	}
-	
-    private void tableOreDisponibileMouseClicked(MouseEvent evt) {
-        String id_calendar = tableOreDisponibile.getValueAt(tableOreDisponibile.getSelectedRow(), 0).toString();
-        textField_idProgramare.setText(id_calendar);
-    }
-    
-    private void tableCalendarMouseClicked(MouseEvent evt) {
-    	String id_calendar = tableCalendar.getValueAt(tableCalendar.getSelectedRow(), 0).toString();
-        textField_idProgramare.setText(id_calendar);
-    }
 }

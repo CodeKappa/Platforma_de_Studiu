@@ -5,31 +5,24 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseModel.StudentSqlQueries;
-import databaseModel.TreatException;
-import main.MainClass;
-
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class PanelStudentMesajeGrup extends JPanel {
-	private JTextField textField_mesaj;
-	private JLabel lblMesaj;
+	public JTextField textField_mesaj;
+	public JLabel lblMesaj;
 	public JButton btnTrimite = new JButton("Trimite Mesaj In Grup");
 	public JButton btnMesaje = new JButton("Mesaje Grup");
 	
 	private JTable tableAfis = new JTable();
 	private JScrollPane jsp = new JScrollPane(tableAfis);
-	private final JTextField textField_grup = new JTextField();
-	private final JLabel lblVeziGrup = new JLabel("Grup");
+	public final JTextField textField_grup = new JTextField();
+	public final JLabel lblVeziGrup = new JLabel("Grup");
 	
 	public String cnp;
 	/**
@@ -55,8 +48,6 @@ public class PanelStudentMesajeGrup extends JPanel {
 		btnTrimite.setBounds(971, 236, 220, 21);
 		add(btnTrimite);
 		
-		setActionListeners();
-		
 		btnMesaje.setBounds(971, 261, 220, 21);
 		add(btnMesaje);
 		textField_grup.setColumns(10);
@@ -66,29 +57,6 @@ public class PanelStudentMesajeGrup extends JPanel {
 		lblVeziGrup.setBounds(987, 189, 63, 13);
 		
 		add(lblVeziGrup);
-	}
-
-	public void setActionListeners()
-	{	
-		btnTrimite.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					StudentSqlQueries.trimite_mesaj(MainClass.db.getCon(),textField_mesaj.getText(),textField_grup.getText(), cnp);
-					setTable(StudentSqlQueries.preia_mesaje(MainClass.db.getCon(), textField_grup.getText()));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
-		btnMesaje.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-					setTable(StudentSqlQueries.preia_mesaje(MainClass.db.getCon(), textField_grup.getText()));
-				} 
-				catch (SQLException e1) { TreatException.printSQLException(e1); }
-			}
-		});
 	}
 	
 	public void setTable(ArrayList<ArrayList<String>> a)
