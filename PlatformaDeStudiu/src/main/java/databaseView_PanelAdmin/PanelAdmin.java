@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-import databaseView.PanelDatePersonale;
 import databaseView.PanelFeedback;
 
 import java.awt.event.ActionEvent;

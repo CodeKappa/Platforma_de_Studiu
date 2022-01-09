@@ -14,9 +14,9 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import databaseView.PanelDatePersonale;
 import databaseView.PanelFeedback;
 import databaseView_PanelAdmin.PanelButoaneAdmin;
+import databaseView_PanelAdmin.PanelDatePersonale;
 
 @SuppressWarnings("serial")
 public class PanelProfesor extends JPanel

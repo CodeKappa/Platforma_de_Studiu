@@ -1,0 +1,66 @@
+Interogari asupra datelor
+1. Selectează toate date tuturor persoane
+	SELECT * FROM persoane;
+2. Selectează toate datele persoanelor cu un nume și un prenume precizat
+	SELECT * FROM persoane p WHERE p.nume = nume AND p.prenume = prenume;
+3. Selectează toate datele pesoanelor care sunt admin
+	SELECT p.* FROM persoane p INNER JOIN admini a on p.cnp = a.cnp;
+4. Selecteaza toate datele persoanelor de tip profesor cu un prenume precizat
+	SELECT p.*, a.nr_ore_min, a.nr_ore_max, a.departament FROM persoane p INNER JOIN profesori a on p.cnp = a.cnp WHERE p.prenume = prenume;
+5. Selectează toți stundeți la o materiile cu un nume precizat
+	SELECT m.id, m.nume as nume_materie, p.cnp, p.nume, p.prenume FROM materii m INNER JOIN materii_studenti ms ON m.id = ms.id_materie INNER JOIN persoane p ON ms.cnp_student = p.cnp WHERE m.nume = nume;
+6. Selectează un admin specificat
+	SELECT * FROM persoane WHERE persoane.cnp = cnp;
+7. Determină dacă utilizatorul exista
+	SELECT 1 FROM persoane WHERE persoane.cnp = cnp
+8. Determină dacă utilizatorul este student
+	SELECT 1 FROM studenti WHERE studenti.cnp = cnp
+9. Determină materiile la care participă un student
+	SELECT m.* FROM materii m INNER JOIN materii_studenti ms ON ms.id_materie = m.id WHERE ms.cnp_student = cnp GROUP BY m.id;
+10. Selectează materiile și câți studenți participă la ele (1 pentru cele fara participanți)
+	SELECT m.id, m.nume, m.nr_max_studenti, COUNT(*) AS magnitude from materii m LEFT JOIN materii_studenti ms on m.id = ms.id_materie
+    	WHERE m.nume = materie
+    	GROUP BY m.id
+    	ORDER BY magnitude ASC;
+11. Selectează calendarul unui student specificat
+	SELECT c.* FROM calendar c
+	JOIN materii m ON c.id_materie = m.id
+	JOIN materii_studenti ms ON m.id = ms.id_materie
+	WHERE ms.cnp_student = cnp_student;
+12. Selectează notele unui student specificat
+	SELECT x.nume, m.categorie, m.nota FROM materii_studenti m JOIN materii x ON m.id_materie=x.id WHERE cnp_student = m.cnp_student;
+13. Vizualizează toate grupurile și numele materie de care aparține
+	SELECT gs.id, m.nume FROM grup_studiu gs INNER JOIN materii m ON gs.id_materie = m.id; 
+14. Descarcă activitățile unui student specificat
+	SELECT * FROM grup_studiu_activitati gsa JOIN grup_studiu gs ON gsa.id_grup=gs.id JOIN grup_studiu_studenti gss ON gss.id_grup=gs.id WHERE gss.cnp_student=cnp_student AND CURRENT_TIMESTAMP()<=gsa.data_programarii
+	ORDER by data_programarii
+	INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\activitati.csv' 
+	FIELDS TERMINATED BY ','  
+	LINES TERMINATED BY '\r\n';
+15. Vizualizare ponderi pentru un profesor specificat
+	SELECT nume, id, procent_curs, procent_seminar, procent_laborator 
+    	FROM materii m 
+    	JOIN materii_profesor mp ON m.id = mp.id_materie
+    	WHERE mp.cnp_profesor = cnp_profesor;
+16. Selectează o datele unei activități specificate
+	SELECT * FROM grup_studiu_activitati g WHERE g.id = id;
+17. Selectează toate datele tuturor materiilor
+	SELECT * FROM materii;
+18. Selectează toate mesajele trimise în toate grupurile
+	SELECT * FROM grup_studiu_mesaje;
+19. Selecteaza toate mesajele trimise într-un grup precizat
+	SELECT p.nume, p.prenume, g.mesaj, g.data_ora_trimiterii FROM grup_studiu_mesaje g JOIN persoane p WHERE g.cnp_student=p.cnp AND id_grup=id ORDER BY g.data_ora_trimiterii;
+20. Selecteaza toate grupurile și studenții care fac parte din ele
+	SELECT * FROM grup_studiu_studenti;
+
+Interogari în algerbră relaționară
+1. Selectează numele și prenumele tuturor persoanelor
+	π nume, prenume persoane;
+2. Selectează toate datele ale unui profesor specificat
+	σ (pesoane.cnp = cnp) pesoane ⨝ profesori;
+3. Selectează toate datele persoanelor cu un nume și un prenume precizat
+	σ (persoane.nume = nume ∨ persoane.prenume = prenume) persoane;
+4. Selectează toți stundeți la o materiile cu un nume precizat
+	π cnp, nume, prenume (persoane) ⨝ π id, nume σ materii.nume = nume materii;
+5. Selectează o lista cu datele studenților și profesorilor care au numele Andrei
+	π cnp, nume, prenume (ρ a (persoane)) ⨝ a.cnp = b.cnp (π cnp ρ b (studenti))  ∪ π cnp, nume, prenume ρ c (persoane) ⨝ c.cnp = d.cnp (π cnp ρ d (profesori));
