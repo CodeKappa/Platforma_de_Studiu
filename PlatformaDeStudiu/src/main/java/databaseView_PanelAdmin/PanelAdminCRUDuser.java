@@ -220,12 +220,6 @@ public class PanelAdminCRUDuser extends JPanel {
 		label_email.setBounds(988, 164, 45, 13);
 		add(label_email);
 		
-        tableAfis.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tableAfisMouseClicked(evt);
-            }
-        });
-		
 		setExtraLabelsOnFalse();
 	}
 	
@@ -245,6 +239,16 @@ public class PanelAdminCRUDuser extends JPanel {
 	
 	public void setActionListeners()
 	{
+        tableAfis.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                String cnp = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
+                try 
+                {
+                	setData(AdminSqlQueries.admin_read_user(MainClass.db.getCon(), cnp));
+        		} 
+                catch (SQLException e) { TreatException.printSQLException(e); }
+            }
+        });
 		
 		radio_student.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -410,13 +414,4 @@ public class PanelAdminCRUDuser extends JPanel {
 			}
 		}	
 	}
-	
-    private void tableAfisMouseClicked(MouseEvent evt) {
-        String cnp = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
-        try 
-        {
-        	setData(AdminSqlQueries.admin_read_user(MainClass.db.getCon(), cnp));
-		} 
-        catch (SQLException e) { TreatException.printSQLException(e); }
-    }
 }

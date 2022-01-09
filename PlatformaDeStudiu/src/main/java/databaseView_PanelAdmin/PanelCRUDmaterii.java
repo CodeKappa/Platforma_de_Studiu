@@ -159,18 +159,21 @@ public class PanelCRUDmaterii extends JPanel {
 		textField_recCurs.setColumns(10);
 		textField_recCurs.setBounds(1069, 271, 112, 19);
 		add(textField_recCurs);
-		
-        tableAfis.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tableAfisMouseClicked(evt);
-            }
-        });
-		
 	}
 	
 	public void setActionListeners()
 	{
-		
+        tableAfis.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
+                try 
+                {
+                	setData(AdminSqlQueries.read_materie(MainClass.db.getCon(), id));
+        		} 
+                catch (SQLException e) { TreatException.printSQLException(e); }
+            }
+        });
+        
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
@@ -271,13 +274,4 @@ public class PanelCRUDmaterii extends JPanel {
 			textField_recCurs.setText(arr.get(9));
 		}	
 	}
-	
-    private void tableAfisMouseClicked(MouseEvent evt) {
-        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
-        try 
-        {
-        	setData(AdminSqlQueries.read_materie(MainClass.db.getCon(), id));
-		} 
-        catch (SQLException e) { TreatException.printSQLException(e); }
-    }
 }

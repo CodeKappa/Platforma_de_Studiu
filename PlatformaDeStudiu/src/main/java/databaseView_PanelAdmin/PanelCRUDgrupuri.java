@@ -73,17 +73,20 @@ public class PanelCRUDgrupuri extends JPanel {
 		add(btnDelete);
 		
 		setActionListeners();
-		
-        tableAfis.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tableAfisMouseClicked(evt);
-            }
-        });	
 	}
 	
 	public void setActionListeners()
 	{
-		
+        tableAfis.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
+                try 
+                {
+                	setData(AdminSqlQueries.read_grup(MainClass.db.getCon(), id));
+        		} 
+                catch (SQLException e) { TreatException.printSQLException(e); }
+            }
+        });	
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try 
@@ -160,13 +163,4 @@ public class PanelCRUDgrupuri extends JPanel {
 			textField_idMaterie.setText(arr.get(1));
 		}	
 	}
-	
-    private void tableAfisMouseClicked(MouseEvent evt) {
-        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
-        try 
-        {
-        	setData(AdminSqlQueries.read_grup(MainClass.db.getCon(), id));
-		} 
-        catch (SQLException e) { TreatException.printSQLException(e); }
-    }
 }

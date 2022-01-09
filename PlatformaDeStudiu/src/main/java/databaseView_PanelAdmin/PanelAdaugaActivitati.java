@@ -141,14 +141,7 @@ public class PanelAdaugaActivitati extends JPanel {
 		
 		JLabel lblNrMinParticipanti = new JLabel("Nr. Min Studenti");
 		lblNrMinParticipanti.setBounds(971, 291, 105, 13);
-		add(lblNrMinParticipanti);
-		
-        tableAfis.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                tableAfisMouseClicked(evt);
-            }
-        });
-		
+		add(lblNrMinParticipanti);	
 	}
 	
 	public void setActionListeners()
@@ -164,6 +157,17 @@ public class PanelAdaugaActivitati extends JPanel {
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
+		
+        tableAfis.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
+                try 
+                {
+                	setData(AdminSqlQueries.read_activitate(MainClass.db.getCon(), id));
+        		} 
+                catch (SQLException e) { TreatException.printSQLException(e); }
+            }
+        });	
 	}
 	
 	public void setTable(ArrayList<ArrayList<String>> a)
@@ -231,15 +235,6 @@ public class PanelAdaugaActivitati extends JPanel {
 			textField_nrMin.setText(arr.get(8));
 		}	
 	}
-
-    private void tableAfisMouseClicked(MouseEvent evt) {
-        String id = tableAfis.getValueAt(tableAfis.getSelectedRow(), 0).toString();
-        try 
-        {
-        	setData(AdminSqlQueries.read_activitate(MainClass.db.getCon(), id));
-		} 
-        catch (SQLException e) { TreatException.printSQLException(e); }
-    }
 	
 	public void setData() {
 		setData(null);
