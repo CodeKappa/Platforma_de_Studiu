@@ -107,7 +107,7 @@ BEGIN
 	SELECT 1 INTO cgs FROM grup_studiu gs WHERE gs.id = id_grup;
     IF(cgs = 1)
     THEN
-		INSERT INTO grup_studiu_activitati VALUES (id_grup, nume, descriere, CONVERT(data_programarii, datetime), CONVERT(durata, time), CONVERT(data_expirare, datetime), numar_minim);
+		INSERT INTO grup_studiu_activitati VALUES (null, id_grup, null, nume, descriere, CONVERT(data_programarii, datetime), CONVERT(durata, time), CONVERT(data_expirare, datetime), numar_minim);
     ELSE
 		SIGNAL SQLSTATE '45000' SET message_text='Grupul nu exista';
     END IF;
