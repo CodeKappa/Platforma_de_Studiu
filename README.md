@@ -1,19 +1,14 @@
-# ProiectBD
+# Platforma de studiu
+- Proiect la disciplina Baze de Date Anul 2021-2022
+- Facultatea de Automatică și Calculatoare
+- Departamentul de Calculatoare
+- Budiul Cristian-Carol - Giesswein Alexia - Kovács Paul-Adrian
 
-## 1. Open project in Eclipse
 
-- Eclipse => File => Open Projects from File System... => Directory... => `/PlaformaDeStudiu` => Select Folder 
+## Setup
 
-## 2. Modify JDBC driver jar file path
+#### 1. Ruleaza scripturile(`/SQL/tabeleProceduriTrigere.sql` prima): `/SQL/tabeleProceduriTrigere.sql`, `/SQL/proceduriAdmin.sql`, `/SQL/proceduriProfesor.sql`, `/SQL/proceduriStudent.sql`
 
-- Open project properties => select project then `ALT+ENTER` OR `right click on project => Properties`
-- In the Java Build path, in the Libraries Section => Classpath => Click on `mysql-connector-java-8.0.27.jar` => Edit =>
-`/mysql-connector-java-8.0.27/mysql-connector-java-8.0.27.jar` => Open => Apply => Apply and Close
-
-## 3. Create database for testing
-- Connect to your MySql Server and run the `/testLogin.sql`
-
-## 4. Basic details of the MySQL JDBC driver to develop the program
-- Modify the url, user and password in `/PlatformaDeStudiu/src/main/MainClass.java` **(Warrning don't push your password if you don't want to)**
-
-### Check [this](https://www.knowprogram.com/jdbc/connect-mysql-database-eclipse/) for more details
+#### 2. Deschide proiectul Java `/PlatformaDeStudiu` in Eclipse si ruleaza
+  
+- Vezi `/Documentatie` Capitol 5 Manual de instalare/utilizare pentru mai multe
