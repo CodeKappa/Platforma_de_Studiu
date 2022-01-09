@@ -42,6 +42,7 @@ public class PanelDatePersonale extends JPanel {
 	
 	private JTable tableAfis = new JTable();
 	private JScrollPane jsp = new JScrollPane(tableAfis);
+	private JLabel lblNewLabel;
 	/**
 	 * Create the panel.
 	 */
@@ -50,7 +51,7 @@ public class PanelDatePersonale extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		jsp.setBounds(2, 2, 959, 447);
+		jsp.setBounds(2, 22, 959, 427);
 		add(jsp);
 		
 		textField_cnp = new JTextField();
@@ -151,6 +152,10 @@ public class PanelDatePersonale extends JPanel {
 		label_email = new JLabel("Email");
 		label_email.setBounds(988, 178, 45, 13);
 		add(label_email);
+		
+		lblNewLabel = new JLabel("Note");
+		lblNewLabel.setBounds(2, 9, 46, 14);
+		add(lblNewLabel);
 	}
 	
 	public void setData(ArrayList<String> arr)

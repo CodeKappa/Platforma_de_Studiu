@@ -33,6 +33,8 @@ public class PanelCalendar extends JPanel {
 	
 	public String cnp;
 	private final JScrollPane jsp_1 = new JScrollPane((Component) null);
+	private final JLabel lblNewLabel = new JLabel("Activitati obligatorii inscrise");
+	private final JLabel lblActivitatiObligatoriiDisponibile = new JLabel("Activitati obligatorii disponibile");
 	
 	/**
 	 * Create the panel.
@@ -42,7 +44,7 @@ public class PanelCalendar extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		jsp.setBounds(2, 2, 959, 225);
+		jsp.setBounds(2, 22, 959, 205);
 		add(jsp);
 		
 		textField_idProgramare = new JTextField();
@@ -62,7 +64,7 @@ public class PanelCalendar extends JPanel {
 		
 		btnRenunta.setBounds(971, 275, 220, 21);
 		add(btnRenunta);
-		jsp_1.setBounds(2, 225, 959, 225);
+		jsp_1.setBounds(2, 245, 959, 205);
 		
 		add(jsp_1);
 		
@@ -70,6 +72,12 @@ public class PanelCalendar extends JPanel {
 		
 		btnRenuntaTotal.setBounds(971, 301, 220, 21);
 		add(btnRenuntaTotal);
+		lblNewLabel.setBounds(2, 9, 203, 14);
+		
+		add(lblNewLabel);
+		lblActivitatiObligatoriiDisponibile.setBounds(2, 228, 203, 14);
+		
+		add(lblActivitatiObligatoriiDisponibile);
 	}
 	
 	public void setTable(JTable table, ArrayList<ArrayList<String>> a)

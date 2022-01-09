@@ -43,7 +43,7 @@ public class PanelStudentMaterii extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		jsp.setBounds(2, 2, 959, 225);
+		jsp.setBounds(2, 22, 959, 205);
 		add(jsp);
 		
 		textField_materie = new JTextField();
@@ -73,11 +73,19 @@ public class PanelStudentMaterii extends JPanel {
 		JLabel lblId = new JLabel("ID");
 		lblId.setBounds(987, 131, 45, 13);
 		add(lblId);
-		jsp_1.setBounds(2, 225, 959, 225);
+		jsp_1.setBounds(2, 245, 959, 205);
 		
 		add(jsp_1);
 		
 		jsp_1.setViewportView(tableMaterii);
+		
+		JLabel lblMateriiLaCare = new JLabel("Materii la care esti inscris");
+		lblMateriiLaCare.setBounds(2, 9, 150, 13);
+		add(lblMateriiLaCare);
+		
+		JLabel lblMateriiDisponibile = new JLabel("Materii Disponibile");
+		lblMateriiDisponibile.setBounds(2, 232, 122, 13);
+		add(lblMateriiDisponibile);
 	}
 	
 	public void setTable(JTable table, ArrayList<ArrayList<String>> a)

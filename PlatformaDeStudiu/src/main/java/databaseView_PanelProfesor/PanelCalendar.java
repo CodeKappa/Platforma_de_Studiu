@@ -42,7 +42,7 @@ public class PanelCalendar extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		jsp.setBounds(2, 2, 959, 225);
+		jsp.setBounds(2, 20, 959, 205);
 		add(jsp);
 		
 		textFieldDataInceput = new JTextField();
@@ -106,11 +106,19 @@ public class PanelCalendar extends JPanel {
 		add(btnDescarcareCalendar);
 		
 		JScrollPane jsp_1 = new JScrollPane((Component) null);
-		jsp_1.setBounds(2, 223, 959, 225);
+		jsp_1.setBounds(2, 245, 959, 205);
 		add(jsp_1);
 		
 		tableMaterii = new JTable();
 		jsp_1.setViewportView(tableMaterii);
+		
+		JLabel lblNewLabel = new JLabel("Programari Activitati Obligatorii");
+		lblNewLabel.setBounds(2, 7, 185, 14);
+		add(lblNewLabel);
+		
+		JLabel lblMateriiDisponibileProgramare = new JLabel("Materii Disponibile Programare");
+		lblMateriiDisponibileProgramare.setBounds(2, 230, 185, 14);
+		add(lblMateriiDisponibileProgramare);
 	}
 	
 	public void setTable(JTable table, ArrayList<ArrayList<String>> a)

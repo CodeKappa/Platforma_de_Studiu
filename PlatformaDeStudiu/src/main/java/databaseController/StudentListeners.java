@@ -347,5 +347,15 @@ public class StudentListeners{
 				catch (SQLException e1) { TreatException.printSQLException(e1); }
 			}
 		});
+    	
+    	theView.panelStudentView.creazaActivitati.btnSugereazaFerestre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					theView.panelStudentView.creazaActivitati.setTable(StudentSqlQueries.vizualizare_ferestre(MainClass.db.getCon()));
+				} 
+				catch (SQLException e1) { TreatException.printSQLException(e1); }
+			}
+		});
     }
 }

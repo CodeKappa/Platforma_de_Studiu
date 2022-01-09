@@ -5,6 +5,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import databaseModel.AdminSqlQueries;
 import databaseModel.StudentSqlQueries;
 import databaseModel.TreatException;
 import main.MainClass;
@@ -22,6 +23,7 @@ public class PanelStudentCreazaActivitatiGrup extends JPanel {
 	public JTextField textField_nume;
 	private JLabel lbl_nume;
 	public JButton btnCreazaActivitate = new JButton("Creaza Activitate");
+	public JButton btnSugereazaFerestre = new JButton("Sugereaza Ferestre");
 	
 	public JTable tableAfis = new JTable();
 	private JScrollPane jsp = new JScrollPane(tableAfis);
@@ -105,6 +107,11 @@ public class PanelStudentCreazaActivitatiGrup extends JPanel {
 		lbl_nrMin.setBounds(987, 305, 71, 13);
 		
 		add(lbl_nrMin);
+		btnSugereazaFerestre.setBounds(973, 371, 220, 21);
+		
+		add(btnSugereazaFerestre);
+		
+		
 	}
 	
 	public void setTable(ArrayList<ArrayList<String>> a)

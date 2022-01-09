@@ -65,6 +65,7 @@ public class PanelStudent extends JPanel
 		mesaje.setVisible(false);
 		activitati.setVisible(false);
 		calendar.setVisible(false);
+		creazaActivitati.setVisible(false);
 		
 		frontPanel = blankPanel;
 		

@@ -518,4 +518,32 @@ public class StudentSqlQueries {
 		con.rollback();
 		return arr;
 	}
+	
+	public static ArrayList<ArrayList<String>> vizualizare_ferestre(Connection con) throws SQLException 
+	{	
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		try 
+		{
+			CallableStatement cs = con.prepareCall("{call Generare_ferestre(?)}");
+			cs.setString(1, DatabaseController.user);
+			ResultSet rs = cs.executeQuery();
+			con.commit();
+			
+			while (rs.next()) 
+			{
+				ArrayList<String> aux = new ArrayList<String>();
+				aux.add(rs.getString("data_terminarii"));
+				aux.add(rs.getString("data_programarii"));
+				arr.add(aux);
+			}	
+		} 
+		catch (SQLException e) 
+		{
+			TreatException.printSQLException(e);
+			con.rollback();
+			return null;
+		}
+		con.rollback();
+		return arr;
+	}
 }

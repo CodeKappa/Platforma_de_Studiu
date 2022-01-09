@@ -31,6 +31,8 @@ public class PanelCatalog extends JPanel {
 	private JTextField textFieldNota;
 	private JLabel lblIdmaterie = new JLabel("ID_Materie");
 	private JTextField textFieldMaterie = new JTextField();
+	private final JLabel lblNewLabel = new JLabel("Note Studenti");
+	private final JLabel lblStudentiInscrisi = new JLabel("Studenti Inscrisi");
 
 	
 	/**
@@ -42,7 +44,7 @@ public class PanelCatalog extends JPanel {
 		
 		setBorder(new LineBorder(Color.BLACK, 1));
 		
-		jsp.setBounds(2, 2, 959, 225);
+		jsp.setBounds(2, 22, 959, 205);
 		add(jsp);
 		
 		textFieldCNP = new JTextField();
@@ -87,11 +89,17 @@ public class PanelCatalog extends JPanel {
 		add(textFieldMaterie);
 		
 		JScrollPane jsp_1 = new JScrollPane((Component) null);
-		jsp_1.setBounds(2, 225, 959, 225);
+		jsp_1.setBounds(2, 245, 959, 205);
 		add(jsp_1);
 		
 		tableStudenti = new JTable();
 		jsp_1.setViewportView(tableStudenti);
+		lblNewLabel.setBounds(2, 9, 94, 14);
+		
+		add(lblNewLabel);
+		lblStudentiInscrisi.setBounds(2, 230, 94, 14);
+		
+		add(lblStudentiInscrisi);
 	}
 	
 	public void setTable(JTable table, ArrayList<ArrayList<String>> a)
