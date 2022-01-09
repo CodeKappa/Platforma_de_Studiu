@@ -103,9 +103,9 @@ END; //
 
 CREATE PROCEDURE Adaugare_activitate_grup(id_grup int, nume varchar(50), descriere varchar(250), data_programarii varchar(50), durata varchar(50), data_expirare varchar(50), numar_minim int)
 BEGIN
-	DECLARE cgs int;
+	DECLARE cgs int default 0;
 	SELECT 1 INTO cgs FROM grup_studiu gs WHERE gs.id = id_grup;
-    IF(@cgs = 1)
+    IF(cgs = 1)
     THEN
 		INSERT INTO grup_studiu_activitati VALUES (id_grup, nume, descriere, CONVERT(data_programarii, datetime), CONVERT(durata, time), CONVERT(data_expirare, datetime), numar_minim);
     ELSE
