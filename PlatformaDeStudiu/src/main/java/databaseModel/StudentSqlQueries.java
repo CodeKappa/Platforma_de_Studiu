@@ -212,7 +212,7 @@ public class StudentSqlQueries {
 	{	
 		try 
 		{
-			CallableStatement cs = con.prepareCall("{call Renuntare_materie(?,?)}");
+			CallableStatement cs = con.prepareCall("{call Parasire_grup(?,?)}");
 			cs.setString(1, id);
 			cs.setString(2, cnp);
 			cs.execute();

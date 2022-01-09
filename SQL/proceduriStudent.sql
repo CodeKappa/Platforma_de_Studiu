@@ -78,7 +78,7 @@ END; //
 
 CREATE PROCEDURE Vizualizare_note(cnp_student char(13))
 BEGIN
-	SELECT x.nume, m.categorie, m.nota FROM materii_studenti m JOIN materii x ON m.id_materie=x.id WHERE cnp_student = m.cnp_student;
+	SELECT m.nume, ms.categorie, ms.nota FROM materii_studenti ms JOIN materii m ON ms.id_materie=m.id WHERE cnp_student = ms.cnp_student AND ms.categorie IS NOT NULL AND ms.nota IS NOT NULL;
 END; //
 
 CREATE PROCEDURE Vizualizare_grupuri()
