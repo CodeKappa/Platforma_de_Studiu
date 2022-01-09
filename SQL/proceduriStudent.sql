@@ -257,3 +257,25 @@ BEGIN
     WHERE ms.cnp_student = cnp_student AND adddate(current_timestamp(), 7) > data_programarii
     GROUP BY id;
 END; //
+
+CREATE PROCEDURE Generare_ferestre(cnp_student char(13))
+BEGIN
+	DECLARE nr_activitati int;
+    
+    SELECT COUNT(*) INTO nr_activitati FROM calendar_studenti cs WHERE cs.cnp_student = cnp_student; 
+    
+	CREATE TEMPORARY TABLE lista_ore 
+    SELECT ROW_NUMBER() OVER(ORDER BY data_programarii) idx, c.data_programarii, addtime(c.data_programarii, c.durata) AS data_terminarii FROM calendar_studenti cs
+    JOIN calendar c ON cs.id_calendar = c.id
+    WHERE cs.cnp_student = cnp_student
+    ORDER BY data_programarii;
+    
+    INSERT INTO lista_ore VALUES (nr_activitati+1, adddate(current_timestamp(), 7), adddate(current_timestamp(), 7));
+    
+    CREATE TEMPORARY TABLE lista_ore2
+    SELECT * FROM lista_ore;
+    
+    SELECT lo1.data_terminarii, lo2.data_programarii FROM lista_ore lo1 JOIN lista_ore2 lo2 ON lo1.idx = lo2.idx-1;
+    DROP TEMPORARY TABLE lista_ore;
+    DROP TEMPORARY TABLE lista_ore2;
+END; //
