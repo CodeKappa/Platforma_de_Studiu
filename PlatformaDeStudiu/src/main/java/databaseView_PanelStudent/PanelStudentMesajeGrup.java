@@ -24,13 +24,13 @@ import javax.swing.JTable;
 public class PanelStudentMesajeGrup extends JPanel {
 	private JTextField textField_mesaj;
 	private JLabel lblMesaj;
-	public JButton btnTrimite = new JButton("Trimite");
+	public JButton btnTrimite = new JButton("Trimite Mesaj In Grup");
 	public JButton btnMesaje = new JButton("Mesaje Grup");
 	
 	private JTable tableAfis = new JTable();
 	private JScrollPane jsp = new JScrollPane(tableAfis);
 	private final JTextField textField_grup = new JTextField();
-	private final JLabel lblVeziGrup = new JLabel("Vezi Mesaje Grup");
+	private final JLabel lblVeziGrup = new JLabel("Grup");
 	
 	public String cnp;
 	/**
@@ -53,18 +53,18 @@ public class PanelStudentMesajeGrup extends JPanel {
 		lblMesaj.setBounds(987, 160, 51, 13);
 		add(lblMesaj);
 		
-		btnTrimite.setBounds(971, 186, 220, 21);
+		btnTrimite.setBounds(971, 236, 220, 21);
 		add(btnTrimite);
 		
 		setActionListeners();
 		
-		btnMesaje.setBounds(971, 251, 220, 21);
+		btnMesaje.setBounds(971, 261, 220, 21);
 		add(btnMesaje);
 		textField_grup.setColumns(10);
-		textField_grup.setBounds(1068, 222, 112, 19);
+		textField_grup.setBounds(1068, 186, 112, 19);
 		
 		add(textField_grup);
-		lblVeziGrup.setBounds(960, 228, 105, 13);
+		lblVeziGrup.setBounds(987, 189, 63, 13);
 		
 		add(lblVeziGrup);
 	}

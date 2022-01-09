@@ -50,11 +50,12 @@ public class PanelStudentGrup extends JPanel {
 		add(jsp);
 		
 		textField_idMaterie = new JTextField();
+		textField_idMaterie.setEditable(false);
 		textField_idMaterie.setBounds(1068, 157, 112, 19);
 		add(textField_idMaterie);
 		textField_idMaterie.setColumns(10);
 		
-		lbl_idMat = new JLabel("ID Materie");
+		lbl_idMat = new JLabel("Materie");
 		lbl_idMat.setBounds(987, 160, 71, 13);
 		add(lbl_idMat);
 		
@@ -73,6 +74,7 @@ public class PanelStudentGrup extends JPanel {
 		add(btnRenuntaLaGrup);
 		
 		textField_id = new JTextField();
+		textField_id.setEditable(false);
 		textField_id.setColumns(10);
 		textField_id.setBounds(1068, 128, 112, 19);
 		add(textField_id);

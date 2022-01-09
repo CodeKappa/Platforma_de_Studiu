@@ -28,8 +28,8 @@ public class PanelStudentMaterii extends JPanel {
 	private JTextField textField_materie;
 	private JLabel lblMaterie;
 	public JButton btnCautaMaterieDupaNume = new JButton("Cauta Materie Dupa Nume");
-	public JButton btnInscriereMaterie = new JButton("Inscriete La Materie (nume)");
-	public JButton btnRenuntaLaMaterie = new JButton("Renunta La Materie (id)");
+	public JButton btnInscriereMaterie = new JButton("Inscriete La Materie (ID)");
+	public JButton btnRenuntaLaMaterie = new JButton("Renunta La Materie (ID)");
 	public JTable tableInscrise = new JTable();
 	public JTable tableMaterii = new JTable();
 	
